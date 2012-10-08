@@ -1,0 +1,156 @@
+\documentclass[10pt]{article}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{subfigure}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\parindent 0mm
+\textwidth 16cm
+\textheight 23cm
+\oddsidemargin 0cm
+\evensidemargin 0cm
+\topmargin -10mm
+\newcommand{\vect}[1]{{\bf{#1}}}
+\newcommand{\svect}[1]{\boldsymbol{#1}}
+\newcommand{\matr}[1]{\boldsymbol{#1}}
+
+
+\begin{document}
+\pagestyle{empty}
+\begin{Large}
+\begin{bf} 
+T-61.5130 Machine Learning and Neural Networks\\ 
+\end{bf}
+\end{Large}
+Karhunen, Hao Tele\\  
+\\
+\begin{large}
+\begin{bf}
+Exercise 2,  10.11.2011
+\end{bf}
+\end{large}
+\begin{enumerate}
+
+\item Let the error function be
+\begin{equation*}
+{\cal E}(\mathbf{w})=w_1^2+10w_2^2,
+\end{equation*}
+where $w_1$ and $w_2$ are the components of the two-dimensional
+parameter vector $\mathbf{w}$. Find the minimum value of ${\cal
+E}(\mathbf{w})$ by applying the steepest descent method. Use
+$\mathbf{w}(0)=[1,1]^T$ as an initial value for the parameter vector
+and the following constant values for the learning rate:
+\begin{enumerate} \item $\alpha=0.04$ \item $\alpha=0.1$ \item
+$\alpha=0.2$ 
+\item What is the condition for the convergence of this method?
+\end{enumerate}
+
+%\vspace{2mm}
+%\item Show that the application of the Gauss-Newton method to the
+%error function
+%\begin{equation*}
+%{\cal E} (\mathbf{w})= \frac{1}{2} \left[   \delta \| \mathbf{w} - \mathbf{w}(n) \|^2 +
+%\sum_{i=1}^n e_i^2(\mathbf{w}) \right]  
+%\end{equation*}
+%yields the following update rule for the weights:
+%\begin{equation*}
+%\Delta \mathbf{w}=-\left[ \mathbf{J}^T(\mathbf{w})\mathbf{J}(\mathbf{w}) 
+%+ \delta \mathbf{I} \right]^{-1} \mathbf{J}^T(\mathbf{w})\mathbf{e}(\mathbf{w}).
+%\end{equation*} 
+%All quantities are evaluated at iteration step $n$. (Haykin 3.3)
+
+\vspace{2mm}
+\item The normalized LMS algorithm is described by the following
+recursion for the weight vector:
+\begin{equation*}
+\Hat{\mathbf{w}}(n+1)= \Hat{\mathbf{w}}(n) +\frac{\eta e(n)
+\mathbf{x}(n)} {\| \mathbf{x}(n) \|^2},
+\end{equation*}
+where $\eta$ is a positive constant and $\|\mathbf{x}(n) \|$ is the
+Euclidean norm of the input vector $\mathbf{x}(n)$. The error
+signal $e(n)$ is defined by
+\begin{equation*}
+e(n)=d(n)-{\Hat{\mathbf{w}}(n)}^T \mathbf{x}(n),
+\end{equation*}
+where $d(n)$ is the desired response. For the normalized LMS algorithm to 
+be convergent in the mean square, show that $0< \eta <2$. 
+
+%\vspace{2mm}
+%\item The ensemble-averaged counterpart to the sum of error squares
+%viewed as a cost function is the mean-square value of the error
+%signal:
+%\begin{equation*}
+%J(\mathbf{w})=\frac{1}{2}E[e^2(n)]=\frac{1}{2}E[(d(n)-\mathbf{x}^T(n)\mathbf{w})^2].
+%\end{equation*}
+%\begin{enumerate} \item Assuming that the input vector $\mathbf{x}(n)$ 
+%and desired response $d(n)$ are drawn from a stationary environment,
+%show that 
+%\begin{equation*} 
+%J(\mathbf{w})=\frac{1}{2}\sigma_d^2-\mathbf{r}_{\mathbf{x}d}^T\mathbf{w} +
+%\frac{1}{2}\mathbf{w}^T\mathbf{R}_{\mathbf{x}}\mathbf{w},
+%\end{equation*}
+%where $\sigma_d^2=E[d^2(n)]$,
+%$\mathbf{r}_{\mathbf{x}d}=E[\mathbf{x}(n)d(n) ]$, and
+%$\mathbf{R}_{\mathbf{x}}=E[\mathbf{x}(n)\mathbf{x}^T(n) ]$. 
+%\item For this cost function, show that the gradient vector and
+%Hessian matrix of $J(\mathbf{w})$ are as follows, respectively:
+%\begin{align}
+%&\mathbf{g}  =-\mathbf{r}_{\mathbf{x}d} + \mathbf{R}_{\mathbf{x}}
+%\mathbf{w} \text{\; and} \notag \\
+%&\mathbf{H}  =\mathbf{R}_{\mathbf{x}}. \notag
+%\end{align}
+%\item In the LMS/Newton algorithm, the gradient vector $\mathbf{g}$ is 
+%replaced by its instantaneous value. Show that this algorithm,
+%incorporating a learning rate parameter $\eta$, is described by
+%\begin{equation*}
+%\Hat{\mathbf{w}}(n+1)=\Hat{\mathbf{w}}(n)+\eta
+%\mathbf{R}_{\mathbf{x}}^{-1}\mathbf{x}(n)\left[d(n)-\mathbf{x}^T(n)\Hat{\mathbf{w}}(n)\right].
+%\end{equation*}
+%The inverse of the correlation matrix $\mathbf{R}_{\mathbf{x}}$,
+%assumed to be positive definite, is calculated ahead of time. (Haykin 3.8)
+%\end{enumerate}
+
+\vspace{2mm}
+\item A linear classifier separates $n$-dimensional
+space into two classes using a $(n-1)$-dimensional hyperplane. Points
+are classified into two classes, $\omega_1$ or $\omega_2$, depending on
+which side of the hyperplane they are located.
+\begin{enumerate} \item Construct a linear classifier which is able to 
+separate the following two-dimensional samples correctly:\\
+\begin{align}
+&\omega_1: \text{\;} \{[2,1]^T\}, \notag \\
+&\omega_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
+\end{align}
+\item Is it possible to construct a linear classifier which is able to
+separate the following samples correctly? \\
+\begin{align}
+&\omega_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
+&\omega_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
+\end{align}
+Justify your answer. 
+\end{enumerate} 
+
+\vspace{2mm}
+\item (Hamm \& Kostanic: 2.8) Write a computer program using a perceptron (see Figure 2.30) to
+  classify the digits given in Figure 2.41. The number of neurons in
+  the output layer should be equal to the number of digits.
+
+\vspace{2mm}
+\item (Hamm \& Kostanic: 2.9) \\
+
+a) By substituting (2.27) into (2.25) prove
+  that
+\[
+J ({\bf w}^*) = \frac{1}{2} \text{E}\lbrace d^2(k) \rbrace
+- \frac{1}{2} {\bf p}^T{\bf w}^*
+\]
+
+b) Using the equation derived in part (a), prove that (2.25) can be
+expressed as
+\[
+J ({\bf w}) = J ({\bf w}^*) + \frac{1}{2} ({\bf w}-{\bf
+  w}^*)^T{\bf C}_x({\bf w} - {\bf w}^*)
+\]
+
+\end{enumerate}
+\end{document}             % End of document.
