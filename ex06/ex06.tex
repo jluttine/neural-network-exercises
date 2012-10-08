@@ -1,0 +1,89 @@
+\documentclass[10pt]{article}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{subfigure}
+\usepackage{epsfig}
+\usepackage{amsmath,amssymb}
+\parindent 0mm
+\textwidth 16cm
+\textheight 23cm
+\oddsidemargin 0cm
+\evensidemargin 0cm
+\topmargin -10mm
+\newcommand{\vect}[1]{{\bf{#1}}}
+\newcommand{\svect}[1]{\boldsymbol{#1}}
+\newcommand{\matr}[1]{\boldsymbol{#1}}
+
+
+\begin{document}
+\pagestyle{empty}
+\begin{Large}
+\begin{bf} 
+T-61.5130 Machine Learning and Neural Networks\\ 
+\end{bf}
+\end{Large}
+Karhunen, Hao Tele\\  
+\\
+\begin{large}
+\begin{bf}
+Exercise 6,  24.11.2011
+\end{bf}
+\end{large}
+\begin{enumerate}
+
+\item One of the important matters to consider in the design of an MLP
+  network is its capability to generalize. Generalization means that
+  the network does not give a good response only to the learning
+  samples but also to new samples from the same distribution. Good generalization can be
+  obtained only if the number of the free parameters of the network
+  is kept reasonable. As a thumb rule, the number of training samples
+  should be at least five times the number of parameters. If there are
+  less training samples than parameters, the network easily overlearns
+  -- it handles perfectly the training samples but gives arbitrary
+  responses to all the other samples.
+
+  An MLP is used for a classification task in which the samples are
+  divided into five classes. The input vectors of the network consist
+  of ten features and the size of the training set is 800. How many
+  hidden units can there be at most according to the rule given above?
+
+\vspace{2mm}
+
+\item What can you say about the bias and variance of a committee in
+  which the output is computed with ensemble averaging? Hint 1: Any
+  answer is better than none at all. 
+%Hint 2: the output $y$ is
+%  obtained as a weighted sum of $K$ experts with equal weights for
+%  each expert, $w_k=1/K$.
+
+\vspace{2mm}
+
+\item Consider the general linear model for modeling a scalar variable \[y:
+  y({\bf x},{\bf w}) = \sum_{j=0}^{M-1} w_j \phi_j({\bf x})\]
+  where ${\bf x}$ is data vector, ${\bf w}$ is $M$-dimensional weight vector with
+  elements $w_0,w_1,...,w_{M-1}$, and the $\phi_j({\bf x})$, $j=1,...,M-1$ are
+  some basis functions which can be nonlinear. Often $\phi_0({\bf x})
+  = 1$ is the dummy 'basis function' corresponding to the bias term $w_0$.
+  You have at your disposal $N$ input-output pairs ($t_i,{\bf x}_i$). Model
+  the dependence between input vector ${\bf x}$ and scalar output t using the
+  general linear model above. Fit the model to the training data using
+  the least-squares method with the added weight decay regularizer
+  $0.5\lambda {\bf w}^T{\bf w}$.
+
+\vspace{2mm}
+
+\item Assume that the relationship between the input vector ${\bf x}$
+  and the desired response (output) vector ${\bf d}$ is of the form
+  \[{\bf d} = {\bf h}({\bf x}) + {\bf e}\]
+  where ${\bf h}({\bf x})$ is the true mapping between ${\bf x}$ and ${\bf d}$
+  and ${\bf e}$ is the error or noise vector. Consider modeling the unknown
+  true mapping ${\bf h}({\bf x})$ by the output ${\bf y}({\bf x},{\bf w})$
+  of a neural network, where the vector ${\bf w}$ contains all the adjustable
+  weights of the neural network. Assume that you have at your disposal
+  $N$ training pairs $({\bf x}_i,{\bf d}_i)$ of the mapping. Show that if the
+  training pairs are independent, and the noise vector ${\bf e}$
+  is Gaussian with zero mean and covariance matrix $\sigma^2 {\bf I}$, the standard
+  least-squares method and maximum likelihood method provide the same results.
+
+\end{enumerate}
+\end{document}             % End of document.
