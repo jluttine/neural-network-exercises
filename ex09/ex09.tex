@@ -1,0 +1,96 @@
+\documentclass[10pt]{article}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{subfigure}
+\usepackage{epsfig}
+\usepackage{amsmath,amssymb}
+\parindent 0mm
+\textwidth 16cm
+\textheight 23cm
+\oddsidemargin 0cm
+\evensidemargin 0cm
+\topmargin -10mm
+\newcommand{\vect}[1]{{\bf{#1}}}
+\newcommand{\svect}[1]{\boldsymbol{#1}}
+\newcommand{\matr}[1]{\boldsymbol{#1}}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\set}[1]{\mathcal{#1}}
+\newcommand{\C}{\set{C}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\I}{\vec{I}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\N}{\mathrm{I \negmedspace N}}
+\newcommand{\R}{\mathrm{I \negmedspace R}}
+\newcommand{\V}{\set{V}}
+\newcommand{\W}{\vec{W}}
+\newcommand{\X}{\set{X}}
+\newcommand{\e}{\vec{e}}
+%\newcommand{\f}[1]{\mathrm{#1}} %funktio
+\newcommand{\h}{\vec{h}}
+\newcommand{\m}{\vec{m}}
+\newcommand{\mub}{\boldsymbol{\mu}}
+\newcommand{\n}{\vec{n}}
+\renewcommand{\t}{\vec{t}}
+\renewcommand{\u}{\vec{u}}
+\renewcommand{\v}{\vec{v}}
+\newcommand{\w}{\vec{w}}
+\newcommand{\x}{\vec{x}}
+\newcommand{\y}{\vec{y}}
+\newcommand{\Y}{\vec{Y}}
+\newcommand{\z}{\vec{z}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\bSigma}{\boldsymbol{\Sigma}}
+
+
+
+\begin{document}
+\pagestyle{empty}
+\begin{Large}
+\begin{bf} 
+T-61.5130 Machine Learning and Neural Networks\\ 
+\end{bf}
+\end{Large}
+Karhunen, Hao Tele\\  
+\\
+\begin{large}
+\begin{bf}
+Exercise 9,  2.12.2011
+\end{bf}
+\end{large}
+\begin{enumerate}
+
+\item Consider a random input vector $\mathbf{X}$ made up of two component vectors,
+ $\mathbf{X} = [\mathbf{X}_1,\mathbf{X}_2]^T$. Assume that you would like to represent the
+ central dependencies between $\mathbf{X}_1$ and $\mathbf{X}_2$ with a  simple
+ model. How would you do that? (Hint: Consider linear combinations.)
+
+\vspace{2mm}
+
+\item Show that
+\begin{displaymath}
+  I(X;Y) = D_{p(X,Y)||p(X)p(Y)} \; ,
+\end{displaymath}
+that is, mutual information is equal to the Kullback-Leibler
+divergence of the joint distribution from the ``corresponding''
+factored distribution.
+
+\vspace{2mm}
+
+\item Show that for a transformation $\mathbf{y} = \mathbf{W}
+  \mathbf{x}$ there exists a simple connection between mutual information $I$
+  and negentropy $J$ assuming that the $Y_i$ are uncorrelated and have
+  unit variance:
+  \[
+  I(Y_1, \ldots , Y_n) = C - \sum_{i=1}^n J(Y_i) ; ,
+  \]
+  where $C$ is a constant. (Notation: $y_i$ is the value of the random
+  variable $Y_i$.) What does this connection imply for ICA computation?
+
+\item Image denoising tutorial
+
+\item Demo: Source separation from climate data
+
+\end{enumerate}
+\end{document}             % End of document.
