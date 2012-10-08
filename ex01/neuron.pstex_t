@@ -1,0 +1,33 @@
+\begin{picture}(0,0)%
+\includegraphics{neuron}%
+\end{picture}%
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(2771,1668)(1501,-2219)
+\put(1501,-1034){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_1$}%
+}}}
+\put(1524,-2219){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_n$}%
+}}}
+\put(3122,-1448){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_k$}%
+}}}
+\put(3938,-1448){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$y_k$}%
+}}}
+\put(3559,-1575){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\varphi$}%
+}}}
+\put(2191,-1195){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$w_{k1}$}%
+}}}
+\put(2179,-2081){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$w_{kn}$}%
+}}}
+\put(2685,-1621){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\Sigma$}%
+}}}
+\put(2823,-1161){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$w_{k0}$}%
+}}}
+\put(2421,-758){\makebox(0,0)[lb]{\smash{\SetFigFont{14}{16.8}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$x_0 = 1$}%
+}}}
+\end{picture}
