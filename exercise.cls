@@ -1,5 +1,10 @@
 \ProvidesClass{exercise}[2012/10/11 v 1.0 Exercise class]
 
+\newif\ifsol
+\solfalse
+\DeclareOption{solutions}{\soltrue}
+\ProcessOptions\relax
+
 %\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 %\ProcessOptions\relax
 \LoadClass[10pt,a4]{article}
@@ -12,13 +17,14 @@
 \RequirePackage{amssymb}
 \RequirePackage{color}
 \RequirePackage{etoolbox}
+\RequirePackage{environ}
 
-\newtoggle{solutions}
-\ifsol
-  \toggletrue{solutions}
-\else
-  \togglefalse{solutions}
-\fi
+% \newtoggle{solutions}
+% \ifsol
+%   \toggletrue{solutions}
+% \else
+%   \togglefalse{solutions}
+% \fi
 
 \parindent 0mm
 \textwidth 16cm
@@ -33,6 +39,24 @@
 
 
 \pagestyle{empty}
+
+% Title formatting
+\RequirePackage{titling}
+\pretitle{\bf \Large}
+\posttitle{\\}
+\preauthor{}
+\postauthor{\\ \\}
+\predate{\bf \large}
+\postdate{}
+
+
+
+% Solution environment
+\NewEnviron{solution}{
+  \ifsol\expandafter
+  \hrulefill
+  \BODY\fi
+}
 
 
 \endinput
