@@ -55,7 +55,7 @@
 \NewEnviron{solution}{
   \ifsol\expandafter
   \hrulefill
-  \BODY\fi
+  \BODY\vspace{1cm}\fi
 }
 
 
