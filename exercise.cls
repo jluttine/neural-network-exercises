@@ -19,6 +19,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{environ}
 \RequirePackage{tikz}
+\RequirePackage{psfrag}
 
 % \newtoggle{solutions}
 % \ifsol
@@ -34,9 +35,9 @@
 \evensidemargin 0cm
 \topmargin -10mm
 
-\newcommand{\vect}[1]{{\bf{#1}}}
-\newcommand{\svect}[1]{\boldsymbol{#1}}
-\newcommand{\matr}[1]{\boldsymbol{#1}}
+% \newcommand{\vect}[1]{{\bf{#1}}}
+% \newcommand{\svect}[1]{\boldsymbol{#1}}
+% \newcommand{\matr}[1]{\boldsymbol{#1}}
 
 
 \pagestyle{empty}
