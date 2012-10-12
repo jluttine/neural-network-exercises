@@ -18,6 +18,7 @@
 \RequirePackage{color}
 \RequirePackage{etoolbox}
 \RequirePackage{environ}
+\RequirePackage{tikz}
 
 % \newtoggle{solutions}
 % \ifsol
@@ -54,7 +55,9 @@
 % Solution environment
 \NewEnviron{solution}{
   \ifsol\expandafter
+  \nopagebreak
   \hrulefill
+  
   \BODY\vspace{1cm}\fi
 }
 
