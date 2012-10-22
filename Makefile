@@ -38,7 +38,7 @@ solutions.pdf: $(SOLUTIONS)
 	output \
 	solutions.pdf
 
-ex%/solutions.pdf: ex%/solutions.tex
+ex%/solutions.pdf: ex%/solutions.tex ex%/exercise.tex
 	cd ex$*; \
 	TEXINPUTS="..:" latex solutions.tex; \
 	dvips solutions.dvi; \
