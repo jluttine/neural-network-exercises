@@ -220,71 +220,145 @@
   \end{enumerate}
 
   \begin{solution}
-    \usetikzlibrary{shapes}
-    \usetikzlibrary{chains}
-    \usetikzlibrary{arrows}
-    \begin{tikzpicture}[start chain=hidden going below,
-      start chain=input going below]
+    \begin{enumerate}
+    \item \      
+      \begin{center}
+        \usetikzlibrary{shapes}
+        \usetikzlibrary{chains}
+        \usetikzlibrary{arrows}
+        \begin{tikzpicture}[start chain=hidden going below,
+          start chain=input going below]
 
-      \tikzset{>={triangle 45}}
-      
-      %
-      \foreach \i in {1,...,6} {
-        \node[rectangle,draw] (in\i) at (0,2*7-2*\i) {};
-      }
-      \foreach \i in {1,...,3} {
-        \node[circle,draw,fill=gray,minimum size=20pt] (hid\i) at (3,2*5.5-2*\i) {};
-      }
-      % 
-      % % Hidden layer
-      % \node[circle,fill=gray!25,draw,minimum
-      % size=20pt,on chain=hidden,label=1] (h1) {};
-      % \node[circle,fill=gray!25,draw,minimum
-      % size=20pt,on chain=hidden,label=2] (h2) {};
-      % \node[circle,fill=gray!25,draw,minimum
-      % size=20pt,on chain=hidden,label=3] (h3) {};
-      %
+          \tikzset{>={triangle 45}}
+          
+          % 
+          \foreach \i in {1,...,6} {
+            \node[rectangle,draw] (in\i) at (0,2*7-2*\i) {};
+          }
+          \foreach \i in {1,...,3} {
+            \node[circle,draw,fill=gray,minimum size=20pt] (hid\i) at (3,2*5.5-2*\i) {};
+          }
+          % 
+          % % Hidden layer
+          % \node[circle,fill=gray!25,draw,minimum
+          % size=20pt,on chain=hidden,label=1] (h1) {};
+          % \node[circle,fill=gray!25,draw,minimum
+          % size=20pt,on chain=hidden,label=2] (h2) {};
+          % \node[circle,fill=gray!25,draw,minimum
+          % size=20pt,on chain=hidden,label=3] (h3) {};
+          % 
 
-      % Output layer
-      \node[right=100pt of hid1]
-      (out) {$y_n$};
+          % Output layer
+          \node[right=100pt of hid1]
+          (out) {$y(n)$};
 
-      % Arrows input->hidden
-      \foreach \i in {1,...,6} {
-        \foreach \j in {1,...,3} {
-          \draw[->] (in\i) -- (hid\j);
-        }
-      }
+          % Arrows input->hidden
+          \foreach \i in {1,...,6} {
+            \foreach \j in {1,...,3} {
+              \draw[->] (in\i) -- (hid\j);
+            }
+          }
 
-      % Arrow hidden->output
-      \draw[->] (hid1) -- (out);
+          % Arrow hidden->output
+          \draw[->] (hid1) -- (out);
 
-      % Recurrent arrows
-      \foreach \i in {1,2,3} {
-        % Unit time-delays
-        \path (hid\i) ++(-1.5,3*\i+2) node[draw,rectangle,minimum
-        size=20pt] (z\i) {$z^{-1}$};
-        % Arrows
-        \draw[->] (hid\i) -- ++(1.5+\i*0.5,0) node[at start,label=above
-        right:$x_{\i,n}$] {} node (crossing\i) {} -- ++(0,3*\i+2) --
-        (z\i) -- ++(-\i*0.5-3,0) node (current) {} -- (current |- in\i)
-        -- (in\i) node[at end, label=above left:$x_{\i,n-1}$] {};
-      }
+          % Recurrent arrows
+          \foreach \i in {1,2,3} {
+            % Unit time-delays
+            \path (hid\i) ++(-1.5,3*\i+2) node[draw,rectangle,minimum
+            size=20pt] (z\i) {$z^{-1}$};
+            % Arrows
+            \draw[->] (hid\i) -- ++(1.5+\i*0.5,0) node[at start,label=above
+            right:$x_\i(n)$] {} node (crossing\i) {} -- ++(0,3*\i+2) --
+            (z\i) -- ++(-\i*0.5-3,0) node (current) {} -- (current |- in\i)
+            -- (in\i) node[at end, label=above left:$x_\i(n-1)$] {};
+          }
 
-      \node[circle,draw,fill,scale=0.4] at (crossing1) {};
+          \node[circle,draw,fill,scale=0.4] at (crossing1) {};
 
-      \draw[<-] (in4) -- ++(-1,0) node[label=left:1] {};
-      \draw[<-] (in5) -- ++(-1,0) node[label=left:$u_{1,n}$] {};
-      \draw[<-] (in6) -- ++(-1,0) node[label=left:$u_{2,n}$] {};
-      
-      % % Input layer
-      % \node[rectangle,draw=black] (in1) {};
-      % \node[rectangle,draw=black,below=30pt of in1] (in2) {};
-      % \node[rectangle,draw=black,below=30pt of in2] (in3) {};
-      % \node[rectangle,draw=black,below=30pt of in3] (in4) {};
-      % \node[rectangle,draw=black,below=30pt of in4] (in5) {};
-      % \node[rectangle,draw=black,below=30pt of in5] (in6) {};
-    \end{tikzpicture}
+          \draw[<-] (in4) -- ++(-1,0) node[label=left:$1$] {};
+          \draw[<-] (in5) -- ++(-1,0) node[label=left:$u_1(n)$] {};
+          \draw[<-] (in6) -- ++(-1,0) node[label=left:$u_2(n)$] {};
+          
+        \end{tikzpicture}
+      \end{center}
+
+    \item
+        
+      There are two neurons in the input layer, three neurons in the
+      hidden layer and one output. In the following, we consider a
+      more general case with arbitrary number of neurons in each
+      layer.
+
+      Let the $q$-by-$1$ vector
+      $\mathbf{x}(n)=[x_1(n),\,\ldots,\,x_q(n)]^{\mathrm{T}}$ denote
+      the state vector of recurrent network. Let the $(m+1)$-by-$1$
+      vector $\mathbf{u}(n)$ denote the input applied to the system
+      and the constant $1$ is concatenated into this vector
+      $\mathbf{u}(n)=[1,\,u_1(n),\,u_2(n),\,\ldots,\,u_m(n)]^{\mathrm{T}}$.
+      The $p$-by-$1$ vector $\mathbf{y}(n)$ denotes the corresponding
+      output of the system.  In mathematical terms, the dynamic
+      behavior of the system, assumed to be noise free, is described
+      by the following pair of nonlinear equations:
+      \begin{align*}
+        \mathbf{x}(n) &= \phi \left( \mathbf{W}_a \mathbf{x}(n-1) +
+          \mathbf{W}_b \mathbf{u}(n) \right), \\
+        \mathbf{y}(n) &= \mathbf{C} \mathbf{x}(n),
+      \end{align*}
+      where $\mathbf{W}_a$ is a $q$-by-$q$ matrix, $\mathbf{W}_b$ is a
+      $q$-by-($m+1$) matrix, $\mathbf{C}$ is a $p$-by-$q$ matrix and
+      $\phi: \mathbb{R}^q \rightarrow \mathbb{R}^q$ is a diagonal map
+      described by
+
+      \[
+      \boldsymbol{\phi}:
+      \left[\begin{array}{c}
+          x_1 \\
+          x_2 \\
+          \vdots \\
+          x_q
+        \end{array}\right]
+      \rightarrow
+      \left[\begin{array}{c}
+          \phi(x_1) \\
+          \phi(x_2) \\
+          \vdots \\
+          \phi(x_q)
+        \end{array}\right]
+      \]
+      for some memoryless, component-wise nonlinearity $\phi$.
+      % : \mathbb{R}^m$,
+      % $\mathbb{R}^n$, and $\mathbb{R}^p$ are called the input space, state
+      % space, and output space, respectively.
+
+      In the network of the figure we have $m$=2, $q$=3 and $p$=1. Thus the
+      matrices $\mathbf{W}$ are defined as follows
+
+      \[
+      \mathbf{W}_a = 
+      \left[\begin{array}{ccc}
+          w_{11} & w_{12} & w_{13} \\
+          w_{21} & w_{22} & w_{23} \\
+          w_{31} & w_{32} & w_{33} \\
+        \end{array}\right]
+      \]
+
+      \[
+      \mathbf{W}_b = 
+      \left[\begin{array}{ccc}
+          b_{1} & w_{14} & w_{15} \\
+          b_{2} & w_{24} & w_{25} \\
+          b_{3} & w_{34} & w_{35} \\
+        \end{array}\right]
+      \]
+
+      where the first column of $\mathbf{W}_b$ represents the bias terms applied to
+      neurons 1, 2 and 3. The matrix $\mathbf{C}$ is defined by
+
+      \[
+      \mathbf{C} = [1, \; 0, \; 0]
+      \]
+    \end{enumerate}
   \end{solution}
   
 \end{enumerate}
