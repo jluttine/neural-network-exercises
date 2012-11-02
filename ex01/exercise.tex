@@ -7,6 +7,8 @@
 \newcommand{\svect}[1]{\boldsymbol{#1}}
 \newcommand{\matr}[1]{\boldsymbol{#1}}
 
+\usepackage{cancel}
+
 \begin{document}
 
 \maketitle
@@ -18,11 +20,11 @@
   An odd sigmoid function is defined by
   \begin{equation}
     \label{eq:sigmoid}
-    \varphi(v)=\frac{1-\exp(-av)}{1+\exp(-av)}=\tanh(av/2),
+    \varphi(v)=\frac{1-e^{-av}}{1+e^{-av}}=\tanh(av/2),
   \end{equation}
   where $\tanh$ denotes a hyperbolic tangent. The limiting values of
-  this second sigmoid function are $-1$ and $+1$. Show that the derivate 
-  of $\varphi(v)$ with respect to $v$ is given by
+  this second sigmoid function are $-1$ and $+1$. Show that the
+  derivative of $\varphi(v)$ with respect to $v$ is given by
   \begin{equation*}
     \frac{d\varphi}{dv}=\frac{a}{2}(1-\varphi^2(v)).
   \end{equation*}
@@ -33,33 +35,47 @@
   \begin{solution}
 
     The derivative of $\varphi(v)$:
-    \begin{equation*}
-      \begin{split}
-        \frac{d\varphi}{dv}&=\frac{a\exp(-av) (1 + \exp(-av)) + a\exp(-av)
-          (1 - \exp(-av))} {(1+\exp(-av))^2} \\
-        &= \frac{a ( \exp(-av) + \exp(-2av) + \exp(-av) - \exp(-2av) )}{(1 +
-          \exp(-av))^2} \\
-        &= \frac{a}{2} \frac{(1 + \exp(-av))^2 - (1 - \exp(-av))^2}{(1 +
-          \exp(-av))^2} = \frac{a}{2} ( 1 - \varphi^2(v) )
-      \end{split}
-    \end{equation*}
+    \begin{align*}
+      \frac{d\varphi}{dv} &= \frac{a e^{-av} (1 + e^{-av}) + a
+        e^{-av} (1 - e^{-av})} {(1+e^{-av})^2}
+      && \text{Derivate using quotient rule}
+      \\
+      &= a \cdot \frac{ e^{-av} + \cancel{e^{-2av}} + e^{-av} -
+        \cancel{e^{-2av}}} {(1 + e^{-av})^2}
+      && \text{Cancel terms}
+      \\
+      &= \frac{a}{2} \cdot \frac{4 e^{-av}} {(1+e^{-av})^2} &&
+      \text{Multiply numerator by 2}
+      \\
+      &= \frac{a}{2} \cdot \frac{1+2e^{-av}+e^{-2av} -
+        1+2e^{-av}-e^{-2av}} {(1+e^{-av})^2} && \text{Add extra
+        terms that sum to zero}
+      \\
+      &= \frac{a}{2} \cdot \frac{(1+e^{-av})^2 - (1-e^{-av})^2}
+      {(1+e^{-av})^2} && \text{Re-organize terms}
+      \\
+      &= \frac{a}{2} \left[ 1 - \frac{(1-e^{-av})^2} {(1+e^{-av})^2}
+      \right]
+      \\
+      &= \frac{a}{2} ( 1 - \varphi^2(v) )
+    \end{align*}
 
     At the origin: 
     \begin{equation*}
       \left.\frac{d\varphi}{dv}\right|_{v=0} = \frac{a}{2} \left[1 - \left(
-        \frac{1 - \exp(-a * 0)}{1 + \exp(-a*0)} \right)^2\right] = \frac{a}{2}.
+          \frac{1 - e^{-a * 0}}{1 + e^{-a*0}} \right)^2\right] = \frac{a}{2}.
     \end{equation*}
     \begin{equation*}
-      \mbox{When  $a$ $\rightarrow$ $\infty$,  $\varphi(v)$ $\rightarrow$} \left\{ 
-        \begin{array}{rl}
+      \text{When  $a$ $\rightarrow$ $\infty$,  $\varphi(v)$ $\rightarrow$}
+        \begin{cases}
           +1, &v > 0 \\
           -1, &v < 0 \\
           0, &v = 0
-        \end{array} \right.
+        \end{cases}
     \end{equation*}
 
-    Fig.~\ref{fig:sigmoid} shows the values of the sigmoid
-    function $\varphi(v)$~\eqref{eq:sigmoid} with different values of $a$.
+    Fig.~\ref{fig:sigmoid} shows the values of the sigmoid function
+    $\varphi(v)$ with different values of $a$.
 
     \begin{figure}[h]
       \begin{center}
@@ -98,7 +114,7 @@
       the synaptic weights and $b_k$ is the bias.
       
       A sigmoid activation function on interval $[0,1]$ is {\em e.g.}
-      $\sigma(v) = 1 / (1 + \exp(-av))$, where we assume $a > 0$ without
+      $\sigma(v) = 1 / (1 + e^{-av})$, where we assume $a > 0$ without
       loss of generality.
       
       When synaptic weights have large values, also $|a v|$ tends to have
@@ -106,19 +122,19 @@
       \begin{equation}
         \begin{aligned}
           \lim_{a \rightarrow \infty} \sigma(v)& = \left. \frac{1}{1 +
-              \exp(-av)}\right|_{a \rightarrow \infty} = \frac{1}{1+0} = 1 \mbox{\ \ \ \ \ \ ($v>0$)}
+              e^{-av}}\right|_{a \rightarrow \infty} = \frac{1}{1+0} = 1 \mbox{\ \ \ \ \ \ ($v>0$)}
           \\
           \lim_{a \rightarrow \infty} \sigma(v)& = \left. \frac{1}{1 +
-              \exp(-av)}\right|_{a \rightarrow \infty} =
+              e^{-av}}\right|_{a \rightarrow \infty} =
           \frac{1}{1-\infty} = 0 \mbox{\ \ \ \ \ ($v<0$)}
         \end{aligned}
       \end{equation}
       
-    \item We expand the $\exp(-av)$ in Taylor series around point $v=0$:
+    \item We expand the $e^{-av}$ in Taylor series around point $v=0$:
       
       \begin{equation}
         \begin{split}
-          \sigma(v) &= \frac{1}{1 + \exp(-av)} = \frac{1}{1 + 1 - av +
+          \sigma(v) &= \frac{1}{1 + e^{-av}} = \frac{1}{1 + 1 - av +
             \underbrace{\frac{(av)^2}{2!} - \frac{(av)^3}{3!} +
               \cdots}_{\mbox{$\approx$ $0$, for small values of $v$}}} \\ 
           &\approx \frac{1}{2 ( 1 - \frac{av}{2})} \\

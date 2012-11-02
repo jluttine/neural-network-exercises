@@ -41,11 +41,16 @@ solutions.pdf: $(SOLUTIONS)
 ex%/solutions.pdf: ex%/solutions.tex ex%/exercise.tex
 	cd ex$*; \
 	TEXINPUTS="..:" latex solutions.tex; \
+	TEXINPUTS="..:" latex solutions.tex; \
 	dvips solutions.dvi; \
 	ps2pdf solutions.ps;
 
 ex%/problems.pdf: ex%/problems.tex ex%/exercise.tex
 	cd ex$*; \
 	TEXINPUTS="..:" latex problems.tex; \
+	TEXINPUTS="..:" latex problems.tex; \
 	dvips problems.dvi; \
 	ps2pdf problems.ps;
+
+clean:
+	rm $(EXERCISES) $(SOLUTIONS) exercises.pdf solutions.pdf
