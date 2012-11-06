@@ -3,6 +3,8 @@
 \author{Karhunen, Luttinen}
 \date{Exercise 2, 8.11.2012}
 
+\usepackage{cancel}
+
 
 % \usepackage{subfigure}
 % \usepackage{epsfig}
@@ -158,14 +160,15 @@
   space into two classes using a $(n-1)$-dimensional hyperplane. Points
   are classified into two classes, $\omega_1$ or $\omega_2$, depending on
   which side of the hyperplane they are located.
-  \begin{enumerate} \item Construct a linear classifier which is able to
-    separate the following two-dimensional samples correctly:\\
+  \begin{enumerate}
+  \item Construct a linear classifier which is able to separate the
+    following two-dimensional samples correctly:
     \begin{align}
       &\omega_1: \text{\;} \{[2,1]^T\}, \notag \\
       &\omega_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
     \end{align}
-  \item Is it possible to construct a linear classifier which is able to
-    separate the following samples correctly? \\
+  \item Is it possible to construct a linear classifier which is able
+    to separate the following samples correctly?
     \begin{align}
       &\omega_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
       &\omega_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
@@ -175,6 +178,16 @@
 
   \begin{solution}
 
+    In general, it is possible to construct a linear classifier to
+    separate sets $\omega_1$ and $\omega_2$ if there exists
+    $\mathbf{w}$ and $b$ such that
+    \begin{align*}
+      \begin{cases}
+        \mathbf{w}^T\mathbf{x}+b<0, & \forall \mathbf{x} \in \omega_1
+        \\
+        \mathbf{w}^T\mathbf{x}+b\geq 0, & \forall \mathbf{x} \in \omega_2
+      \end{cases}
+    \end{align*}
 
     \begin{enumerate} 
     \item
@@ -196,10 +209,10 @@
 
       Classifications are carried out as follows:
       \begin{equation*}
-        \left\{\begin{array}{l}
-            \vw^T\vx<0 \Rightarrow \vx \in \omega_1\\
-            \vw^T\vx\geq 0 \Rightarrow \vx \in \omega_2\\
-          \end{array}\right.
+        \begin{cases}
+          \vw^T\vx<0 \Rightarrow \vx \in \omega_1\\
+          \vw^T\vx\geq 0 \Rightarrow \vx \in \omega_2\\
+        \end{cases}
       \end{equation*}
 
     \item
@@ -213,8 +226,9 @@
       \end{center}
 
       It is not possible to separate the classes with a single
-      hyperplane. At least two hyperplanes are required to separated the
-      classes correctly.
+      hyperplane. At least two hyperplanes are required to separated
+      the classes correctly. In general, if the convex hulls of the
+      sets overlap, the sets are not linearly separable.
 
     \end{enumerate}
 
@@ -222,59 +236,133 @@
   
 \item
 
-  a) By substituting (2.27) into (2.25) prove that
-  \begin{equation*}
-    J(\mathbf{w}^*) = \frac{1}{2} \mathrm{E}\{ d^2(k) \} - \frac{1}{2}
-    \mathbf{p}^T \mathbf{w}^*
-  \end{equation*}
-  
-  b) Using the equation derived in part (a), prove that (2.25) can be
-  expressed as
-  \begin{equation*}
-    J(\mathbf{w}) = J(\mathbf{w}^*) + \frac{1}{2}( \mathbf{w} -
-    \mathbf{w}^*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}^*)
-  \end{equation*}
+  \begin{enumerate}
+  \item
+    By substituting the optimal weights
+    \begin{equation}
+      \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p}
+      \label{eq:w_optimal}
+    \end{equation}
+    into the cost function
+    \begin{equation}
+      J(\mathbf{w}) = \frac{1}{2} \mathrm{E}\{d^2(n)\} -
+      \mathbf{p}^{\mathrm{T}}\mathbf{w} +
+      \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w}
+      \label{eq:J}
+    \end{equation}
+    prove that
+    \begin{equation}
+      J(\mathbf{w}_*) = \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
+      \mathbf{p}^T \mathbf{w}_*.
+      \label{eq:J2}
+    \end{equation}
+    
+  \item Using \eqref{eq:J2}, prove that \eqref{eq:J} can be expressed as
+    \begin{equation*}
+      J(\mathbf{w}) = J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
+      \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
+    \end{equation*}
+  \end{enumerate}
 
   \begin{solution}
-    
+
+    First, some background for the linear neuron:
+    \begin{itemize}
+    \item $\mathbf{x}(n)$ is the input vector at time $n$
+    \item $\mathbf{w}$ is the weight vector
+    \item $\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the linear output
+      of the neuron at time $k$
+    \item $d(n)$ is the desired output at time $n$
+    \item $e(n)=d(n)-\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the
+      error of the output at time $n$
+    \end{itemize}
+    Thus, the mean squared error (MSE) to be minimized can be given as
     \begin{align*}
-      J(\vw)&=\frac{1}{2}E[e^2(n)]=\frac{1}{2}E[(d(n)-\mathbf{x}(n)^T\vw)^2] \\
+      J(\mathbf{w}) 
+      &=\frac{1}{2}E[e^2(n)]
+      \\
+      &=\frac{1}{2}E[(d(n)-\mathbf{x}(n)^T\mathbf{w})^2]
+      \\
       &=
-      \frac{1}{2} E[d(n)^2] - \vw^T E[ d(n) \mathbf{x}(n)  ]  + 
-      \frac{1}{2} \vw^T E[\textbf{x}(n) \textbf{x}(n)^T ] \vw \mbox{.}
+      \frac{1}{2} E[d(n)^2] - \mathbf{w}^T E[ d(n) \mathbf{x}(n)  ]  + 
+      \frac{1}{2} \mathbf{w}^T E[\mathbf{x}(n) \mathbf{x}(n)^T ] \mathbf{w} .
     \end{align*}
     % 
     Now if we define 
     \begin{equation*}
-      \textbf{C}_x = E[\textbf{x}(n) \textbf{x}(n)^T ]
+      \mathbf{C}_x = E[\mathbf{x}(n) \mathbf{x}(n)^T ]
     \end{equation*}
     and
     \begin{equation*}
-      \textbf{p} = E[d(n) \textbf{x}(n) ] \mbox{,}
+      \mathbf{p} = E[d(n) \mathbf{x}(n) ] ,
     \end{equation*}
-    then
+    we get the MSE criterion as in equation \eqref{eq:J}
     \begin{align*}
-      J(\vw) = \frac{1}{2} E[d(n)^2] - \vw^T \textbf{p}  + 
-      \frac{1}{2} \vw^T \textbf{C}_x \vw \mbox{.}
+      J(\mathbf{w}) = \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}} \mathbf{w}   + 
+      \frac{1}{2} \mathbf{w}^T \mathbf{C}_x \mathbf{w} .
     \end{align*}
     % 
-    The gradient of this is
+    Recall that the objective is to minimize the $J(\mathbf{w})$.  The
+    gradient of this is
     \begin{align*}
-      \nabla J =   \textbf{C}_x \vw - \textbf{p} \mbox{.}
+      \nabla_{\mathbf{w}} J =   \mathbf{C}_x \mathbf{w} - \mathbf{p} .
     \end{align*}
     % 
-    Now setting this to zero, we can solve for the minimizer of $J$:
+    Now setting this to zero, we can solve for the minimizer of $J$ as
+    in equation \eqref{eq:w_optimal}:
     \begin{equation*}
-      \textbf{w}^* = \textbf{C}_x^{-1} \textbf{p} \mbox{.}
+      \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p} .
     \end{equation*}
-    Now 5(a) is solved by substituting $\textbf{w}^*$ into the expression for $J$.
-    5(b) follows by a straightforward calculation or alternatively, we may observe
-    that $\nabla_{\textbf{w}^*} J = 0$ and the Hessian of $J$ at $\textbf{w}^*$ is $\textbf{C}_x$.
-    The higher order derivatives are zero, because $J$ is a second order polynomial with respect
-    to $\textbf{w}$ and thus
-    \begin{equation*}
-      J(\vw) = J( \textbf{w}^* ) + \frac{1}{2} ( \vw - \textbf{w}^* ) \textbf{C}_x ( \vw - \textbf{w}^* ) \mbox{.}
-    \end{equation*}
+    \begin{enumerate}
+    \item
+      Now, prove \eqref{eq:J2} by computing $J(\mathbf{w}_*)$:
+      \begin{align*}
+        J(\mathbf{w}_*) &= \frac{1}{2} E[d(n)^2] -
+        \mathbf{p}^{\mathrm{T}} \mathbf{w}_* + \frac{1}{2}
+        \mathbf{w}_*^T \mathbf{C}_x \mathbf{w}_*
+        \\
+        &= \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}}
+        \mathbf{w}_* + \frac{1}{2} \mathbf{p}^T
+        \cancel{\mathbf{C}^{-1}_x \mathbf{C}_x} \mathbf{w}_*
+        \\
+        &= \frac{1}{2} E[d(n)^2] - \frac{1}{2}\mathbf{p}^{\mathrm{T}}
+        \mathbf{w}_*
+      \end{align*}
+    \item
+      Let us prove by a straightforward calculation:
+      \begin{align*}
+        &\quad J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
+        \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
+        \\
+        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
+        \mathbf{p}^T \mathbf{w}_* + \frac{1}{2}\mathbf{w}^{\mathrm{T}}
+        \mathbf{C}_x \mathbf{w} -
+        \mathbf{w}_*^{\mathrm{T}}\mathbf{C}_x \mathbf{w} + \frac{1}{2}
+        \mathbf{w}^T_* \mathbf{C}_x\mathbf{w}_*
+        \\
+        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \cancel{\frac{1}{2}
+          \mathbf{p}^T \mathbf{w}_*} +
+        \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
+        \mathbf{p}^{\mathrm{T}}\cancel{\mathbf{C}_x^{-1}\mathbf{C}_x}\mathbf{w}
+        + \cancel{\frac{1}{2} \mathbf{p}^T\mathbf{C}_x^{-1}
+          \mathbf{Cw}_*}
+        \\
+        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} +
+        \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
+        \mathbf{p}^{\mathrm{T}}\mathbf{w}
+        \\
+        &= J(\mathbf{w})
+      \end{align*}
+
+      Alternatively, we may observe that $\nabla_{\mathbf{w}_*} J = 0$
+      and the Hessian of $J$ at $\mathbf{w}_*$ is $\mathbf{C}_x$.  The
+      higher order derivatives are zero, because $J$ is a second order
+      polynomial with respect to $\mathbf{w}$ and thus
+      \begin{equation*}
+        J(\mathbf{w}) = J( \mathbf{w}_* ) + \frac{1}{2} ( \mathbf{w} -
+        \mathbf{w}_* ) \mathbf{C}_x ( \mathbf{w} - \mathbf{w}_* ) . 
+      \end{equation*}
+    \end{enumerate}
 
   \end{solution}
   
