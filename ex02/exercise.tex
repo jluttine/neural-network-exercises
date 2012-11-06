@@ -233,138 +233,156 @@
     \end{enumerate}
 
   \end{solution}
-  
-\item
 
-  \begin{enumerate}
-  \item
-    By substituting the optimal weights
-    \begin{equation}
-      \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p}
-      \label{eq:w_optimal}
-    \end{equation}
-    into the cost function
-    \begin{equation}
-      J(\mathbf{w}) = \frac{1}{2} \mathrm{E}\{d^2(n)\} -
-      \mathbf{p}^{\mathrm{T}}\mathbf{w} +
-      \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w}
-      \label{eq:J}
-    \end{equation}
-    prove that
-    \begin{equation}
-      J(\mathbf{w}_*) = \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
-      \mathbf{p}^T \mathbf{w}_*.
-      \label{eq:J2}
-    \end{equation}
-    
-  \item Using \eqref{eq:J2}, prove that \eqref{eq:J} can be expressed as
-    \begin{equation*}
-      J(\mathbf{w}) = J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
-      \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
-    \end{equation*}
-  \end{enumerate}
+
+\item Consider the generative model
+  \begin{equation*}
+    x(n) = a x(n-1) + \epsilon(n)
+  \end{equation*}
+  which represents an autoregressive (AR) stochastic process of order
+  one.  The only parameter of this process is $a$, which has in this
+  simulation the value $a=0.99$.  The term $\epsilon(n)$ is zero mean
+  white Gaussian noise having the variance 0.02, $\epsilon(n) \sim
+  \mathrm{N}(0,0.02)$, which drives the AR process.  Estimate the
+  parameter $a$ of this AR process using the LMS algorithm.  Run the
+  LMS algorithm with different learning rate parameter values $\mu
+  =0.001, \, 0.003, \, 0.01, \, 0.03$. Comment the results.
 
   \begin{solution}
 
-    First, some background for the linear neuron:
-    \begin{itemize}
-    \item $\mathbf{x}(n)$ is the input vector at time $n$
-    \item $\mathbf{w}$ is the weight vector
-    \item $\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the linear output
-      of the neuron at time $k$
-    \item $d(n)$ is the desired output at time $n$
-    \item $e(n)=d(n)-\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the
-      error of the output at time $n$
-    \end{itemize}
-    Thus, the mean squared error (MSE) to be minimized can be given as
-    \begin{align*}
-      J(\mathbf{w}) 
-      &=\frac{1}{2}E[e^2(n)]
-      \\
-      &=\frac{1}{2}E[(d(n)-\mathbf{x}(n)^T\mathbf{w})^2]
-      \\
-      &=
-      \frac{1}{2} E[d(n)^2] - \mathbf{w}^T E[ d(n) \mathbf{x}(n)  ]  + 
-      \frac{1}{2} \mathbf{w}^T E[\mathbf{x}(n) \mathbf{x}(n)^T ] \mathbf{w} .
-    \end{align*}
-    % 
-    Now if we define 
-    \begin{equation*}
-      \mathbf{C}_x = E[\mathbf{x}(n) \mathbf{x}(n)^T ]
-    \end{equation*}
-    and
-    \begin{equation*}
-      \mathbf{p} = E[d(n) \mathbf{x}(n) ] ,
-    \end{equation*}
-    we get the MSE criterion as in equation \eqref{eq:J}
-    \begin{align*}
-      J(\mathbf{w}) = \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}} \mathbf{w}   + 
-      \frac{1}{2} \mathbf{w}^T \mathbf{C}_x \mathbf{w} .
-    \end{align*}
-    % 
-    Recall that the objective is to minimize the $J(\mathbf{w})$.  The
-    gradient of this is
-    \begin{align*}
-      \nabla_{\mathbf{w}} J =   \mathbf{C}_x \mathbf{w} - \mathbf{p} .
-    \end{align*}
-    % 
-    Now setting this to zero, we can solve for the minimizer of $J$ as
-    in equation \eqref{eq:w_optimal}:
-    \begin{equation*}
-      \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p} .
-    \end{equation*}
-    \begin{enumerate}
-    \item
-      Now, prove \eqref{eq:J2} by computing $J(\mathbf{w}_*)$:
-      \begin{align*}
-        J(\mathbf{w}_*) &= \frac{1}{2} E[d(n)^2] -
-        \mathbf{p}^{\mathrm{T}} \mathbf{w}_* + \frac{1}{2}
-        \mathbf{w}_*^T \mathbf{C}_x \mathbf{w}_*
-        \\
-        &= \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}}
-        \mathbf{w}_* + \frac{1}{2} \mathbf{p}^T
-        \cancel{\mathbf{C}^{-1}_x \mathbf{C}_x} \mathbf{w}_*
-        \\
-        &= \frac{1}{2} E[d(n)^2] - \frac{1}{2}\mathbf{p}^{\mathrm{T}}
-        \mathbf{w}_*
-      \end{align*}
-    \item
-      Let us prove by a straightforward calculation:
-      \begin{align*}
-        &\quad J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
-        \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
-        \\
-        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
-        \mathbf{p}^T \mathbf{w}_* + \frac{1}{2}\mathbf{w}^{\mathrm{T}}
-        \mathbf{C}_x \mathbf{w} -
-        \mathbf{w}_*^{\mathrm{T}}\mathbf{C}_x \mathbf{w} + \frac{1}{2}
-        \mathbf{w}^T_* \mathbf{C}_x\mathbf{w}_*
-        \\
-        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \cancel{\frac{1}{2}
-          \mathbf{p}^T \mathbf{w}_*} +
-        \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
-        \mathbf{p}^{\mathrm{T}}\cancel{\mathbf{C}_x^{-1}\mathbf{C}_x}\mathbf{w}
-        + \cancel{\frac{1}{2} \mathbf{p}^T\mathbf{C}_x^{-1}
-          \mathbf{Cw}_*}
-        \\
-        &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} +
-        \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
-        \mathbf{p}^{\mathrm{T}}\mathbf{w}
-        \\
-        &= J(\mathbf{w})
-      \end{align*}
-
-      Alternatively, we may observe that $\nabla_{\mathbf{w}_*} J = 0$
-      and the Hessian of $J$ at $\mathbf{w}_*$ is $\mathbf{C}_x$.  The
-      higher order derivatives are zero, because $J$ is a second order
-      polynomial with respect to $\mathbf{w}$ and thus
-      \begin{equation*}
-        J(\mathbf{w}) = J( \mathbf{w}_* ) + \frac{1}{2} ( \mathbf{w} -
-        \mathbf{w}_* ) \mathbf{C}_x ( \mathbf{w} - \mathbf{w}_* ) . 
-      \end{equation*}
-    \end{enumerate}
-
   \end{solution}
+  
+% \item
+
+%   \begin{enumerate}
+%   \item
+%     By substituting the optimal weights
+%     \begin{equation}
+%       \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p}
+%       \label{eq:w_optimal}
+%     \end{equation}
+%     into the cost function
+%     \begin{equation}
+%       J(\mathbf{w}) = \frac{1}{2} \mathrm{E}\{d^2(n)\} -
+%       \mathbf{p}^{\mathrm{T}}\mathbf{w} +
+%       \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w}
+%       \label{eq:J}
+%     \end{equation}
+%     prove that
+%     \begin{equation}
+%       J(\mathbf{w}_*) = \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
+%       \mathbf{p}^T \mathbf{w}_*.
+%       \label{eq:J2}
+%     \end{equation}
+    
+%   \item Using \eqref{eq:J2}, prove that \eqref{eq:J} can be expressed as
+%     \begin{equation*}
+%       J(\mathbf{w}) = J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
+%       \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
+%     \end{equation*}
+%   \end{enumerate}
+
+%   \begin{solution}
+
+%     First, some background for the linear neuron:
+%     \begin{itemize}
+%     \item $\mathbf{x}(n)$ is the input vector at time $n$
+%     \item $\mathbf{w}$ is the weight vector
+%     \item $\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the linear output
+%       of the neuron at time $k$
+%     \item $d(n)$ is the desired output at time $n$
+%     \item $e(n)=d(n)-\mathbf{x}(n)^{\mathrm{T}} \mathbf{w}$ is the
+%       error of the output at time $n$
+%     \end{itemize}
+%     Thus, the mean squared error (MSE) to be minimized can be given as
+%     \begin{align*}
+%       J(\mathbf{w}) 
+%       &=\frac{1}{2}E[e^2(n)]
+%       \\
+%       &=\frac{1}{2}E[(d(n)-\mathbf{x}(n)^T\mathbf{w})^2]
+%       \\
+%       &=
+%       \frac{1}{2} E[d(n)^2] - \mathbf{w}^T E[ d(n) \mathbf{x}(n)  ]  + 
+%       \frac{1}{2} \mathbf{w}^T E[\mathbf{x}(n) \mathbf{x}(n)^T ] \mathbf{w} .
+%     \end{align*}
+%     % 
+%     Now if we define 
+%     \begin{equation*}
+%       \mathbf{C}_x = E[\mathbf{x}(n) \mathbf{x}(n)^T ]
+%     \end{equation*}
+%     and
+%     \begin{equation*}
+%       \mathbf{p} = E[d(n) \mathbf{x}(n) ] ,
+%     \end{equation*}
+%     we get the MSE criterion as in equation \eqref{eq:J}
+%     \begin{align*}
+%       J(\mathbf{w}) = \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}} \mathbf{w}   + 
+%       \frac{1}{2} \mathbf{w}^T \mathbf{C}_x \mathbf{w} .
+%     \end{align*}
+%     % 
+%     Recall that the objective is to minimize the $J(\mathbf{w})$.  The
+%     gradient of this is
+%     \begin{align*}
+%       \nabla_{\mathbf{w}} J =   \mathbf{C}_x \mathbf{w} - \mathbf{p} .
+%     \end{align*}
+%     % 
+%     Now setting this to zero, we can solve for the minimizer of $J$ as
+%     in equation \eqref{eq:w_optimal}:
+%     \begin{equation*}
+%       \mathbf{w}_* = \mathbf{C}_x^{-1} \mathbf{p} .
+%     \end{equation*}
+%     \begin{enumerate}
+%     \item
+%       Now, prove \eqref{eq:J2} by computing $J(\mathbf{w}_*)$:
+%       \begin{align*}
+%         J(\mathbf{w}_*) &= \frac{1}{2} E[d(n)^2] -
+%         \mathbf{p}^{\mathrm{T}} \mathbf{w}_* + \frac{1}{2}
+%         \mathbf{w}_*^T \mathbf{C}_x \mathbf{w}_*
+%         \\
+%         &= \frac{1}{2} E[d(n)^2] - \mathbf{p}^{\mathrm{T}}
+%         \mathbf{w}_* + \frac{1}{2} \mathbf{p}^T
+%         \cancel{\mathbf{C}^{-1}_x \mathbf{C}_x} \mathbf{w}_*
+%         \\
+%         &= \frac{1}{2} E[d(n)^2] - \frac{1}{2}\mathbf{p}^{\mathrm{T}}
+%         \mathbf{w}_*
+%       \end{align*}
+%     \item
+%       Let us prove by a straightforward calculation:
+%       \begin{align*}
+%         &\quad J(\mathbf{w}_*) + \frac{1}{2}( \mathbf{w} -
+%         \mathbf{w}_*)^T \mathbf{C}_x (\mathbf{w} - \mathbf{w}_*)
+%         \\
+%         &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \frac{1}{2}
+%         \mathbf{p}^T \mathbf{w}_* + \frac{1}{2}\mathbf{w}^{\mathrm{T}}
+%         \mathbf{C}_x \mathbf{w} -
+%         \mathbf{w}_*^{\mathrm{T}}\mathbf{C}_x \mathbf{w} + \frac{1}{2}
+%         \mathbf{w}^T_* \mathbf{C}_x\mathbf{w}_*
+%         \\
+%         &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} - \cancel{\frac{1}{2}
+%           \mathbf{p}^T \mathbf{w}_*} +
+%         \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
+%         \mathbf{p}^{\mathrm{T}}\cancel{\mathbf{C}_x^{-1}\mathbf{C}_x}\mathbf{w}
+%         + \cancel{\frac{1}{2} \mathbf{p}^T\mathbf{C}_x^{-1}
+%           \mathbf{Cw}_*}
+%         \\
+%         &= \frac{1}{2} \mathrm{E}\{ d^2(n) \} +
+%         \frac{1}{2}\mathbf{w}^{\mathrm{T}} \mathbf{C}_x \mathbf{w} -
+%         \mathbf{p}^{\mathrm{T}}\mathbf{w}
+%         \\
+%         &= J(\mathbf{w})
+%       \end{align*}
+
+%       Alternatively, we may observe that $\nabla_{\mathbf{w}_*} J = 0$
+%       and the Hessian of $J$ at $\mathbf{w}_*$ is $\mathbf{C}_x$.  The
+%       higher order derivatives are zero, because $J$ is a second order
+%       polynomial with respect to $\mathbf{w}$ and thus
+%       \begin{equation*}
+%         J(\mathbf{w}) = J( \mathbf{w}_* ) + \frac{1}{2} ( \mathbf{w} -
+%         \mathbf{w}_* ) \mathbf{C}_x ( \mathbf{w} - \mathbf{w}_* ) . 
+%       \end{equation*}
+%     \end{enumerate}
+
+%   \end{solution}
   
 \end{enumerate}
 
