@@ -280,13 +280,46 @@
   which represents an autoregressive (AR) stochastic process of order
   one.  The only parameter of this process is $a$, which has in this
   simulation the value $a=0.99$.  The term $\epsilon(n)$ is zero mean
-  white Gaussian noise having the variance 0.02, $\epsilon(n) \sim
-  \mathrm{N}(0,0.02)$, which drives the AR process.  Estimate the
-  parameter $a$ of this AR process using the LMS algorithm.  Run the
-  LMS algorithm with different learning rate parameter values $\mu
-  =0.001, \, 0.01, \, 0.1, \, 1, \, 2, \, 3$. Comment the results.
+  white Gaussian noise having the variance $\sigma^2=0.02$,
+  $\epsilon(n) \sim \mathrm{N}(0,\sigma^2)$, which drives the AR
+  process.  Estimate the parameter $a$ of this AR process using the
+  LMS algorithm.  Run the LMS algorithm with different learning rate
+  parameter values $\mu =0.001, \, 0.01, \, 0.1, \, 1$. Comment the
+  results.
 
   \begin{solution}
+
+    First, perform some basic analysis of the variance of $x(n)$:
+    \begin{align*}
+      C_x &= \mathrm{E}[x(n)^2]
+      \\
+      &= \mathrm{E}[a^2x(n-1)^2 + 2ax(n)\epsilon(n) + \epsilon(n)^2]
+      \\
+      &= a^2\mathrm{E}[x(n-1)^2] +
+      2a\mathrm{E}[x(n-1)]\underbrace{\mathrm{E}[\epsilon(n)]}_{=0} +
+      \mathrm{E}[\epsilon(n)^2]
+      \\
+      &= a^2 C_x + \sigma^2.
+    \end{align*}
+    Solve $C_x$:
+    \begin{align*}
+      C_x &= a^2C_x + \sigma^2
+      \\
+      (1-a^2)C_x &= \sigma^2
+      \\
+      C_x &= \frac{\sigma^2}{(1-a^2)} \approx 1.005.
+    \end{align*}
+    The process is stable when $|1-a^2|>0$, that is, $|a|<1$. Now
+    $a=0.99$ so the process is stable.  By the theory of the LMS
+    algorithm, in order for the LMS algorithm to converge, the
+    learning parameter $\mu$ must satisfy
+    \begin{equation*}
+      0 < \mu < \frac{2}{C_x} \approx 1.99.
+    \end{equation*}
+    However, this theoretical result does not hold in this case
+    because the inputs $x(n),x(n-1),\ldots,x(1)$ are not independent.
+    Thus, the upper bound for $\mu$ is near $0.1$ in practice as found
+    by the simulations.
     
     \lstinputlisting[language=Matlab,
                      showstringspaces=false,

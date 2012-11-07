@@ -7,14 +7,14 @@
 % MIT License
 
 % True parameters
-a = 0.9;
+a = 0.99;
 s2 = 0.02;
 
 N = 6000; % Number of iterations
 
 % Try how the size of the ensemble affects the estimated 
 % mean-square error.
-M = 10000;
+M = 1000;
 
 % Allocate memory
 w = zeros(N,M); % Estimated parameter
@@ -30,7 +30,7 @@ for n=1:N
 end
 
 % Try different values for mu
-mu = 1.8; % 0.001, 0.01, 0.1, 1, 1.1, 2, 10
+mu = 0.01; % 0.001, 0.01, 0.1, 1
 
 % Estimate the parameter
 xp = x0;
@@ -54,12 +54,17 @@ subplot(2,2,1)
 plot(x(:,1))
 title('Example process')
 
-% Show mean-squared error computed by averaging over the ensemble
+% Show mean error computed by averaging over the ensemble
 subplot(2,2,2)
+semilogy(mean(e,2))
+title('Mean error')
+
+% Show mean-squared error computed by averaging over the ensemble
+subplot(2,2,3)
 semilogy(mean(e.^2,2))
 title('Mean-square error')
 
 % Show the parameter estimation processes
-subplot(2,2,3)
+subplot(2,2,4)
 plot(w)
 title('Estimated parameter')
