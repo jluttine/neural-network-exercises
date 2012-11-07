@@ -18,45 +18,55 @@ M = 1000;
 
 % Allocate memory
 w = zeros(N,M); % Estimated parameter
-x = zeros(N,M); % Process
 e = zeros(N,M); % Errors
 
-% Simulate the process
-x0 = randn(1,M); % Initial state
-xp = x0;
-for n=1:N
-  x(n,:) = a.*xp + sqrt(s2)*randn(1,M);
-  xp = x(n,:);
+switch 1
+case 1
+  % Simulate the given process
+  disp('Use samples from the dynamic process')
+  x = zeros(N,M); % Process
+  x0 = randn(1,M); % Initial state
+  xp = x0;
+  for n=1:N
+    x(n,:) = a.*xp + sqrt(s2)*randn(1,M);
+    xp = x(n,:);
+  end
+  u = [x0; x(1:(N-1),:)]; % Input
+  d = x; % Desired output
+case 2
+  % Try using independent samples and how it affects
+  % the upper bound for the learning parameter. Use
+  % the same variance as in equilibrium in the dynamic
+  % process.
+  disp('Use independent samples')
+  u = sqrt(1.005)*randn(N,M); % Input
+  d = a*u + sqrt(s2)*randn(N,M); % Desired output
 end
 
-% Try different values for mu
-mu = 0.01; % 0.001, 0.01, 0.1, 1
+% Try different values for the learning parameter mu
+mu = 0.05; % 0.001, 0.01, 0.1, 1
 
-% Estimate the parameter
-xp = x0;
-w(1) = 0;
+% LMS algorithm: Estimate the parameter
+w(1) = 0; % Initial parameter value
 for n=1:(N-1)
-  % Input:          x(n-1) (or xp)
-  % Output:         w(n)*x(n-1)
-  % Desired output: x(n)
-  e(n,:) = x(n,:) - w(n,:).*xp;      % Error
+  % Error
+  e(n,:) = d(n,:) - w(n,:).*u(n,:);      
   % LMS update parameter estimate
-  w(n+1,:) = w(n,:) + mu*e(n,:).*xp; 
-  % Or: Normalized LMS update
-  %w(n+1,:) = w(n,:) + mu*e(n,:).*xp./(0.1+xp.^2); 
-  xp = x(n,:);
+  w(n+1,:) = w(n,:) + mu*e(n,:).*u(n,:); 
+  % Or: Normalized LMS update (with regularization 0.1)
+  %w(n+1,:) = w(n,:) + mu*e(n,:).*u(n,:)./(0.1+u(n,:).^2); 
 end
 
 figure
 
 % Show an example of a process realization
 subplot(2,2,1)
-plot(x(:,1))
+plot(d(:,1))
 title('Example process')
 
 % Show mean error computed by averaging over the ensemble
 subplot(2,2,2)
-semilogy(mean(e,2))
+plot(mean(e,2))
 title('Mean error')
 
 % Show mean-squared error computed by averaging over the ensemble
