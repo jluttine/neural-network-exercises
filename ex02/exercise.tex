@@ -4,7 +4,7 @@
 \date{Exercise 2, 8.11.2012}
 
 \usepackage{cancel}
-
+\usepackage{listings}
 
 % \usepackage{subfigure}
 % \usepackage{epsfig}
@@ -106,52 +106,90 @@
 \item The normalized LMS algorithm is described by the following
   recursion for the weight vector:
   \begin{equation*}
-    \Hat{\mathbf{w}}(n+1)= \Hat{\mathbf{w}}(n) +\frac{\eta e(n)
+    \tilde{\mathbf{w}}(n+1)= \tilde{\mathbf{w}}(n) +\frac{\eta e(n)
       \mathbf{x}(n)} {\| \mathbf{x}(n) \|^2},
   \end{equation*}
   where $\eta$ is a positive constant and $\|\mathbf{x}(n) \|$ is the
   Euclidean norm of the input vector $\mathbf{x}(n)$. The error
   signal $e(n)$ is defined by
   \begin{equation*}
-    e(n)=d(n)-{\Hat{\mathbf{w}}(n)}^T \mathbf{x}(n),
+    e(n)=d(n)-{\tilde{\mathbf{w}}(n)}^T \mathbf{x}(n),
   \end{equation*}
-  where $d(n)$ is the desired response. For the normalized LMS algorithm to
-  be convergent in the mean square, show that $0< \eta <2$.
+  where $d(n)$ is the desired response. Show that the normalized LMS
+  algorithm is convergent in the mean square, if $0< \eta <2$.
+
+  \emph{Hint:} You may use the result that the conventional LMS
+  algorithm is convergent in the mean square if
+  \begin{equation}
+    0 < \eta < \frac{2}{
+      \mathrm{E}\left[\mathbf{x}(n)^{\mathrm{T}}\mathbf{x}(n)\right]
+    }
+    \label{eq:LMS_convergence}
+  \end{equation}
 
   \begin{solution}
 
-    Convergence in the mean square means that
-    $E\left[e^2(n)\right]\xrightarrow[n\rightarrow\infty]{}\mbox{constant}$.
-
-    In the conventional LMS algorithm we have
+    The normalized LMS algorithm can be represented as
+    \begin{align*}
+      \tilde{\mathbf{w}}(n+1) &= \tilde{\mathbf{w}}(n) +\frac{\eta e(n)
+        \mathbf{x}(n)} {\| \mathbf{x}(n) \|^2}
+      \\
+      &= \tilde{\mathbf{w}}(n) + \eta \cdot
+      \frac{e(n)}{\|\mathbf{x}(n)\|} \cdot
+      \frac{\mathbf{x}(n)}{\|\mathbf{x}(n)\|}
+      \\
+      &= \tilde{\mathbf{w}}(n) + \eta \Bigg(
+        \underbrace{\frac{d(n)}{\|\mathbf{x}(n)\|}}_{\tilde{d}(n)} -
+        \tilde{\mathbf{w}}(n)^{\mathrm{T}}
+        \underbrace{\frac{\mathbf{x}(n)}{\|\mathbf{x}(n)\|}}_{\Hat{\mathbf{x}}(n)} \Bigg)
+      \underbrace{\frac{\mathbf{x}(n)}{\|\mathbf{x}(n)\|}}_{\Hat{\mathbf{x}}(n)}
+      \\
+      &= \tilde{\mathbf{w}}(n) + \eta \left( \tilde{d}(n) -
+      \tilde{\mathbf{w}}(n)^{\mathrm{T}} \Hat{\mathbf{x}}(n) \right) \Hat{\mathbf{x}}(n)
+    \end{align*}
+    which is the conventional LMS algorithm with desired output
+    $\tilde{d}(n)$ and input $\Hat{\mathbf{x}}(n)$. Because of the
+    normalization, we have that
     \begin{equation*}
-      \vw(n+1)=\vw(n)+\eta e(n)\vx(n)
+      \mathrm{E}\left[\Hat{\mathbf{x}}(n)^{\mathrm{T}}\Hat{\mathbf{x}}(n)\right] = 1.
     \end{equation*}
-    which is convergent in the mean
-    square if 
+    Thus, it follows from \eqref{eq:LMS_convergence} that the
+    normalized LMS algorithm is convergent in the mean square if
     \begin{equation*}
-      0<\eta<\frac{2}{\mbox{sum of mean-square values of the
-          inputs}}\end{equation*}
-    or 
-    \begin{equation*}
-      0<\eta<\frac{2}{\|\vx(n)\|^2} \forall n.
+      0 < \eta < 2.
     \end{equation*}
-    (This is a stricter condition than the first one!)
+    
+    
 
+    % Convergence in the mean square means that
+    % $E\left[e^2(n)\right]\xrightarrow[n\rightarrow\infty]{}\mbox{constant}$.
 
+    % In the conventional LMS algorithm we have
+    % \begin{equation*}
+    %   \vw(n+1)=\vw(n)+\tilde{\eta} e(n)\vx(n)
+    % \end{equation*}
+    % which is convergent in the mean square if
+    % \begin{equation*}
+    %   0<\tilde{\eta}<\frac{2}{\mathrm{E}\left[\|\vx(n)\|^2\right]}.
+    % \end{equation*}
+    % One can give a stricter condition:
+    % \begin{equation}
+    %   0<\tilde{\eta}<\frac{2}{\|\vx(n)\|^2} \, \forall n.
+    %   \label{eq:stricter}
+    % \end{equation}
 
-    In the normalized LMS algorithm we have
-    \begin{equation*}
-      \vw(n+1)=\vw(n)+\tilde{\eta}\frac{e(n)\vx(n)}{\|\vx(n)\|^2}
-    \end{equation*}
-    Comparing this to the conventional LMS algorithm we have:
-    \begin{equation*}
-      \tilde{\eta}=\eta\|\vx(n)\|^2
-    \end{equation*}
-
-    Using this result in the convergence condition yields the condition
-    for convergence of the normalized LMS algorithm in the mean square as
-    $0<\tilde{\eta}<2$.
+    % In the normalized LMS algorithm, we have
+    % \begin{equation*}
+    %   \vw(n+1)=\vw(n)+\eta\frac{e(n)\vx(n)}{\|\vx(n)\|^2}.
+    % \end{equation*}
+    % Comparing this to the conventional LMS algorithm we have:
+    % \begin{equation*}
+    %   \eta=\tilde{\eta}\|\vx(n)\|^2 \Leftrightarrow \tilde{\eta} =
+    %   \frac{\eta}{\|\vx(n)\|^2} 
+    % \end{equation*}
+    % Using this result in \eqref{eq:stricter} yields the condition for
+    % convergence of the normalized LMS algorithm in the mean square as
+    % $0<\eta<2$.
 
   \end{solution}
   
@@ -246,10 +284,13 @@
   \mathrm{N}(0,0.02)$, which drives the AR process.  Estimate the
   parameter $a$ of this AR process using the LMS algorithm.  Run the
   LMS algorithm with different learning rate parameter values $\mu
-  =0.001, \, 0.003, \, 0.01, \, 0.03$. Comment the results.
+  =0.001, \, 0.01, \, 0.1, \, 1, \, 2, \, 3$. Comment the results.
 
   \begin{solution}
-
+    
+    \lstinputlisting[language=Matlab,
+                     showstringspaces=false,
+                     title=\lstname]{ex02_04.m}
   \end{solution}
   
 % \item
