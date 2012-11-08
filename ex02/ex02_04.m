@@ -44,7 +44,7 @@ case 2
 end
 
 % Try different values for the learning parameter mu
-mu = 0.05; % 0.001, 0.01, 0.1, 1
+mu = 0.01; % 0.001, 0.01, 0.1, 1
 
 % LMS algorithm: Estimate the parameter
 w(1) = 0; % Initial parameter value

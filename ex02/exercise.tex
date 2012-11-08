@@ -196,20 +196,20 @@
 
 \item A linear classifier separates $n$-dimensional
   space into two classes using a $(n-1)$-dimensional hyperplane. Points
-  are classified into two classes, $\omega_1$ or $\omega_2$, depending on
+  are classified into two classes, $\psi_1$ or $\psi_2$, depending on
   which side of the hyperplane they are located.
   \begin{enumerate}
   \item Construct a linear classifier which is able to separate the
     following two-dimensional samples correctly:
     \begin{align}
-      &\omega_1: \text{\;} \{[2,1]^T\}, \notag \\
-      &\omega_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
+      &\psi_1: \text{\;} \{[2,1]^T\}, \notag \\
+      &\psi_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
     \end{align}
   \item Is it possible to construct a linear classifier which is able
     to separate the following samples correctly?
     \begin{align}
-      &\omega_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
-      &\omega_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
+      &\psi_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
+      &\psi_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
     \end{align}
     Justify your answer.
   \end{enumerate}
@@ -217,13 +217,13 @@
   \begin{solution}
 
     In general, it is possible to construct a linear classifier to
-    separate sets $\omega_1$ and $\omega_2$ if there exists
+    separate sets $\psi_1$ and $\psi_2$ if there exists
     $\mathbf{w}$ and $b$ such that
     \begin{align*}
       \begin{cases}
-        \mathbf{w}^T\mathbf{x}+b<0, & \forall \mathbf{x} \in \omega_1
+        \mathbf{w}^T\mathbf{x}+b<0, & \forall \mathbf{x} \in \psi_1
         \\
-        \mathbf{w}^T\mathbf{x}+b\geq 0, & \forall \mathbf{x} \in \omega_2
+        \mathbf{w}^T\mathbf{x}+b\geq 0, & \forall \mathbf{x} \in \psi_2
       \end{cases}
     \end{align*}
 
@@ -234,13 +234,13 @@
       the separation rule $\vect{w}^T \vect{x}=0$, where $\vect{w}=[-1,1]$.
       
       \begin{align}
-        &\omega_1: \text{\;} \{[2,1]^T\}, \notag \\
-        &\omega_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
+        &\psi_1: \text{\;} \{[2,1]^T\}, \notag \\
+        &\psi_2: \text{\;} \{[0,1]^T, [-1,1]^T \}. \notag
       \end{align}
       \psfrag{x1}{$x_1$}
       \psfrag{x2}{$x_2$}
-      \psfrag{w1}{$\omega_1$}
-      \psfrag{w2}{$\omega_2$}
+      \psfrag{w1}{$\psi_1$}
+      \psfrag{w2}{$\psi_2$}
       \begin{center}
         \includegraphics[scale=0.35]{e4_5.eps}
       \end{center}
@@ -248,16 +248,16 @@
       Classifications are carried out as follows:
       \begin{equation*}
         \begin{cases}
-          \vw^T\vx<0 \Rightarrow \vx \in \omega_1\\
-          \vw^T\vx\geq 0 \Rightarrow \vx \in \omega_2\\
+          \vw^T\vx<0 \Rightarrow \vx \in \psi_1\\
+          \vw^T\vx\geq 0 \Rightarrow \vx \in \psi_2\\
         \end{cases}
       \end{equation*}
 
     \item
 
       \begin{align}
-        &\omega_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
-        &\omega_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
+        &\psi_1:\text{\;} \{ [1,1]^T, [2,2]^T \}, \notag \\
+        &\psi_2: \text{\;} \{ [1,2]^T,[2,1]^T \} \notag
       \end{align}
       \begin{center}
         \includegraphics[scale=0.35]{e4_5b.eps}
@@ -265,8 +265,12 @@
 
       It is not possible to separate the classes with a single
       hyperplane. At least two hyperplanes are required to separated
-      the classes correctly. In general, if the convex hulls of the
-      sets overlap, the sets are not linearly separable.
+      the classes correctly. In general, the sets are linearly
+      separable if and only if the convex hulls of the sets do not
+      overlap.  In this case, the convex hulls are the line segments
+      connecting the two points in both sets.  These two line segments
+      intersect at point $[1.5,1.5]^{\mathrm{T}}$, thus the sets are
+      not linearly separable.
 
     \end{enumerate}
 
@@ -284,16 +288,19 @@
   $\epsilon(n) \sim \mathrm{N}(0,\sigma^2)$, which drives the AR
   process.  Estimate the parameter $a$ of this AR process using the
   LMS algorithm.  Run the LMS algorithm with different learning rate
-  parameter values $\mu =0.001, \, 0.01, \, 0.1, \, 1$. Comment the
-  results.
+  parameter values $\mu =0.001, \, 0.01, \, 0.1, \, 1, \, 3$. Comment
+  the results.
 
   \begin{solution}
 
-    First, perform some basic analysis of the variance of $x(n)$:
+    In order to make the analysis of the simulations more interesting,
+    let us first examine theoretical bounds of convergence for $\mu$.
+    Begin by computing the variance of $x(n)$ at ``equilibrium''
+    (i.e., $\mathrm{E}[x(n)^2]=\mathrm{E}[x(n-1)^2]$):
     \begin{align*}
       C_x &= \mathrm{E}[x(n)^2]
       \\
-      &= \mathrm{E}[a^2x(n-1)^2 + 2ax(n)\epsilon(n) + \epsilon(n)^2]
+      &= \mathrm{E}[a^2x(n-1)^2 + 2ax(n-1)\epsilon(n) + \epsilon(n)^2]
       \\
       &= a^2\mathrm{E}[x(n-1)^2] +
       2a\mathrm{E}[x(n-1)]\underbrace{\mathrm{E}[\epsilon(n)]}_{=0} +
@@ -307,19 +314,47 @@
       \\
       (1-a^2)C_x &= \sigma^2
       \\
-      C_x &= \frac{\sigma^2}{(1-a^2)} \approx 1.005.
+      C_x &= \frac{\sigma^2}{1-a^2} \approx 1.005.
     \end{align*}
-    The process is stable when $|1-a^2|>0$, that is, $|a|<1$. Now
+    The process is stable when $1-a^2>0$, that is, $|a|<1$. Now
     $a=0.99$ so the process is stable.  By the theory of the LMS
     algorithm, in order for the LMS algorithm to converge, the
     learning parameter $\mu$ must satisfy
     \begin{equation*}
       0 < \mu < \frac{2}{C_x} \approx 1.99.
     \end{equation*}
-    However, this theoretical result does not hold in this case
-    because the inputs $x(n),x(n-1),\ldots,x(1)$ are not independent.
-    Thus, the upper bound for $\mu$ is near $0.1$ in practice as found
-    by the simulations.
+    Below some comments:
+    \begin{itemize}
+    \item This theoretical bound assumes that the data points
+      $x(n),x(n-1),\ldots,x(1)$ are independent.  In this case, they
+      are \emph{not} independent, thus the theoretical bound does not
+      hold.  In practice, the upper bound for $\mu$ is near $0.1$ as
+      found by the simulations.
+    \item The estimated parameter in a single run may not converge
+      (even if the algorithm converges in the mean).  Because of the
+      fixed learning parameter and the noise in the observations, the
+      algorithm oscillates around the true solution.  Even if the
+      oscillation is reduced by making $\mu$ smaller, the noise still
+      causes some oscillation.  Thus, with small $\mu$ the mean
+      squared-error converges close to the noise variance $0.02$.
+    \item The squared error oscillates in a single simulation but one
+      can approximate the \emph{mean} squared error by averaging over
+      several runs, thus reducing the oscillation.  Note that it is
+      the \emph{mean} squared error that converges, not the squared
+      error of a single run.
+    \item The mean squared error may converge to a large value.  If
+      the learning parameter is large (but small enough for the
+      algorithm to converge) the converged value may be very large
+      (e.g., $10^5$).  Thus, the algorithm may perform extremely badly
+      even if it converges.
+    \item If the algorithm does not converge, the mean squared error
+      increases without bounds as the iteration progresses and the
+      parameter estimation ``explodes''.
+    \item If the model was modified such that the data points are
+      independent, the theoretical bound for $\mu$ seems to hold in
+      practice (although the algorithm may perform badly).  This
+      implementation is also available in the accompanied Matlab file.
+    \end{itemize}
     
     \lstinputlisting[language=Matlab,
                      showstringspaces=false,
