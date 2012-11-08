@@ -74,211 +74,280 @@
 
   \end{solution}
 
-\item a) Modify the standard Gram-Schmidt orthogonalization (GSO)
-  method for performing whitening. b) What can you say about the
-  uniqueness of whitening in view of the developed algorithm?
-
+\item
+  \begin{enumerate}
+  \item Modify the standard Gram-Schmidt orthogonalization (GSO)
+    method for performing whitening.
+  \item What can you say about the uniqueness of whitening in view of
+    the developed algorithm?
+  \end{enumerate}
+  
   \begin{solution}
 
-    a) Assume that we have m linearly independent $n$-dimensional
-    ($n\geq m$) vectors $\vect{a}_1 \vect{a}_2, ..., \vect{a}_m$, The
-    standard Gram-Schmidt (GSO) orhogonalization methods can be used
-    to contruct a set $\vect{w}_1, ..., \vect{w}_m$ of $m$ vectors
-    that spands the same subspace as the original vectors. This means
-    that each $\vect{w}_i$ is some linear combination of the
-    $\vect{a}_j$
+    \begin{enumerate}
+    \item Assume that we have m linearly independent $n$-dimensional
+      ($n\geq m$) vectors $\vect{a}_1 \vect{a}_2, ..., \vect{a}_m$,
+      The standard Gram-Schmidt (GSO) orhogonalization methods can be
+      used to contruct a set $\vect{w}_1, ..., \vect{w}_m$ of $m$
+      vectors that spands the same subspace as the original
+      vectors. This means that each $\vect{w}_i$ is some linear
+      combination of the $\vect{a}_j$
 
-    The standard GSO method is as follows:
+      The standard GSO method is as follows:
 
-    \[
-    \begin{split}
-      \tilde{\vect{w}}_1 &= \vect{a}_1 \\
-      \tilde{\vect{w}}_j &= \vect{a}_j - \sum_{i=1}^{j-1} (\vect{w}_i^T
-      \vect{a}_j)\vect{w}_i, \hspace{4mm} j=2,...,m \\
-      \vect{w}_j &= \tilde{\vect{w}}_j / \| \tilde{\vect{w}}_j \| \hspace{4mm} j=1,2,...,m
-    \end{split}
-    \]
+      \[
+      \begin{split}
+        \tilde{\vect{w}}_1 &= \vect{a}_1 \\
+        \tilde{\vect{w}}_j &= \vect{a}_j - \sum_{i=1}^{j-1}
+        (\vect{w}_i^T
+        \vect{a}_j)\vect{w}_i, \hspace{4mm} j=2,...,m \\
+        \vect{w}_j &= \tilde{\vect{w}}_j / \| \tilde{\vect{w}}_j \|
+        \hspace{4mm} j=1,2,...,m
+      \end{split}
+      \]
 
-    It is easy to see that the vectors $\textbf{w}_1, ..., \textbf{w}_m$ are mutually
-    orthonormal: 
+      It is easy to see that the vectors $\textbf{w}_1, ...,
+      \textbf{w}_m$ are mutually orthonormal:
 
-    \[\vect{w}_i^T\vect{w}_j = \delta_{ij} = \begin{cases}1, &i=j\\0 &i\neq
-      j\end{cases}
-    \]
+      \[\vect{w}_i^T\vect{w}_j = \delta_{ij} = \begin{cases}1, &i=j\\0 &i\neq
+        j\end{cases}
+      \]
 
-    In matrix form
+      In matrix form
 
-    \[
-    \vect{W}^T\vect{W} = \matr{I}, \hspace{6mm}\vect{W} = [\vect{w}_1, \vect{w}_2, ..., \vect{w}_m]
-    \]
+      \[
+      \vect{W}^T\vect{W} = \matr{I}, \hspace{6mm}\vect{W} =
+      [\vect{w}_1, \vect{w}_2, ..., \vect{w}_m]
+      \]
 
-    In whitening, the original data vectors $\vect{x}$ are transformed so
-    that the whitened vectors $\textbf{y}=\vect{W}^T\vect{x}$ satisfy the condition
-    $E\lbrace \textbf{y}\textbf{y}^T \rbrace=\matr{I}$.
+      In whitening, the original data vectors $\vect{x}$ are transformed
+      so that the whitened vectors $\textbf{y}=\vect{W}^T\vect{x}$
+      satisfy the condition $E\lbrace \textbf{y}\textbf{y}^T
+      \rbrace=\matr{I}$.
 
-    This yields
-    $E\lbrace \vect{W}^T\vect{x}\vect{x}^T\vect{W}\rbrace=\vect{W}^T \textbf{C}_{xx} \vect{W}=\matr{I}$
-    where $\matr{C}_{xx}$ is the correlation matrix of $\vect{x}$
-    (assuming that $\vect{x}$ has zero mean).
+      This yields $\mathbf{I} = E\lbrace \textbf{y}\textbf{y}^T \rbrace
+      = E\lbrace \vect{W}^T\vect{x}\vect{x}^T\vect{W}\rbrace=\vect{W}^T
+      \textbf{C}_{xx} \vect{W}$ where $\matr{C}_{xx}$ is the correlation
+      matrix of $\vect{x}$ (assuming that $\vect{x}$ has zero mean).
 
-    For individual elements of the matrix $E\lbrace \vect{y}\vect{y}^T\rbrace=\vect{W}^T\matr{C}_{xx}\vect{W}$, the whitening condition becomes
+      For individual elements of the matrix $E\lbrace
+      \vect{y}\vect{y}^T\rbrace=\vect{W}^T\matr{C}_{xx}\vect{W}$, the
+      whitening condition becomes
 
-    \[
-    \vect{w}_i^T\matr{C}_{xx}\vect{w}_j = \delta_{ij} = \begin{cases}1, &i=j\\0 &i\neq
-      j\end{cases}
-    \]
-
-
-    We see that the usual orthogonality
-    condition $\vect{w}_i^T\vect{w}_j = \delta_{ij}$ of the standard GSO
-    should be changed so that the inner product is in whitening weighted by the covariance
-    matrix $\matr{C}_{xx}$ of the data.
-
-    We can get a whitening algorithm from the basic GSO by replacing all
-    the inner products by weighted inner products. This yields fhe
-    following algorithm:
-
-    \[
-    \begin{split}
-      \tilde{\vect{w}}_1 &= \vect{a}_1 \\
-      \tilde{\vect{w}}_j &= \vect{a}_j - \sum_{i=1}^{j-1}
-      (\vect{w}_i^T\matr{C}_{xx}\vect{a}_j)\vect{w}_i, \hspace{4mm} j=2,3,...,m \\
-      \vect{w}_j &= \tilde{\vect{w}}_j/\sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
-    \end{split}
-    \]
-
-    Let us now check the validity of the whitening algorithm:
-
-    \[
-    \vect{w}_j^T\matr{C}_{xx}\vect{w}_j
-    =\frac{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}{\sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}\sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}}
-    = 1 \hspace{6mm} \text{OK}
-    \]
-    % 
-    We have to show that
-    \begin{equation*}
-      \vect{w}_i^T  \matr{C}_{xx} \vect{w}_j  = 0 \mbox{\ \ \ \ $(i \neq j)$}
-    \end{equation*}
-    or equivalently $\tilde{\vect{w}_i}^T \matr{C}_{xx} \vect{w}_j  = 0$ ($i > j$).
-    We proceed by induction:
-    \vspace{2mm}\\
-    1.\\
-    % \vspace{1mm}
-    \begin{align*}
-      \tilde{\vect{w}_2}^T \matr{C}_{xx} \vect{w}_1 &= 
-      \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - ( \vect{w}_1^T \matr{C}_{xx} \vect{a}_2 ) \times 
-      \vect{w}_1^T \matr{C}_{xx} \vect{w}_1 \nonumber \\
-      &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1
-      - \vect{w}_1^T \matr{C}_{xx} \vect{a}_2
-      = 0 \mbox{.}
-    \end{align*}
-    % 
-    We used $( \vect{a}_2^T \matr{C}_{xx} \vect{a}_1 )^T = \vect{a}_1^T \matr{C}_{xx} \vect{a}_2$, which holds
-    because both terms are scalars and $\matr{C}_{xx}^T = \matr{C}_{xx}$.
-    % x
-    \vspace{2mm}\\
-    2.\\
-    \vspace{2mm}
-    % 
-    % 
-    Suppose now that the condition
-    \begin{equation*}
-      \vect{w}_i^T \matr{C}_{xx} \vect{w}_k = \delta_{i,k} \mbox{\ \ holds for all $i,k < j$.}
-    \end{equation*}
-    % 
-    For $i < j$,
-    \begin{align*}
-      \tilde{\vect{w}}_j^T \matr{C}_{xx} \vect{w}_i &= \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \sum_{k=1}^{j-1} 
-      ( \vect{w}_k^T \matr{C}_{xx} \vect{a}_j ) ( \vect{w}_k^T \matr{C}_{xx} \vect{w}_i ) \nonumber \\
-      &=  \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \vect{w}_i^T \matr{C}_{xx} \vect{a}_j = 0 \mbox{,}
-    \end{align*}
-    because from the terms $\vect{w}_k^T \matr{C}_{xx} \vect{w}_i$ only the term
-    $\vect{w}_i^T \matr{C}_{xx} \vect{w}_i = 1$ remains and all the others are zero.
-    Thus it is proved that $\vect{w}_j^T \matr{C}_{xx} \vect{w}_i = 0$, $i < j$, as required.
-
-    b) Uniqueness: One can start from any set of linearly independent vectors
-    $\vect{a}_1, \vect{a}_2, ..., \vect{a}_n$ and get usually a different whitening
-    solution. Thus whitening is by no means unique. In fact, the whitening
-    condition
-
-    \[
-    \vect{W}^T\matr{C}_{xx}\vect{W}=\matr{I}
-    \]
-
-    would set in general $n^2$ conditions for the $n\times n$ dimensional whitening
-    matrix $\matr{W}^T$. But due to the symmetricity of $\matr{C}_{xx}$ there are
-    only $n(n+1)/2$ constraint conditions in performing whitening, giving
-    $n^2-n(n+1)/2=n(n-1)/2$ degrees of freedom.
+      \[
+      \vect{w}_i^T\matr{C}_{xx}\vect{w}_j = \delta_{ij}
+      = \begin{cases}1, &i=j\\0 &i\neq j\end{cases}
+      \]
 
 
+      We see that the usual orthogonality condition
+      $\vect{w}_i^T\vect{w}_j = \delta_{ij}$ of the standard GSO
+      should be changed so that the inner product is in whitening
+      weighted by the covariance matrix $\matr{C}_{xx}$ of the data.
+
+      We can get a whitening algorithm from the basic GSO by replacing
+      all the inner products by weighted inner products. This yields
+      fhe following algorithm:
+
+      \[
+      \begin{split}
+        \tilde{\vect{w}}_1 &= \vect{a}_1 \\
+        \tilde{\vect{w}}_j &= \vect{a}_j - \sum_{i=1}^{j-1}
+        (\vect{w}_i^T\matr{C}_{xx}\vect{a}_j)\vect{w}_i, \hspace{4mm} j=2,3,...,m \\
+        \vect{w}_j &= \tilde{\vect{w}}_j/\sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
+      \end{split}
+      \]
+
+      Let us now check the validity of the whitening algorithm:
+
+      \[
+      \vect{w}_j^T\matr{C}_{xx}\vect{w}_j =\frac
+      {\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} {
+        \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
+        \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} } =
+      1 \hspace{6mm} \text{OK}
+      \]
+      % 
+      We have to show that
+      \begin{equation*}
+        \vect{w}_i^T  \matr{C}_{xx} \vect{w}_j  = 0 \mbox{\ \ \ \ $(i \neq j)$}
+      \end{equation*}
+      or equivalently $\tilde{\vect{w}_i}^T \matr{C}_{xx} \vect{w}_j  = 0$ ($i > j$).
+      We proceed by induction: NO NEED FOR INDUCTION!
+      \begin{enumerate}
+      \item First, show that it holds for $i=2, \, j=1$:
+        \begin{align*}
+          \tilde{\vect{w}_2}^T \matr{C}_{xx} \vect{w}_1 &= \left[
+            \vect{a}_2^T - (\vect{w}_1^T \matr{C}_{xx}
+            \vect{a}_2)\vect{w}_1^T \right] \matr{C}_{xx} \vect{w}_1
+          \\
+          &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - ( \vect{w}_1^T
+          \matr{C}_{xx} \vect{a}_2 ) \cdot \underbrace{\vect{w}_1^T
+            \matr{C}_{xx} \vect{w}_1}_{=1}
+          \\
+          &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - \vect{w}_1^T
+          \matr{C}_{xx} \vect{a}_2 = 0 .
+        \end{align*}
+        % 
+        We used $( \vect{a}_2^T \matr{C}_{xx} \vect{a}_1 )^T =
+        \vect{a}_1^T \matr{C}_{xx} \vect{a}_2$, which holds because both
+        terms are scalars and $\matr{C}_{xx}^T = \matr{C}_{xx}$.
+        % x
+      \item     
+        % 
+        Suppose now that the condition
+        \begin{equation*}
+          \vect{w}_i^T \matr{C}_{xx} \vect{w}_k = \delta_{i,k} \quad\text{holds for all $i,k < j$.}
+        \end{equation*}
+        % 
+        For $i < j$,
+        \begin{align*}
+          \tilde{\vect{w}}_j^T \matr{C}_{xx} \vect{w}_i &=
+          \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \sum_{k=1}^{j-1} (
+          \vect{w}_k^T \matr{C}_{xx} \vect{a}_j ) \underbrace{(
+            \vect{w}_k^T \matr{C}_{xx} \vect{w}_i )}_{=\delta_{ki}}
+          \\
+          &= \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \vect{w}_i^T
+          \matr{C}_{xx} \vect{a}_j = 0,
+        \end{align*}
+        because from the terms $\vect{w}_k^T \matr{C}_{xx} \vect{w}_i$
+        only the term $\vect{w}_i^T \matr{C}_{xx} \vect{w}_i = 1$
+        remains and all the others are zero.  Thus it is proved that
+        $\vect{w}_j^T \matr{C}_{xx} \vect{w}_i = 0$, $i < j$, as
+        required.
+
+      \end{enumerate}
+
+    \item \emph{Inaccurate simple explanation:} The whitening is not
+      unique, because the result of the algorithm depends on initial
+      set of linearly independent vectors which can be chosen
+      arbitrarily.
+
+      \emph{A bit more formal explanation:} Assume $n>1$.  One can
+      start from any set of linearly independent vectors
+      $\mathbf{A}=\{\vect{a}_1, \ldots, \vect{a}_n\}$ resulting in the
+      whitened set $\mathbf{W}=\{\mathbf{w}_1, \ldots,
+      \mathbf{w}_n\}$.  Now, it is possible to select another set of
+      initial independent vectors $\mathbf{B}=\{\vect{b}_1, \ldots,
+      \vect{b}_n\}$ for which $\mathbf{b}$ is not parallel to any of
+      the vectors in $\mathbf{W}$.  For this set $\mathbf{B}$, the
+      first whitened vector is parallel to $\mathbf{b}_1$, thus not
+      parallel to any of the vectors in $\mathbf{W}$ and therefore the
+      resulting set of whitened vectors is different. get usually a
+      different whitening solution because there exists another set of
+      linearly independent vectors. Thus whitening is by no means
+      unique.
+
+      \emph{Yet another explanation:} The condition
+      \[
+      \vect{W}^T\matr{C}_{xx}\vect{W}=\matr{I}
+      \]
+      would set in general $n^2$ conditions for the $n\times n$ dimensional whitening
+      matrix $\matr{W}^T$. But due to the symmetricity of $\matr{C}_{xx}$ there are
+      only $n(n+1)/2$ constraint conditions in performing whitening, giving
+      $n^2-n(n+1)/2=n(n-1)/2$ degrees of freedom.
+
+    \end{enumerate}
   \end{solution}
 
 
-\item a) Develop a whitening method based on principal component analysis.\\
-  b) Show that if the whitening matrix is multiplied by any orthogonal
-  matrix, the whitening property remains still valid.
-
+\item
+  \begin{enumerate}
+  \item Develop a whitening method based on principal component
+    analysis.
+  \item Show that if the whitening matrix is multiplied by any
+    orthogonal matrix, the whitening property remains still valid.
+  \end{enumerate}
+  
   \begin{solution}
 
-    The PCA expression has as its basis vectors the eigenvectors
-    $\vect{e}_i$ of the data covariance matrix $\matr{C}_{xx}=E\lbrace
-    \vect{x}\vect{x}^T\rbrace$ assuming again that the vectors $\vect{x}$
-    have zero mean.
+    \begin{enumerate}
 
-    On the other hand, $\matr{C}_{xx}$ as any symmetric matrix can be expressed
-    in terms of its eigenvalue decomposition as
+    \item The PCA expression has as its basis vectors the eigenvectors
+      $\vect{e}_i$ of the data covariance matrix
+      $\matr{C}_{xx}=E\lbrace \vect{x}\vect{x}^T\rbrace$ assuming
+      again that the vectors $\vect{x}$ have zero mean.
 
-    \[
-    \matr{C}_{xx} = \matr{E}\matr{D}\matr{E}^T = \sum_{i=1}^{n} \lambda_i \vect{e}_i \vect{e}_i^T
-    \]
+      On the other hand, $\matr{C}_{xx}$ as any symmetric matrix can be expressed
+      in terms of its eigenvalue decomposition as
 
-    where the matrix $\matr{E}=\left[ \vect{e}_1, \vect{e}_2, ...,
-      \vect{e}_n \right]$ contains as its columns the
-    eigenvectors $\vect{e}_i$ of $\matr{C}_{xx}$ and the diagonal matrix $\matr{D}=\text{diag}(\lambda_1,
-    \lambda_2, ..., \lambda_n)$ the eigenvalues of $\matr{C}_{xx}$ in the same
-    order. Since the eigenvectors of a symmetric matrix are mutually
-    orthogonal
+      \[
+      \matr{C}_{xx} = \matr{E}\matr{D}\matr{E}^T = \sum_{i=1}^{n} \lambda_i \vect{e}_i \vect{e}_i^T
+      \]
 
-    \[
-    \vect{e}_i^T\vect{e}_j = \begin{cases}1, &i=j\\0 &i\neq
-      j\end{cases}
-    \]
+      where the matrix $\matr{E}=\left[ \vect{e}_1, \vect{e}_2, ...,
+        \vect{e}_n \right]$ contains as its columns the
+      eigenvectors $\vect{e}_i$ of $\matr{C}_{xx}$ and the diagonal matrix $\matr{D}=\text{diag}(\lambda_1,
+      \lambda_2, ..., \lambda_n)$ the eigenvalues of $\matr{C}_{xx}$ in the same
+      order. Since the eigenvectors of a symmetric matrix are mutually
+      orthogonal
+
+      \[
+      \vect{e}_i^T\vect{e}_j = \begin{cases}1, &i=j\\0 &i\neq
+        j\end{cases}
+      \]
 
 
-    $\matr{E}^T\matr{E} = \matr{E}\matr{E}^T = \matr{I}$ where $\matr{I}$ is $n\times n$ unity matrix. Then we get
+      $\matr{E}^T\matr{E} = \matr{E}\matr{E}^T = \matr{I}$ where
+      $\matr{I}$ is $n\times n$ identity matrix. Then we get
 
-    \[
-    \matr{E}^T\matr{C}_{xx}\matr{E} =
-    \matr{E}^T\matr{E}\matr{D}\matr{E}^T\matr{E} = \matr{D} \hspace{1cm} (*)
-    \]
+      \begin{equation}
+        \matr{E}^T\matr{C}_{xx}\matr{E} =
+        \matr{E}^T\matr{E}\matr{D}\matr{E}^T\matr{E} = \matr{D}
+        \label{eq:orthogonalization}
+      \end{equation}
+      
+      The eigenvalues are positive so we can form a square root diagonal matrix
 
-    The eigenvalues are positive so we can form a square root diagonal matrix
+      \[
+      \matr{D}^{-1/2} = \left[ 1/\sqrt{\lambda_1}, ..., 1/\sqrt{\lambda_n} \right]
+      \]
 
-    \[
-    \matr{D}^{-1/2} = \left[ 1/\sqrt{\lambda_1}, ..., 1/\sqrt{\lambda_n} \right]
-    \]
+      Multiplying \eqref{eq:orthogonalization} by $\matr{D}^{-1/2}$
+      from the left and right yields
 
-    Multiplying $(*)$ by $\matr{D}^{-1/2}$ from the left and right yields
+      \[
+      \matr{D}^{-1/2}\matr{E}^T\matr{C}_{xx}\matr{E}\matr{D}^{-1/2}=\matr{I}
+      \]
 
-    \[
-    \matr{D}^{-1/2}\matr{E}^T\matr{C}_{xx}\matr{E}\matr{D}^{-1/2}=\matr{I}
-    \]
+      Thus the matrix $\matr{D}^{-1/2}\matr{E}^T$ can be used for whitening
+      and the whitening transform by PCA is
 
-    Thus the matrix $\matr{D}^{-1/2}\matr{E}^T$ can be used for whitening
-    and the whitening transform by PCA is
+      \[
+      \textbf{y}=\vect{W}^T\vect{x} = \matr{D}^{-1/2}\matr{E}^T\vect{x}
+      \]
 
-    \[
-    \textbf{y}=\vect{W}^T\vect{x} = \matr{D}^{-1/2}\matr{E}^T\vect{x}
-    \]
+      In PCA, it is typical to reduce the dimensionality. That is
+      achieved by using only $m<n$ eigenvectors corresponding to the
+      largest eigenvalues:
+      \begin{align*}
+        \mathbf{W} = [\mathbf{e}_1, \ldots, \mathbf{e}_m]
+        \begin{pmatrix}
+          1/\sqrt{\lambda_1} & &
+          \\
+          & \ddots &
+          \\
+          && 1/\sqrt{\lambda_m} 
+        \end{pmatrix}
+      \end{align*}
+      
+    \item 
+      Whitening condition: $\vect{W}^T\matr{C}_{xx}\vect{W}=\matr{I}$
 
-    b) Whitening condition: $\vect{W}^T\matr{C}_{xx}\vect{W}=\matr{I}$
+      Multiply $\vect{W}$ by an arbitrary orthogonal matrix $\matr{R}$:
 
-    Multiply $\vect{W}$ by an orthogonal matrix $\matr{T}$
+      \[
+      (\vect{W}\matr{R})^T\matr{C}_{xx}\vect{W}\matr{R} =
+      \matr{R}^T\vect{W}^T\matr{C}_{xx}\vect{W}\matr{R} =
+      \matr{R}^T\matr{R} = \matr{I}.
+      \]
 
-    \[
-    (\vect{W}\matr{T})^T\matr{C}_{xx}\vect{W}\matr{T} = \matr{T}^T\vect{W}^T\matr{C}_{xx}\vect{W}\matr{T} = \matr{T}^T\matr{T} = \matr{I}
-    \]
-
+      Thus, the PCA whitening can be performed as
+      \[
+      \mathbf{y} = \mathbf{RW}^T \mathbf{x}.
+      \]
+    \end{enumerate}
+    
   \end{solution}
 
 \item Consider the problem of maximizing the variance of $y_m = {\bf
@@ -290,53 +359,70 @@
 
   \begin{solution}
 
-    \begin{equation}
+    \begin{equation*}
       \var\{ y_m \} = \E \{ y_m^2 \} = \E \{ \vw_m^T \vx \vx^T \vw_m^T \}
       = \vw_m^T \E \{ \vx \vx^T \} \vw_m^T = \vw_m^T \mC_x \vw_m
-    \end{equation}
+    \end{equation*}
 
     The constraints:
-    \begin{equation}
+    \begin{equation*}
       \vw_k^T \vw_l = \begin{cases}1 \quad\text{if $k=l$} \\
         0 \quad\text{if $k \neq l$} \end{cases}
-    \end{equation}
+    \end{equation*}
 
-    The Lagrangian function:
-    \begin{equation}
-      {\cal L}(\vw_m, \vects{\lambda}) = \frac{1}{2} \vw_m^T  \mathbf{C}_x \vw_m
-      + \lambda_0 ( \vw_m^T \vw_m - 1) + \sum_{i=1}^{m-1} \lambda_i \vw_m^T \vw_i
-    \end{equation}
-    and its derivative
+    The Lagrangian function is
+    \begin{equation*}
+      {\cal L}(\vw_m, \vects{\lambda}^{(m)}) = \frac{1}{2} \vw_m^T  \mathbf{C}_x \vw_m
+      + \lambda_0^{(m)} ( \vw_m^T \vw_m - 1) + \sum_{i=1}^{m-1} \lambda_i^{(m)} \vw_m^T \vw_i.
+    \end{equation*}
+    Its gradient must equal to zero at the optimal solution:
     \begin{equation}
       \label{eq:prob_6_1_a}
-      \nabla {\cal L} = {\bf{C}}_x \vw_m + \lambda_0 \vw_m
-      + \sum_{i=1}^{m-1} \lambda_i \vw_i.
+      \nabla {\cal L} = {\bf{C}}_x \vw_m + \lambda_0^{(m)} \vw_m
+      + \sum_{i=1}^{m-1} \lambda_i^{(m)} \vw_i = \mathbf{0}.
     \end{equation}
 
     Letting $m=1$ and setting the derivative to zero yields
-    \begin{equation}
-      \mC_x \vw_1 = - \lambda_0 \vw_1
-    \end{equation}
+    \begin{equation*}
+      \mC_x \vw_1 = - \lambda_0^{(1)} \vw_1
+    \end{equation*}
     which implies that $\vw_1$ is an eigenvector of $\mC_x$.
 
     Evaluating the variance of $y$:
     \begin{equation}
       \var\{ y_1 \} = \var\{ \vw_1^T \vx \} = \E\{ \vw_1^T \vx \vx^T \vw_1 \}
-      = \vw_1^T \mC_x \vw_1 = \vw_1^T (- \lambda_0 \vw_1) = - \lambda_0.
+      = \vw_1^T \mC_x \vw_1 = \vw_1^T (- \lambda_0^{(1)} \vw_1) = -
+      \lambda_0^{(1)}.
+      \label{eq:maximal_variance}
     \end{equation}
-    This is maximized when $- \lambda_0$ is equal to the largest
+    This is maximized when $- \lambda_0^{(1)}$ is equal to the largest
     eigenvalue of $\mC_x$ and $\vw_1$ is the corresponding eigenvector.
 
     Let us now continue inductively.  For $m>1$, the previous weight
     vectors $\vw_i$, $i = 1, \dots, m-1$ are the eigenvectors
     corresponding to $m-1$ largest eigenvalues.  By multiplying
-    Eq.~(\ref{eq:prob_6_1_a}) from the left by $\vw_i$, $i = 1, \dots,
-    m-1$, we get $\lambda_i = 0$ for all $i$.  Thus again
-    \begin{equation}
-      \mC_x \vw_m = - \lambda_0 \vw_m.
-    \end{equation}
-    Thus $\vw_m$ is again an eigenvector and to maximize the variance it
-    must be the one with the largest remaining eigenvalue.
+    \eqref{eq:prob_6_1_a} from the left by $\vw_j$, $j = 1, \dots,
+    m-1$, we get $\lambda_j^{(m)} = 0$ for all j:
+    \begin{align*}
+      \underbrace{\mathbf{w}_j^T
+        \mathbf{C}_x}_{=-\lambda_0^{(j)}\mathbf{w}_j^T} \mathbf{w}_m +
+      \lambda_0^{(m)} \mathbf{w}_j^T \mathbf{w}_m + \sum^{m-1}_{i=1}
+      \lambda_i^{(m)} \underbrace{ \mathbf{w}^T_j \mathbf{w}_i
+      }_{=\delta_{ij}} &= 0
+      \\
+      0 + 0 + \lambda_j^{(m)} \cdot 1 &= 0
+      \\
+      \lambda_j^{(m)} &= 0.
+    \end{align*}
+    Thus, \eqref{eq:prob_6_1_a} simplifies into
+    \begin{align*}
+      \mC_x \vw_m + \lambda_0^{(m)} \vw_m &= 0
+      \\
+      \mC_x \vw_m &= - \lambda_0^{(m)} \vw_m.
+    \end{align*}
+    Therefore, $\vw_m$ is again an eigenvector and to maximize the
+    variance similarly as in \eqref{eq:maximal_variance}, it must be
+    the one with the largest remaining eigenvalue.
 
     NB: Remember that $\mC_x$ is a symmetric matrix and thus its
     eigenvalues are real and eigenvectors orthogonal.
@@ -348,8 +434,8 @@
   $y=({\bf w}^T{\bf x})^2$ under constraint $ \| {\bf w} \| = 1$. (We have now omitted the
   subscript 1 because only one neuron is involved.)
 
-  Show that an unlimited gradient ascent method would compute the new
-  vector ${\bf w}$ from
+  Show that an unconstrained gradient ascent method would compute the
+  new vector ${\bf w}$ from
   \[
   {\bf w} \leftarrow {\bf w} + \gamma ({\bf w}^T{\bf x}){\bf x}
   \]
@@ -359,16 +445,16 @@
   \begin{solution}
 
 
-    \begin{equation}
+    \begin{equation*}
       \frac{\partial y}{\partial \vw} = 2 \vx \vx^T \vw = 2 (\vw^T \vx) \vx.
-    \end{equation}
+    \end{equation*}
     Thus the gradient ascent updates are
-    \begin{equation}
+    \begin{equation*}
       \vw \leftarrow \vw + \gamma (\vw^T \vx) \vx.
-    \end{equation}
+    \end{equation*}
 
     Evaluating the norm of the new iterate
-    \begin{equation}
+    \begin{equation*}
       \begin{split}
         ||\vw + \gamma (\vw^T \vx) \vx||^2
         &= \left(\vw + \gamma (\vw^T \vx) \vx\right)^T
@@ -377,7 +463,7 @@
         &= ||\vw||^2 + 2 \gamma (\vw^T \vx)^2 + \gamma^2 (\vw^T \vx)^2 ||\vx||^2
         \ge ||\vw||^2
       \end{split}
-    \end{equation}
+    \end{equation*}
 
   \end{solution}
   
