@@ -25,53 +25,62 @@
       0 & 3 & 0 \\
       0 & 0 & 0.1 \end{array} \right]\]
 
-  a) Calculate the covariance matrix ${\bf C}_x = \text{E}\left[ {\bf
-      xx}^T \right]$\\
-  b) Calculate the theoretical eigenvalues and eigenvectors of ${\bf C}_x$
-
+  \begin{enumerate}
+  \item Calculate the covariance matrix ${\bf C}_x = \text{E}\left[
+      {\bf xx}^T \right]$
+  \item Calculate the theoretical eigenvalues and eigenvectors of
+    ${\bf C}_x$
+  \end{enumerate}
+  
   \begin{solution}
 
-    a) The covariance matrix for vector $\vect{x}$ is
-    \[
-    \begin{split}
-      \matr{C}_x &=
-      E[\vect{x} \vect{x}^T]=E[[\alpha\vect{x}(n-1)+\vect{v}(n)][\alpha\vect{x}(n-1)+\vect{v}(n)]^T]\\
-      &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2 \underbrace{E[\alpha \vect{x}(n-1)\vect{v}(n)^T]}_{=0}+ E[\vect{v}(n)\vect{v}(n)^T]\\
-      % &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2E[ \alpha \vect{x}(n-1)\vect{v}(n)^T]\\
-      &=\alpha^2 \matr{C}_x + \matr{C}_v
-    \end{split}
-    \]
-    which yields
-    \[
-    \matr{C}_x = \frac{1}{1-\alpha^2}\matr{C}_v=
-    \left[\begin{array}{ccc}
-        26.32 & 0     & 0 \\
-        0     & 15.79 & 0 \\
-        0     & 0     & 0.53 
-      \end{array}\right]
-    \]
+    \begin{enumerate}
+    \item 
+      The covariance matrix for vector $\vect{x}$ is
+      \[
+      \begin{split}
+        \matr{C}_x &= E[\vect{x} \vect{x}^T] =
+        E[[\alpha\vect{x}(n-1)+\vect{v}(n)]
+        [\alpha\vect{x}(n-1)+\vect{v}(n)]^T]
+        \\
+        &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2
+        \underbrace{E[\alpha \vect{x}(n-1)\vect{v}(n)^T]}_{=0}+
+        E[\vect{v}(n)\vect{v}(n)^T]
+        \\
+        % &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2E[ \alpha \vect{x}(n-1)\vect{v}(n)^T]\\
+        &=\alpha^2 \matr{C}_x + \matr{C}_v
+      \end{split}
+      \]
+      which yields
+      \[
+      \matr{C}_x = \frac{1}{1-\alpha^2}\matr{C}_v=
+      \left[\begin{array}{ccc}
+          26.32 & 0     & 0 \\
+          0     & 15.79 & 0 \\
+          0     & 0     & 0.53 
+        \end{array}\right]
+      \]
 
+    \item Since the covariance matrix $\matr{C}_x$ is diagonal its
+      eigenvalues and eigenvectors are
+      \[
+      \begin{cases}
+        \lambda_1 &= 26.32 \\
+        \lambda_2 &= 15.79 \\
+        \lambda_3 &= 0.53
+      \end{cases}
+      \]
 
-    b) Since the covariance matrix $\matr{C}_x$ is diagonal its
-    eigenvalues and eigenvectors are
-    \[
-    \begin{cases}
-      \lambda_1 &= 26.32 \\
-      \lambda_2 &= 15.79 \\
-      \lambda_3 &= 0.53
-    \end{cases}
-    \]
+      and eigenvectors
 
-    and eigenvectors
-
-    \[
-    \begin{cases}
-      \vect{e}_1 &= [1 \hspace{2mm} 0 \hspace{2mm} 0]^T \\
-      \vect{e}_2 &= [0 \hspace{2mm} 1 \hspace{2mm} 0]^T \\
-      \vect{e}_3 &= [0 \hspace{2mm} 0 \hspace{2mm} 1]^T
-    \end{cases}
-    \]
-
+      \[
+      \begin{cases}
+        \vect{e}_1 &= [1 \hspace{2mm} 0 \hspace{2mm} 0]^T \\
+        \vect{e}_2 &= [0 \hspace{2mm} 1 \hspace{2mm} 0]^T \\
+        \vect{e}_3 &= [0 \hspace{2mm} 0 \hspace{2mm} 1]^T
+      \end{cases}
+      \]
+    \end{enumerate}
   \end{solution}
 
 \item
@@ -125,20 +134,18 @@
       satisfy the condition $E\lbrace \textbf{y}\textbf{y}^T
       \rbrace=\matr{I}$.
 
-      This yields $\mathbf{I} = E\lbrace \textbf{y}\textbf{y}^T \rbrace
-      = E\lbrace \vect{W}^T\vect{x}\vect{x}^T\vect{W}\rbrace=\vect{W}^T
-      \textbf{C}_{xx} \vect{W}$ where $\matr{C}_{xx}$ is the correlation
-      matrix of $\vect{x}$ (assuming that $\vect{x}$ has zero mean).
-
-      For individual elements of the matrix $E\lbrace
-      \vect{y}\vect{y}^T\rbrace=\vect{W}^T\matr{C}_{xx}\vect{W}$, the
-      whitening condition becomes
-
-      \[
-      \vect{w}_i^T\matr{C}_{xx}\vect{w}_j = \delta_{ij}
-      = \begin{cases}1, &i=j\\0 &i\neq j\end{cases}
-      \]
-
+      This yields $\mathbf{I} = E\lbrace \textbf{y}\textbf{y}^T
+      \rbrace = E\lbrace
+      \vect{W}^T\vect{x}\vect{x}^T\vect{W}\rbrace=\vect{W}^T
+      \textbf{C}_{xx} \vect{W}$ where $\matr{C}_{xx}$ is the
+      correlation matrix of $\vect{x}$ (assuming that $\vect{x}$ has
+      zero mean).  This equation can be given as
+      \begin{equation}
+        \vect{w}_i^T\matr{C}_{xx}\vect{w}_j = \delta_{ij}
+        = \begin{cases}1, &i=j\\0 &i\neq j\end{cases}
+        \label{eq:delta}
+      \end{equation}
+      
 
       We see that the usual orthogonality condition
       $\vect{w}_i^T\vect{w}_j = \delta_{ij}$ of the standard GSO
@@ -148,79 +155,109 @@
       We can get a whitening algorithm from the basic GSO by replacing
       all the inner products by weighted inner products. This yields
       fhe following algorithm:
-
       \[
       \begin{split}
         \tilde{\vect{w}}_1 &= \vect{a}_1 \\
         \tilde{\vect{w}}_j &= \vect{a}_j - \sum_{i=1}^{j-1}
-        (\vect{w}_i^T\matr{C}_{xx}\vect{a}_j)\vect{w}_i, \hspace{4mm} j=2,3,...,m \\
-        \vect{w}_j &= \tilde{\vect{w}}_j/\sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
+        (\vect{w}_i^T\matr{C}_{xx}\vect{a}_j)\vect{w}_i, \hspace{4mm}
+        j=2,3,...,m
+        \\
+        \vect{w}_j &=
+        \tilde{\vect{w}}_j/\sqrt{\tilde{\vect{w}}_j^T
+          \matr{C}_{xx}\tilde{\vect{w}}_j} 
       \end{split}
       \]
 
-      Let us now check the validity of the whitening algorithm:
-
-      \[
-      \vect{w}_j^T\matr{C}_{xx}\vect{w}_j =\frac
-      {\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} {
-        \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
-        \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} } =
-      1 \hspace{6mm} \text{OK}
-      \]
+      Let us now check the validity of the whitening algorithm, that
+      is, that the algorithm results in vectors that satisfy
+      \eqref{eq:delta}.  First, check the case $i=j$:
+      \begin{equation}
+        \vect{w}_j^T\matr{C}_{xx}\vect{w}_j =\frac
+        {\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} {
+          \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j}
+          \sqrt{\tilde{\vect{w}}_j^T\matr{C}_{xx}\tilde{\vect{w}}_j} } =
+        1 \hspace{6mm} \text{OK}
+        \label{eq:induction_first}
+      \end{equation}
       % 
-      We have to show that
+      Next, we have to show that
       \begin{equation*}
         \vect{w}_i^T  \matr{C}_{xx} \vect{w}_j  = 0 \mbox{\ \ \ \ $(i \neq j)$}
       \end{equation*}
-      or equivalently $\tilde{\vect{w}_i}^T \matr{C}_{xx} \vect{w}_j  = 0$ ($i > j$).
-      We proceed by induction: NO NEED FOR INDUCTION!
-      \begin{enumerate}
-      \item First, show that it holds for $i=2, \, j=1$:
-        \begin{align*}
-          \tilde{\vect{w}_2}^T \matr{C}_{xx} \vect{w}_1 &= \left[
-            \vect{a}_2^T - (\vect{w}_1^T \matr{C}_{xx}
-            \vect{a}_2)\vect{w}_1^T \right] \matr{C}_{xx} \vect{w}_1
-          \\
-          &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - ( \vect{w}_1^T
-          \matr{C}_{xx} \vect{a}_2 ) \cdot \underbrace{\vect{w}_1^T
-            \matr{C}_{xx} \vect{w}_1}_{=1}
-          \\
-          &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - \vect{w}_1^T
-          \matr{C}_{xx} \vect{a}_2 = 0 .
-        \end{align*}
-        % 
-        We used $( \vect{a}_2^T \matr{C}_{xx} \vect{a}_1 )^T =
-        \vect{a}_1^T \matr{C}_{xx} \vect{a}_2$, which holds because both
-        terms are scalars and $\matr{C}_{xx}^T = \matr{C}_{xx}$.
-        % x
-      \item     
-        % 
-        Suppose now that the condition
-        \begin{equation*}
-          \vect{w}_i^T \matr{C}_{xx} \vect{w}_k = \delta_{i,k} \quad\text{holds for all $i,k < j$.}
-        \end{equation*}
-        % 
-        For $i < j$,
-        \begin{align*}
-          \tilde{\vect{w}}_j^T \matr{C}_{xx} \vect{w}_i &=
-          \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \sum_{k=1}^{j-1} (
-          \vect{w}_k^T \matr{C}_{xx} \vect{a}_j ) \underbrace{(
-            \vect{w}_k^T \matr{C}_{xx} \vect{w}_i )}_{=\delta_{ki}}
-          \\
-          &= \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \vect{w}_i^T
-          \matr{C}_{xx} \vect{a}_j = 0,
-        \end{align*}
-        because from the terms $\vect{w}_k^T \matr{C}_{xx} \vect{w}_i$
-        only the term $\vect{w}_i^T \matr{C}_{xx} \vect{w}_i = 1$
-        remains and all the others are zero.  Thus it is proved that
-        $\vect{w}_j^T \matr{C}_{xx} \vect{w}_i = 0$, $i < j$, as
-        required.
+      or equivalently $\tilde{\vect{w}_i}^T \matr{C}_{xx} \vect{w}_j =
+      0$ ($j < i$).  We proceed by induction: Assume that for some $k$
+      the equation \eqref{eq:delta} holds for all $j<i<k$ (we know
+      that it holds for all $j=i$).  It was shown to hold in
+      \eqref{eq:induction_first} when $k=2$ (i.e., $j=i=1$), so we
+      will use induction: If it holds for $k$, show that it holds for
+      $k+1$.  Thus, for $j < i=k<k+1$,
+      \begin{align*}
+        \tilde{\vect{w}}_k^T \matr{C}_{xx} \vect{w}_j &= \left[
+          \vect{a}_k^T  - \sum_{l=1}^{k-1} (
+          \vect{w}_l^T \matr{C}_{xx} \vect{a}_k ) \vect{w}_l^T \right]
+        \matr{C}_{xx} \vect{w}_j 
+      \\
+      &= \vect{a}_k^T \matr{C}_{xx} \vect{w}_j - \sum_{l=1}^{k-1} (
+      \vect{w}_l^T \matr{C}_{xx} \vect{a}_k ) \underbrace{(
+        \vect{w}_l^T \matr{C}_{xx} \vect{w}_j )}_{=\delta_{lj}}
+      \\
+      &= \vect{a}_k^T \matr{C}_{xx} \vect{w}_j - \vect{w}_j^T
+      \matr{C}_{xx} \vect{a}_k = 0.
+      \end{align*}
+      Thus, \eqref{eq:delta} holds for all $j<i<k+1$ and by induction
+      it is proved that $\vect{w}_i^T \matr{C}_{xx} \vect{w}_j = 0$,
+      $j<i$, as required.
+      
 
-      \end{enumerate}
+
+      % NO NEED FOR INDUCTION!
+      % \begin{enumerate}
+      % \item First, show that it holds for $i=2, \, j=1$:
+      %   \begin{align*}
+      %     \tilde{\vect{w}_2}^T \matr{C}_{xx} \vect{w}_1 &= \left[
+      %       \vect{a}_2^T - (\vect{w}_1^T \matr{C}_{xx}
+      %       \vect{a}_2)\vect{w}_1^T \right] \matr{C}_{xx} \vect{w}_1
+      %     \\
+      %     &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - ( \vect{w}_1^T
+      %     \matr{C}_{xx} \vect{a}_2 ) \cdot \underbrace{\vect{w}_1^T
+      %       \matr{C}_{xx} \vect{w}_1}_{=1}
+      %     \\
+      %     &= \vect{a}_2^T \matr{C}_{xx} \vect{w}_1 - \vect{w}_1^T
+      %     \matr{C}_{xx} \vect{a}_2 = 0 .
+      %   \end{align*}
+      %   % 
+      %   We used $( \vect{a}_2^T \matr{C}_{xx} \vect{a}_1 )^T =
+      %   \vect{a}_1^T \matr{C}_{xx} \vect{a}_2$, which holds because both
+      %   terms are scalars and $\matr{C}_{xx}^T = \matr{C}_{xx}$.
+      %   % x
+      % \item     
+      %   % 
+      %   Suppose now that the condition
+      %   \begin{equation*}
+      %     \vect{w}_i^T \matr{C}_{xx} \vect{w}_k = \delta_{i,k} \quad\text{holds for all $i,k < j$.}
+      %   \end{equation*}
+      %   % 
+      %   For $i < j$,
+      %   \begin{align*}
+      %     \tilde{\vect{w}}_j^T \matr{C}_{xx} \vect{w}_i &=
+      %     \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \sum_{k=1}^{j-1} (
+      %     \vect{w}_k^T \matr{C}_{xx} \vect{a}_j ) \underbrace{(
+      %       \vect{w}_k^T \matr{C}_{xx} \vect{w}_i )}_{=\delta_{ki}}
+      %     \\
+      %     &= \vect{a}_j^T \matr{C}_{xx} \vect{w}_i - \vect{w}_i^T
+      %     \matr{C}_{xx} \vect{a}_j = 0,
+      %   \end{align*}
+      %   because from the terms $\vect{w}_k^T \matr{C}_{xx} \vect{w}_i$
+      %   only the term $\vect{w}_i^T \matr{C}_{xx} \vect{w}_i = 1$
+      %   remains and all the others are zero.  Thus it is proved that
+      %   $\vect{w}_j^T \matr{C}_{xx} \vect{w}_i = 0$, $i < j$, as
+      %   required.
+
+      % \end{enumerate}
 
     \item \emph{Inaccurate simple explanation:} The whitening is not
-      unique, because the result of the algorithm depends on initial
-      set of linearly independent vectors which can be chosen
+      unique, because the result of the algorithm depends on the
+      initial set of linearly independent vectors which can be chosen
       arbitrarily.
 
       \emph{A bit more formal explanation:} Assume $n>1$.  One can
@@ -233,10 +270,7 @@
       the vectors in $\mathbf{W}$.  For this set $\mathbf{B}$, the
       first whitened vector is parallel to $\mathbf{b}_1$, thus not
       parallel to any of the vectors in $\mathbf{W}$ and therefore the
-      resulting set of whitened vectors is different. get usually a
-      different whitening solution because there exists another set of
-      linearly independent vectors. Thus whitening is by no means
-      unique.
+      resulting set of whitened vectors is different. 
 
       \emph{Yet another explanation:} The condition
       \[
