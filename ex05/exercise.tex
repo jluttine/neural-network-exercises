@@ -3,6 +3,8 @@
 \author{Karhunen, Luttinen}
 \date{Exercise 5, 16.11.2012}
 
+\usepackage{url}
+
 \newcommand{\vect}[1]{{\bf{#1}}}
 \newcommand{\svect}[1]{\boldsymbol{#1}}
 \newcommand{\matr}[1]{\boldsymbol{#1}}
@@ -73,113 +75,151 @@
   \end{solution}
   
 
-\item In Ham's and Kostanic's book, the Levenberg-Marquardt algorithm is derived
-  in subsection 3.4.4 as an approximation from Newton's optimization algorithm.
-  Derive the Levenberg-Marquardt algorithm in another way by linearizing
-  the dependence of the errors $e_p$ on the weight vector ${\bf w}$ using
-  Taylor series expansion.
+\item The Levenberg-Marquardt algorithm is
+  \[
+  \vect{w}(n+1) = \vect{w}(n) - \left(\matr{J}^T(n)\matr{J}(n) +
+    \sigma \matr{I} \right)^{-1}\matr{J}^T(n)\vect{e}(n),
+  \]
+  where $\mathbf{w}$ is the parameter vector of the neural network,
+  $\mathbf{e}$ is the error of the output, $J$ is the Jacobian of the
+  error with respect to the parameters and $\sigma$ is a small
+  constant.  Derive the Levenberg-Marquardt algorithm by linearizing
+  the dependence of the errors $e_p$ on the weight vector $\mathbf{w}$
+  using Taylor series expansion.
 
   \begin{solution}
 
-    Optimization algorithms:
+    % Optimization algorithms:
 
-    Steepest descent: Move iteratively to the direction of the negative gradient.
-    \[
-    \vect{w}(n+1) = \vect{w}(n) - \eta \vect{g}(n)
-    \]
+    % Steepest descent: Move iteratively to the direction of the negative gradient.
+    % \[
+    % \vect{w}(n+1) = \vect{w}(n) - \eta \vect{g}(n)
+    % \]
 
-    Newton's method: Use a quadratic approximation of the cost function by
-    computing the Hessian matrix
-    \[
-    \vect{w}(n+1) = \vect{w}(n) - \matr{H}^{-1}(n) \vect{g}(n)
-    \]
+    % Newton's method: Use a quadratic approximation of the cost function by
+    % computing the Hessian matrix
+    % \[
+    % \vect{w}(n+1) = \vect{w}(n) - \matr{H}^{-1}(n) \vect{g}(n)
+    % \]
 
-    Gauss-Newton: Simplified version of Newton's method (no Hessian required)
+    % Gauss-Newton: Simplified version of Newton's method (no Hessian required)
 
-    \[
-    \vect{w}(n+1) = \vect{w}(n) - (\matr{J}(n)^T\matr{J}(n))^{-1} \matr{J}(n)^T \vect{e}(n)
-    \]
+    % \[
+    % \vect{w}(n+1) = \vect{w}(n) - (\matr{J}(n)^T\matr{J}(n))^{-1} \matr{J}(n)^T \vect{e}(n)
+    % \]
 
 
-    The Gauss-Newton method is applicable to a cost function that is
-    expressed as the sum of error squares. Let
-    \[
-    \mathcal{E}(\vect{w})=\frac{1}{2}\sum_{i=1}^{n} e^2(i)
-    \]
-    where the scaling factor $1/2$ is included to simplify further
-    computations. All the error terms in this formula are calculated on
-    the basis of a weight vector $\vect{w}$ that is fixed over the the entire
-    observation interval $1\leq i\leq n$.
+    % The Gauss-Newton method is applicable to a cost function that is
+    % expressed as the sum of error squares. Let
+    % \[
+    % \mathcal{E}(\vect{w})=\frac{1}{2}\sum_{i=1}^{n} e^2(i)
+    % \]
+    % where the scaling factor $1/2$ is included to simplify further
+    % computations. All the error terms in this formula are calculated on
+    % the basis of a weight vector $\vect{w}$ that is fixed over the the entire
+    % observation interval $1\leq i\leq n$.
 
-    The error signal $e(i)$ is a function of the adjustable weight vector
-    $\vect{w}$. Given an operating point $\vect{w}(n)$, we linearize the dependence of $e(i)$
-    on $\vect{w}$ by writing
-    \[
-    \tilde{e}(i,\vect{w})=e(i) + \left[ \frac{\partial e(i)}{\partial \vect{w}}
-    \right]_{\vect{w}=\vect{w}(n)}^{T} \left(
-      \vect{w}-\vect{w}(n)\right), \hspace{4mm} i=1,2,...,n
-    \]
-    Equivalently, in matrix notation we can write
-    \[
-    \tilde{\vect{e}}(n,\vect{w})=\vect{e}(n)+\matr{J}(n)(\vect{w}-\vect{w}(n))
-    \]
-    where $\vect{e}(n)$ is the error vector
-    \[
-    \vect{e}(n)=\left[ e(1), e(2), ... , e(n) \right]^T
-    \]
-    and $\matr{J}(n)$ is the $n$-by-$m$ Jacobian (matrix of all
+    % The error signal $e(i)$ is a function of the adjustable weight vector
+    % $\vect{w}$. Given an operating point $\vect{w}(n)$, we linearize the dependence of $e(i)$
+    % on $\vect{w}$ by writing
+    % \[
+    % \tilde{e}(i,\vect{w})=e(i) + \left[ \frac{\partial e(i)}{\partial \vect{w}}
+    % \right]_{\vect{w}=\vect{w}(n)}^{T} \left(
+    %   \vect{w}-\vect{w}(n)\right), \hspace{4mm} i=1,2,...,n
+    % \]
+    The error of the approximate function $\mathbf{f}$ parameterized
+    by $\mathbf{w}$ is defined as
+    \begin{equation*}
+      \mathbf{e} = \mathbf{y} - \mathbf{f}(\mathbf{x}; \mathbf{w}),
+    \end{equation*}
+    where $\mathbf{x}$ is the input vector.  Levenberg-Marquardt
+    algorithm tries to minimize the squared error
+    $\|\mathbf{e}\|^2=\mathbf{e}^T\mathbf{e}$.  At iteration step $n$,
+    $\mathbf{e}(n)$ is the current error and $\mathbf{w}(n)$ is the
+    current parameter vector.  The dependence of the error
+    $\mathbf{e}$ on the weight vector $\mathbf{w}$ can be linearized
+    using Taylor series expansion at $\mathbf{w}(n)$:
+    \begin{equation}
+      \tilde{\vect{e}}(n,\vect{w})=\vect{e}(n)+\matr{J}(n)(\vect{w}-\vect{w}(n))
+      \label{eq:taylor}
+    \end{equation}
+    where $\matr{J}(n)$ is the $N$-by-$M$ Jacobian (matrix of all
     first-order partial derivatives of a vector-valued function).
     \[
     \matr{J}(n)=
-    \left[ \begin{array}{cccc}
-        \frac{\partial e(1)}{\partial w_1} & \frac{\partial e(1)}{\partial w_2} & \cdots & \frac{\partial e(1)}{\partial w_m} \\
-        \frac{\partial e(2)}{\partial w_1} & \frac{\partial e(2)}{\partial w_2} & \cdots & \frac{\partial e(2)}{\partial w_m} \\
-        \vdots & \vdots & \ddots &  \vdots \\
-        \frac{\partial e(n)}{\partial w_1} & \frac{\partial e(n)}{\partial w_2} & \cdots & \frac{\partial e(n)}{\partial w_m} 
-      \end{array} \right]_{\vect{w}=\vect{w}(n)}
+    \begin{pmatrix}
+      \frac{\partial e_1(n)}{\partial w_1} & \frac{\partial
+        e_1(n)}{\partial w_2} & \cdots & \frac{\partial
+        e_1(n)}{\partial w_M}
+      \\
+      \frac{\partial e_2(n)}{\partial w_1} & \frac{\partial
+        e_2(n)}{\partial w_2} & \cdots & \frac{\partial
+        e_2(n)}{\partial w_M}
+      \\
+      \vdots & \vdots & \ddots &  \vdots \\
+      \frac{\partial e_N(n)}{\partial w_1} & \frac{\partial
+        e_N(n)}{\partial w_2} & \cdots & \frac{\partial
+        e_N(n)}{\partial w_M}
+    \end{pmatrix}_{\vect{w}=\vect{w}(n)}
+    = 
+    \begin{bmatrix}
+      \nabla e_1(n) & \nabla e_2(n) & \ldots & \nabla e_N(n)
+    \end{bmatrix}^T
     \]
-    The Jacobian matrix $\matr{J}(n)$ is the transpose of the $m$-by-$n$ gradient matrix $\nabla \vect{e}(n)$, where
+    Using the approximation \eqref{eq:taylor} for the Euclidian
+    squared norm of $\vect{e}(n,\vect{w})$, we get
     \[
-    \nabla \vect{e}(n) = \left[ \nabla e(1),\nabla e(2), ... ,\nabla e(n) \right]
+    \frac{1}{2} \| \tilde{\vect{e}}(n,\vect{w}) \|^2 = \frac{1}{2}
+    \|\vect{e}(n)\|^2 + \vect{e}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n))
+    +
+    \frac{1}{2}(\vect{w}-\vect{w}(n))^T\matr{J}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n))
     \]
-    The updated weight vector $\vect{w}(n+1)$ is then defined by
+    Hence, differentiating this expression with respect to $\vect{w}$
+    and setting the result equal to zero, we obtain
     \[
-    \vect{w}(n+1)=\arg \min_{\vect{w}} \{ \frac{1}{2} \| \tilde{\vect{e}}(n,\vect{w})\|^2\rbrace
-    \]
-    Using the approximation for the Euclidian squared norm of
-    $\vect{e}(n,\vect{w})$, we get
-    \[
-    \frac{1}{2} \| \tilde{\vect{e}}(n,\vect{w}) \|^2 = \frac{1}{2} \|\vect{e}(n)\|^2 + \vect{e}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n)) + \frac{1}{2}(\vect{w}-\vect{w}(n))^T\matr{J}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n))
-    \]
-    Hence, differentiating this expression with respect to $\vect{w}$ and setting the result equal to zero, we obtain
-    \[
-    \matr{J}^T(n)\vect{e}(n) + \matr{J}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n))=\vect{0}
+    \matr{J}^T(n)\vect{e}(n) +
+    \matr{J}^T(n)\matr{J}(n)(\vect{w}-\vect{w}(n))=\vect{0}
     \]
     and solving this for $\vect{w}$ results in
     \[
-    \vect{w}(n+1) = \vect{w}(n) - \left(\matr{J}^T(n)\matr{J}(n)\right)^{-1}\matr{J}^T(n)\vect{e}(n)
+    \vect{w}(n+1) = \vect{w}(n) -
+    \left(\matr{J}^T(n)\matr{J}(n)\right)^{-1}\matr{J}^T(n)\vect{e}(n).
     \]
-
-    However, to ensure that the matrix $\matr{J}^T(n)\matr{J}(n)$ is
-    nonsingular (invertible) we can add a small increment $\sigma$ to the
-    diagonal of the matrix resulting in the update rule
+    This is the Gauss-Newton optimization method.  However, to ensure
+    that the matrix $\matr{J}^T(n)\matr{J}(n)$ is nonsingular
+    (invertible) we can add an increment $\sigma$ to the diagonal of
+    the matrix resulting in the update rule
     \[
     \vect{w}(n+1) = \vect{w}(n) - \left(\matr{J}^T(n)\matr{J}(n) + \sigma
       \matr{I} \right)^{-1}\matr{J}^T(n)\vect{e}(n)
     \]
-    which is the Levenberg-Marquardt learning rule.
+    which is the Levenberg-Marquardt learning rule.  When $\sigma$ is
+    close to zero, the method is close to the Gauss-Newton
+    method. When $\sigma$ is large, the method is close to the
+    steepest descent method.  The parameter $\sigma$ can be varied
+    during the iteration in order to achieve efficient convergence. A
+    good overview of the algorithm can be found at
+    \url{http://media.cs.ohiou.edu/teaching/CS641/week3/LMA.pdf}.
   \end{solution}
 
 
-\item In extreme learning machine, the optimal weights are computed using the
-  pseudoinverse ${\bf H}^+$ of the hidden layer output matrix ${\bf H}$. Consider
-  an $N \times M$ matrix ${\bf X}$, which is generally rectangular with $N \neq M$.
-  The singular value decomposition (SVD) of ${\bf X}$ is a generalization of the
-  eigendecomposition, defined for square matrices only, to rectangular matrices.
-  Similarly, the pseudoinverse ${\bf X}^+$ of ${\bf X}$ is a generalization of the
-  standard inverse matrix defined for square non-singular matrices only to
-  rectangular matrices. Discuss the definitions, computation, and interrelationships
-  of the SVD and pseudoinverse of ${\bf X}$.
+\item In extreme learning machine, the weights of the hidden layer are
+  fixed to random values and the optimal weights $\mathbf{B}$ of the
+  linear output layer are computed using the pseudoinverse ${\bf H}^+$
+  of the hidden layer output matrix ${\bf H}$:
+  \begin{equation*}
+    \mathbf{B} = \mathbf{H}^+ \mathbf{T},
+  \end{equation*}
+  where $\mathbf{T}$ contains the target values.
+
+  Consider an $N \times M$ matrix ${\bf X}$, which is generally
+  rectangular with $N \neq M$.  The singular value decomposition (SVD)
+  of ${\bf X}$ is a generalization of the eigendecomposition, defined
+  for square matrices only, to rectangular matrices.  Similarly, the
+  pseudoinverse ${\bf X}^+$ of ${\bf X}$ is a generalization of the
+  standard inverse matrix defined for square non-singular matrices
+  only to rectangular matrices. Discuss the definitions, computation,
+  and interrelationships of the SVD and pseudoinverse of ${\bf X}$.
 
   \begin{solution}
 
