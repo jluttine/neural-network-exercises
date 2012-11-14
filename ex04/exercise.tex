@@ -78,48 +78,66 @@
       \includegraphics[scale=0.35]{e61-2.eps}
     \end{center}
     % 
-    The input relates to the   ${\bf x} = (x_1\ x_2\ \mbox{-1})$.
-    From the above figure:
-    \begin{equation*}
-      \left.
-        \begin{array}{l}
-          \vect{w}_1=(\begin{array}{ccc}-1&0&-1\end{array})^T\\
-          \vect{w}_2=(\begin{array}{ccc}-1&1&0\end{array})^T\\
-          \vect{w}_3=(\begin{array}{ccc}1&1&4\end{array})^T
-        \end{array}\right\}\mbox{hidden layer}
-    \end{equation*}
-    The input to the network relates to the coordinate axis by ${\bf x} = (x_1\ x_2\ \mbox{-1})$ the
-    last component being the bias.
-
-    Let $z_i \in\{0,1\}$ be the output of the $i$:th hidden layer neuron and $\vect{z}=(\begin{array}{cccc}z_1&z_2&z_3&-1\end{array})^T$.
-
-    The outputs of McCulloch-Pitts perceptrons are determined as follows:
+    The input to the network relates to the coordinate axis by
+    $\mathbf{x} = \begin{pmatrix}x_1&x_2&-1\end{pmatrix}^T$ where the
+    last component is the bias.  Each linear classifier uses the
+    outputs of McCulloch-Pitts perceptrons which determined as
+    follows:
     \begin{equation*}
       z_i=\left\{\begin{array}{l}
           1 \mbox{, if }\vect{w}_i^T\vect{x} > 0\\
           0 \mbox{, otherwise}
         \end{array}\right.
     \end{equation*}
+    The parameters $\mathbf{w}_i$ for each hidden layer neuron can be
+    derived from the above figure:
+    \begin{equation*}
+      \left.
+        \begin{array}{lcrcl}
+          i=1:\, \mathbf{x}_1<1& \Rightarrow
+          & \begin{pmatrix}-1&0&-1\end{pmatrix}\mathbf{x}>0 &
+          \Rightarrow &
+          \vect{w}_1=\begin{pmatrix}-1&0&-1\end{pmatrix}^T
+          \\
+          i=2:\, \mathbf{x}_2>\mathbf{x}_1&
+          \Rightarrow
+          & \begin{pmatrix}-1&1&0\end{pmatrix}\mathbf{x}>0 & \Rightarrow &
+          \vect{w}_2=\begin{pmatrix}-1&1&0\end{pmatrix}^T
+          \\
+          i=3:\, \mathbf{x}_2>-\mathbf{x}_1+4 &
+          \Rightarrow
+          & \begin{pmatrix}1&1&4\end{pmatrix}\mathbf{x}>0 &
+          \Rightarrow & \vect{w}_3
+          = \begin{pmatrix}1&1&4\end{pmatrix}^T 
+        \end{array}\right\}\mbox{hidden layer}
+    \end{equation*}
+    
 
-    The weights of the output layer neurons,
-    $\vect{w}_4$ and $\vect{w}_5$ are set so that
-
-    $\vect{w}_4=-\vect{w}_5$ and
-
-    $\left\{\begin{array}{l}
-        \vect{w}_4^T\vect{z} > 0 \mbox{, if } z_1=1 \mbox{ or } z_2=1 \mbox{
-          or } z_3=1\\
-        \vect{w}_4^T\vect{z} \leq 0 \mbox{, otherwise}
-      \end{array}\right.$
-
-    $\vect{w}_4=\left(\begin{array}{cccc}1&1&1&\frac{1}{2}\end{array}\right)$ is a feasible solution. (The above problem has infinitely many solutions!)
+    Let $z_i \in\{0,1\}$ be the output of the $i$:th hidden layer
+    neuron and
+    $\vect{z}=\begin{pmatrix}z_1&z_2&z_3&-1\end{pmatrix})^T$.  Again,
+    McCulloch-Pitts perceptrons are used and the weights of the output
+    layer neurons, $\vect{w}_4$ and $\vect{w}_5$ are set so that
+    \begin{equation*}
+      \begin{cases}
+        \vect{w}_4^T\vect{z} > 0, & \text{if } z_1=1 \text{ or } z_2=1
+        \text{ or } z_3=1,
+        \\
+        \vect{w}_4^T\vect{z} \leq 0, & \text{otherwise}
+      \end{cases}
+    \end{equation*}
+    and the opposite classification with $\vect{w}_4=-\vect{w}_5$.
+    One feasible solution is
+    $\vect{w}_4=\begin{pmatrix}1&1&1&\frac{1}{2}\end{pmatrix}^T$. However,
+    the above problem has infinitely many solutions.
     \begin{enumerate}
-    \item[(a)] The minimum amount of neurons in the hidden layer is two as the classes can be separated with two lines.
-    \item[(b)] There is no upper limit for the number of hidden layer
-      neurons. However, the network might overlearn the training set and
-      lose its generalization capability. When the number of hidden layer
-      neurons is increased, the boundary between the classes can be
-      estimated more precisely.
+    \item The minimum amount of neurons in the hidden layer is two as
+      the classes can be separated with two lines.
+    \item There is no upper limit for the number of hidden layer
+      neurons. However, the network might overlearn the training set
+      and lose its generalization capability. When the number of
+      hidden layer neurons is increased, the boundary between the
+      classes can be estimated more precisely.
     \end{enumerate}
 
 
@@ -153,29 +171,45 @@
       y(x)=Wx+\theta
     \end{equation*}
     and the approximation performance measure is
-    \begin{eqnarray*}
-      \mathcal{E}&=&\int_1^2(t(x)-y(x))^2 dx = \int_1^2
-      (x^2-Wx-\theta)^2dx\\
-      &=&\int_1^2 (x^4+\theta^2 +W^2x^2-2Wx^3+2W\theta x-2\theta x^2)dx\\
-      &=&\Big/^2_{\mspace{-11.0mu} 1} \frac{x^5}{5}
-      +\theta^2x+\frac{W^2x^3}{3}-\frac{Wx^4}{2}+W\theta x^2-\frac{2}{3}\theta x^3\\
-      &=&\frac{31}{5}+\theta^2 +\frac{7}{3}W^2-\frac{15}{2}W+3W\theta-\frac{14}{3}\theta
-    \end{eqnarray*}
+    \begin{align*}
+      \mathcal{E}&=\int_1^2(t(x)-y(x))^2 dx
+      \\
+      &= \int_1^2 (x^2-Wx-\theta)^2dx
+      \\
+      &=\int_1^2 (x^4+\theta^2 +W^2x^2-2Wx^3+2W\theta x-2\theta x^2)dx
+      \\
+      &=\Big/^2_{\mspace{-11.0mu} 1} \frac{x^5}{5}
+      +\theta^2x+\frac{W^2x^3}{3}-\frac{Wx^4}{2}+W\theta
+      x^2-\frac{2}{3}\theta x^3
+      \\
+      &=\frac{31}{5}+\theta^2
+      +\frac{7}{3}W^2-\frac{15}{2}W+3W\theta-\frac{14}{3}\theta
+    \end{align*}
 
     Let us find $W$ and $\theta$ which minimize $\mathcal{E}$:
-    \begin{equation*}
-      \left\{\begin{array}{l}
+    \begin{align*}
+      &
+      \begin{array}{l}
+        \begin{cases}
           \frac{\partial\mathcal{E}}{\partial
-            W}=\frac{14}{3}W-\frac{15}{2}+3\theta = 0\\
+            W}=\frac{14}{3}W-\frac{15}{2}+3\theta = 0 & | \cdot 2
+          \\
           \frac{\partial\mathcal{E}}{\partial
-            \theta}=2\theta+3W -\frac{14}{3} = 0
-        \end{array}\right.
-      \Rightarrow
-      \left\{\begin{array}{l}
-          W^*=3\\
-          \theta^*=-2\frac{1}{6}\\
-        \end{array}\right.
-    \end{equation*}
+            \theta}=2\theta+3W -\frac{14}{3} = 0 & | \cdot (-3)
+        \end{cases}
+        \\
+        \hline
+        (\frac{28}{3}-9)W - 15 + 14 = 0 \quad \Rightarrow \quad W^*=3
+      \end{array}
+      \\
+      \Rightarrow &
+      \begin{cases}
+        W^* = 3
+        \\
+        2\theta+3\cdot 3 -\frac{14}{3} = 0 \quad \Rightarrow \quad \theta^* =
+        -2\frac{1}{6}
+      \end{cases}
+    \end{align*}
 
     As $\left.\begin{pmatrix} \frac{\partial^2\mathcal{E}}{\partial W^2} &
         \frac{\partial^2\mathcal{E}}{\partial W \partial\theta}\\
