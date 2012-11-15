@@ -35,11 +35,12 @@
   functions, namely McCulloch-Pitts model, for all the neurons and
   determine their weights by hand without using any specific learning
   algorithm.
-  \begin{itemize}
-  \item[(a)] What is the minimum amount of neurons in the hidden layer
+  \begin{enumerate}
+  \item What is the minimum amount of neurons in the hidden layer
     required for a perfect separation of the classes?
-  \item[(b)] What is the maximum amount of neurons in the hidden layer?
-  \end{itemize}
+  \item What is the maximum amount of neurons in the hidden layer?
+  %\item Is one layer sufficient to classify any two separable classes?
+  \end{enumerate}
 
   \begin{figure}[hbp]
     \centering
@@ -138,8 +139,86 @@
       and lose its generalization capability. When the number of
       hidden layer neurons is increased, the boundary between the
       classes can be estimated more precisely.
-    \end{enumerate}
 
+    % \item Based on the universal approximation theorem we could state
+    %   that the claim is true (or maybe it is just approximately
+    %   true?).  However, let us provide a constructive proof which is
+    %   more interesting and gives a method to find such a solution.
+
+    %   One layer may not be sufficient in a complex case because the
+    %   outputs of the hidden layer may not be linearly separable into
+    %   classes.  Proof?
+
+    %   Idea: Form the class as a collection of convex sets.  The first
+    %   layer hidden determines whether the points are in the
+    %   half-spaces (neuron per half-space).  The second hidden layer
+    %   determines whether they are inside the convex sets (neuron per
+    %   convex set).  The output layer determines whether they are
+    %   inside at least one convex set (one neuron).
+
+    %   The following proof misses the second hidden layer. It should be
+    %   added. But still the question is, could this be achieved with
+    %   one hidden layer?
+
+    %   Note that any complex class can be contained in a union of convex
+    %   sets.  It is assumed that the classes are separable, that is, they
+    %   do not intersect, thus these convex sets may chosen such that they
+    %   contain points only from one class and no points from other
+    %   classes.
+      
+    %   A convex set can be constructed as an intersection of
+    %   half-spaces.  These half-spaces are defined by hyperplanes which
+    %   in turn correspond to neurons in the hidden layer (the weight
+    %   vector of a neuron defines a hyperplane).  Thus, a collection of
+    %   neurons can be used to represent one convex set: if the input
+    %   vector is in the convex set, all the corresponding neurons
+    %   should give output 1.  Thus, for one collection of $N$ neurons
+    %   corresponding to one convex set, the input vector belongs to
+    %   that convex set if
+    %   \begin{equation}
+    %     \sum^N_{i=1} z_i = N \quad \Rightarrow \quad
+    %     \frac{1}{N}\sum^N_{i=1} z_i = 1, \label{eq:collection}
+    %   \end{equation}
+    %   which gives the following condition on the output layer:
+    %   \begin{equation*}
+    %     \frac{1}{N} \sum^N_{i=1} z_i > 1 - \epsilon,
+    %   \end{equation*}
+    %   where $\epsilon>0$ is a sufficiently small positive constant.  A
+    %   sufficiently small value is $\epsilon<\frac{1}{N}$.
+
+    %   % Now, the point belongs to the
+    %   % class if it belongs to any of these convex sets.
+    %   To obtain more convex sets, the hidden layer may contain several
+    %   separate collections of neurons.  If for at least one of these
+    %   neuron collections all the neurons output 1, then the input
+    %   vector belongs to the class.  If the class is represented by $M$
+    %   convex sets and the corresponding neuron collections are
+    %   $A_1,\ldots,A_M$, it is sufficient that at least one collection
+    %   satisfies \eqref{eq:collection}.  Thus, we have
+    %   \begin{equation*}
+    %     \sum_{j=1}^M \frac{1}{|A_j|} \sum_{z \in A_j} z > 1
+    %     - \epsilon,
+    %   \end{equation*}
+    %   where $|A_j|$ is the number of neurons in the collection $A_j$
+    %   and $\epsilon$ is chosen such that $\epsilon<\min_k
+    %   \frac{1}{|A_k|+1}$.  This gives the weights and the bias term on
+    %   the output layer.
+      
+    %   This proof showed how to select the hyperplanes, that is, the
+    %   weights on the hidden layer.  The purpose of the hidden layer is
+    %   to form convex sets that cover one class.  The proof also showed
+    %   how to select the weights on the output layer in order to output
+    %   $1$ if the input vector does belong to the class, that is, to
+    %   any of the convex sets defined by the hidden layer.
+
+    %   Although the classification can be performed using only one
+    %   layer, the total number of neurons can sometimes be reduced if
+    %   one uses several layers.  Thus, it is not necessarily a good
+    %   idea to use only one layer although it is theoretically enough
+    %   to give the correct classification.
+
+
+    \end{enumerate}
 
   \end{solution}
   
