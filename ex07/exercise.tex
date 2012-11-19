@@ -39,23 +39,96 @@
         between the input and the weight vector is computed.
       \item MLPs construct {\em global} approximations, while RBF networks
         approximate {\em locally} nonlinear input-output mappings.
+        % Jaakko: The basis functions can be global, aren't the
+        % approximations of RBFnets then global???
       \end{enumerate}
       % 
     \item MLP may require less parameters than the RBF network for achieving
       the same accuracy.
+      % Jaakko: Citation needed!! Or a reason / proof / argumentation.
     \end{itemize}
 
   \end{solution}
-  
+
+\item Derive the equation for learning the weights of RBF networks
+  with several neurons in the output layer.
+
+  % In Ham's and Kostanic's book, training of RBF networks is
+  % considered for the
+  % case of a single neuron in the output layer only. Show how the
+  % learning method
+  % presented in section 3.6.1 can be generalized for several neurons
+  % in the
+  % output layer.
+
+  \begin{solution}
+
+    The $n$-th output of an RBF network for input $\mathbf{x}$ is
+    \begin{align*}
+      y_n(\mathbf{x}) = \sum^D_{d=1} w_{dn}
+      \phi_d(\|\mathbf{x}-\mathbf{c}_d\|),
+    \end{align*}
+    where $\mathbf{c}_d$ are the cluster centers, $\phi_d$ the radial
+    basis functions and $w_{dn}$ the weights.  Let us assume that we
+    have a set of $M$ input-output pairs $(\hat{\mathbf{x}}_k,
+    \hat{\mathbf{y}}_k)$.  Then our set of equations becomes
+    \begin{align*}
+      \underbrace{
+        \begin{bmatrix}
+          \hat{y}_{11} & \ldots & \hat{y}_{1N}
+          \\
+          \vdots & \ddots & \vdots
+          \\
+          \hat{y}_{M1} & \ldots & \hat{y}_{MN}
+        \end{bmatrix}
+      }_{\mathbf{Y}}
+      &=
+      \underbrace{
+        \begin{bmatrix}
+          \phi_1(\|\hat{\mathbf{x}}_1-\mathbf{c}_1\|) & \ldots &
+          \phi_D(\|\hat{\mathbf{x}}_1-\mathbf{c}_D\|) 
+          \\
+          \vdots & \ddots & \vdots
+          \\
+          \phi_1(\|\hat{\mathbf{x}}_M-\mathbf{c}_1\|) & \ldots &
+          \phi_D(\|\hat{\mathbf{x}}_M-\mathbf{c}_D\|)
+        \end{bmatrix}
+      }_{\mathbf{\Phi}}
+      \underbrace{
+        \begin{bmatrix}
+          w_{11} & \ldots & w_{1N}
+          \\
+          \vdots & \ddots & \vdots
+          \\
+          w_{D1} & \ldots & w_{DN}
+        \end{bmatrix}
+      }_{\mathbf{W}}
+    \end{align*}
+    Note that $\mathbf{Y}$, $\mathbf{W}$ and $\mathbf{\Phi}$ are $M
+    \times N$, $M \times D$ and $D \times N$ matrices, respectively.
+    $M$ is the number of data points, $N$ is the dimensionality of the
+    output vectors and $D$ is the number of neurons in the hidden
+    layer.  The optimal solution can be found using the
+    pseudo-inverse:
+    \begin{align*}
+      \mathbf{W} = (\mathbf{\Phi}^T\mathbf{\Phi})^{-1} \mathbf{\Phi}^T
+      \mathbf{Y} = \mathbf{\Phi}^{\dagger} \mathbf{Y}.
+    \end{align*}
+    Note that this learns the weights only in the output layer.  If
+    there are parameters in the radial basis functions, they need to
+    be learnt using optimization methods.
+
+  \end{solution}
+
 
 \item The well-known XOR (Exclusive OR) problem is the simplest example of a
   two-class classification problem where the pattern vectors are not linearly
   separable. In the XOR problem, there are four two-dimensional input vectors
-  (patterns) (0,0), (0,1), (1,1), and (1,0). The first and third pattern
+  (patterns) (-1,-1), (-1,1), (1,1), and (1,-1). The first and third pattern
   vector belong to the class 1, while the second and the fourth one belong
   to the class 2. Solve the XOR problem by using a RBF network with two
-  Gaussian basis functions centered at ${\bf c}_1 = (0,1)^T$ and
-  ${\bf c}_2 = (1,0)^T$.
+  Gaussian basis functions centered at ${\bf t}_1 = (-1,1)^T$ and
+  ${\bf t}_2 = (1,-1)^T$.
 
   \begin{solution}
 
@@ -65,25 +138,19 @@
       \includegraphics[scale=0.7]{v102-f1.eps}
     \end{center}
 
-    Some notes on the above network:
-    \begin{itemize}
-    \item weight sharing is justified by the symmetry of the problem
-    \item the desired output values of the problem have nonzero mean and
-      thus the output unit includes a bias 
-    \end{itemize}
-    Now the centers of the radial-basis functions are
-    \begin{eqnarray*}
-      \mathbf{t}_1&=&(-1,1)^T\\
-      \mathbf{t}_2&=&(1,-1)^T.
-    \end{eqnarray*}
+    % Some notes on the above network:
+    % \begin{itemize}
+    % \item weight sharing is justified by the symmetry of the problem
+    % \item the desired output values of the problem have nonzero mean and
+    %   thus the output unit includes a bias 
+    % \end{itemize}
 
-    Let us assume that the logical symbol 0 is represented by level -1
-    and symbol 1 is represented by level +1. Sometimes this is directly
-    taken as the XOR problem.
+    % Let us assume that the logical symbol 0 is represented by level -1
+    % and symbol 1 is represented by level +1. Sometimes this is directly
+    % taken as the XOR problem.
 
     \begin{enumerate}
-    \item For the input pattern (0,0):\\
-      $\mathbf{x}=(-1,-1)^T$ and
+    \item For the input pattern $\mathbf{x}=(-1,-1)^T$:
       \begin{eqnarray*}
         (1)\;G(\|\mathbf{x}-\mathbf{t}_1\|)&=&e^{-\|(-1,-1)^T-(-1,1)^T\|^2}\\
         &=&e^{-\|(0,-2)^T\|^2}=e^{-4}=0.01832\\
@@ -91,8 +158,7 @@
         &=&e^{-\|(-2,0)^T\|^2}=e^{-4}=0.01832
       \end{eqnarray*}
 
-    \item For the input pattern (0,1):\\
-      $\mathbf{x}=(-1,1)^T$ and
+    \item For the input pattern $\mathbf{x}=(-1,1)^T$:
       \begin{eqnarray*}
         (3)\;G(\|\mathbf{x}-\mathbf{t}_1\|)&=&e^{-\|(-1,1)^T-(-1,1)^T\|^2}\\
         &=&e^{-\|(0,0)^T\|^2}=e^{-0}=1\\
@@ -100,8 +166,7 @@
         &=&e^{-\|(-2,2)^T\|^2}=e^{-8}=0.000336
       \end{eqnarray*}
 
-    \item For the input pattern (1,1):\\
-      $\mathbf{x}=(1,1)^T$ and
+    \item For the input pattern $\mathbf{x}=(1,1)^T$:
       \begin{eqnarray*}
         (5)\;G(\|\mathbf{x}-\mathbf{t}_1\|)&=&e^{-\|(1,1)^T-(-1,1)^T\|^2}\\
         &=&e^{-\|(2,0)^T\|^2}=e^{-4}=0.01832\\
@@ -109,8 +174,7 @@
         &=&e^{-\|(0,2)^T\|^2}=e^{-4}=0.01832
       \end{eqnarray*}
 
-    \item For the input pattern (1,0):\\
-      $\mathbf{x}=(1,-1)^T$ and
+    \item For the input pattern $\mathbf{x}=(1,-1)^T$:
       \begin{eqnarray*}
         (7)\;G(\|\mathbf{x}-\mathbf{t}_1\|)&=&e^{-\|(1,-1)^T-(-1,1)^T\|^2}\\
         &=&e^{-\|(2,-2)^T\|^2}=e^{-8}=0.000336\\
@@ -134,14 +198,16 @@
           \end{array}
         \right] &
         \begin{array}{r}
-          \mbox{ pattern }(0,0)\\
-          (0,1)\\
+          \mbox{ pattern }(-1,-1)\\
+          (-1,1)\\
           (1,1)\\
-          (1,0)
+          (1,-1)
         \end{array}
       \end{array}
     \end{equation*}
-    and the desired responses as vector $d=(-1,1,-1,1)^T$.
+    and the desired responses as vector $d=(-1,1,-1,1)^T$, where we
+    have chosen $-1$ and $1$ to represent classes 1 and 2,
+    respectively.
 
     The linear parameters of the network are defined by
     \begin{equation*}
@@ -149,8 +215,9 @@
     \end{equation*}
 
     The solution to the equation is
-    $\mathbf{w}=\mathbf{G}^\dagger\mathbf{d}$, where $\mathbf{G}^\dagger=(\mathbf{G}^T\mathbf{G})^{-1}\mathbf{G}^T$
-    is the pseudo inverse of $\mathbf{G}$
+    $\mathbf{w}=\mathbf{G}^\dagger\mathbf{d}$, where
+    $\mathbf{G}^\dagger=(\mathbf{G}^T\mathbf{G})^{-1}\mathbf{G}^T$ is
+    the pseudo inverse of $\mathbf{G}$
 
     \begin{equation*}
       \mathbf{G}^\dagger=
@@ -168,60 +235,25 @@
 
   \end{solution}
   
-\item Derive the learning rules for the stochastic gradient method for
-  training an RBF neural network.
+% \item Derive the learning rules for the stochastic gradient method for
+%   training an RBF neural network.
 
-  \begin{solution}
+%   \begin{solution}
 
-  \end{solution}
+%   \end{solution}
   
   
-\item Consider approximation of the nonlinear function $y = e^{-x} \sin(3x)$
-  on the interval $[0,4]$ using multilayer perceptron (MLP) and radial-basis
-  function (RBF) networks. Compare the generalization ability of these
-  networks.
+% \item Consider approximation of the nonlinear function $y = e^{-x} \sin(3x)$
+%   on the interval $[0,4]$ using multilayer perceptron (MLP) and radial-basis
+%   function (RBF) networks. Compare the generalization ability of these
+%   networks.
 
-  \begin{solution}
+%   \begin{solution}
 
-    See Ham \& Kostanic examples 3.2 and 3.4.
-  \end{solution}
+%     See Ham \& Kostanic examples 3.2 and 3.4.
+%   \end{solution}
 
   
-\item In Ham's and Kostanic's book, training of RBF networks is considered for the
-  case of a single neuron in the output layer only. Show how the learning method
-  presented in section 3.6.1 can be generalized for several neurons in the
-  output layer.
-
-  \begin{solution}
-
-    The learning method can be extended to networks with multiple neurons
-    in the output layer by transforming the scalar equations (Ham \&
-    Kostanic, Equations 3.147--3.154) into vector notation.
-
-    In Eq. (3.147) the index $i$ is present in the weight vector $w_{ik}$
-    denoting the $i$th output neuron and the $k$th hidden neuron, but in
-    (3.148) the index has been dropped. Simply add the index $i$ for
-    $\hat{y}(q)$ in (3.147) and indeces $i$ for $\hat{y}(q)$ and $w$ in
-    (3.148), which then become $w_{i1}, w_{i2}$ etc.
-
-
-    Then Eq. (3.149) for the $i$th neuron of the output layer is the same
-    as in the book and in  $\hat{{\bf y}}$ ja ${\bf w}$ in $i$ is merely
-    added to denote the neuron. The matrix $\Phi$ stays the same for all
-    output neurons. An LMS solution can be obtained for each output
-    neuron using (3.154), where an index $i$
-    is added to denote the $i$th weight ${\bf w}_i$ and the
-    $Q$-dimensional vector of its desired outputs ${\bf y}_{i,d}$.
-    The obtained LMS solutions (3.154) can then be combined in matrix
-    notation as
-    \[
-    \bf{W} = (\Phi^T \Phi)^{-1}\Phi^T \bf{Y}_d,\] 
-    where the column vectors of the $N\times M$ weight matrix $\bf{W}$ are the output layer's $M$ neuron's
-    weight vectors ${\bf w}_i$ and the column vectors ${\bf y}_{i,d}$ of the $Q \times M$ matrix $\bf{Y}_d$
-    are the output layer's M neuron's desired output vectors for the
-    set of $Q$ training samples.
-
-  \end{solution}
   
 \end{enumerate}
 \end{document}             % End of document.
