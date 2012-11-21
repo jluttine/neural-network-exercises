@@ -7,6 +7,7 @@
 \newcommand{\svect}[1]{\boldsymbol{#1}}
 \newcommand{\matr}[1]{\boldsymbol{#1}}
 
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -66,7 +67,7 @@
     The $n$-th output of an RBF network for input $\mathbf{x}$ is
     \begin{align*}
       y_n(\mathbf{x}) = \sum^D_{d=1} w_{dn}
-      \phi_d(\|\mathbf{x}-\mathbf{c}_d\|),
+      \phi_d(\|\mathbf{x}-\mathbf{c}_d\|), \quad n=1,\ldots,N,
     \end{align*}
     where $\mathbf{c}_d$ are the cluster centers, $\phi_d$ the radial
     basis functions and $w_{dn}$ the weights.  Let us assume that we
@@ -135,7 +136,7 @@
     RBF network for solving the XOR problem
 
     \begin{center}
-      \includegraphics[scale=0.7]{v102-f1.eps}
+      \includegraphics[scale=0.7]{v102-f1}
     \end{center}
 
     % Some notes on the above network:
@@ -233,6 +234,14 @@
     \end{equation*}
 
 
+  \end{solution}
+
+
+\item (demo) Compare the performance of LMS, MLP and RBF networks for
+  the double-moon classification problem.
+
+  \begin{solution}
+    \includegraphics[width=0.4\linewidth]{ex07_04_lms.jpg}
   \end{solution}
   
 % \item Derive the learning rules for the stochastic gradient method for
