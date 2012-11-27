@@ -48,25 +48,161 @@
 
   \begin{solution}
 
-    Now the Lagrangian function is $$J(\w, b, \xi, \alpha, \mu) =
-    \frac{1}{2}\w^T\w + C \sum_{i=1}^N \xi_i - \sum_{i=1}^N
-    \alpha_i[d_i(\w^T \x_i + b) - 1 + \xi_i] - \sum_{i=1}^N \mu_i \xi_i
-    \, ,$$ where $\alpha_i$ and $\mu_i$ are Lagrange multipliers.  The
-    new multipliers are due to the constraints $\xi_i \geq 0$.  The
-    conditions for optimality are $\partial J/\partial \w = \vec{0}$,
-    $\partial J/\partial b = 0$ and $\partial J/\partial \xi = \vec{0}$.
-    We thus have $$\frac{\partial J}{\partial \w} = \w - \sum_{i=1}^N
-    \alpha_i d_i \x_i = 0 \; \Rightarrow \; \w = \sum_{i=1}^N \alpha_i
-    d_i \x_i \, ,$$ $$\frac{\partial J}{\partial b} = - \sum_{i=1}^N
-    \alpha_i d_i = 0 \,$$ and $$\frac{\partial J}{\partial \xi_i} = C -
-    \alpha_i - \mu_i = 0 \; \Rightarrow \; \alpha_i + \mu_i = C \, .$$
-    Inserting these to the Lagrangian gives after some manipulation
-    $$Q(\alpha) = \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i=1}^N
-    \sum_{j=1}^N \alpha_i \alpha_j d_i d_j \x_i^T \x_j \, ,$$ where
-    $Q(\alpha) = J(\w, b, \xi, \alpha, \mu)$ is the objective function
-    of the dual problem.
+    First, consider a general constrained optimization problem:
+    \begin{align*}
+      \text{minimize}& \quad f(x)
+      \\
+      \text{subject to}& \quad g(x) \leq 0.
+    \end{align*}
+    If a point $x$ is an optimum and $g(x)\leq 0$, the point needs to
+    satisfy:
+    \begin{align*}
+      \text{if } g(x)<0:& \quad \nabla f(x) = 0
+      \\
+      \text{if } g(x)=0:& \quad \nabla f(x) = -\alpha \nabla g(x),
+      \quad \text{where } \alpha \geq 0.
+    \end{align*}
+    Therefore, we have the following conditions:
+    \begin{align*}
+      \nabla f(x) + \alpha \nabla g(x) = 0
+      \\
+      \alpha g(x) = 0
+      \\
+      g(x) \leq 0
+      \\
+      \alpha \geq 0,
+    \end{align*}
+    where the second condition means that either $\alpha$ or $g(x)$
+    must equal to zero.  These conditions are equal to optimizing the
+    following Lagrangian function:
+    \begin{align*}
+      & \quad \min_x \max_\alpha f(x) + \alpha g(x)
+      \\
+      \text{subject to} &\quad g(x) \leq 0
+      \\
+      &\quad \alpha \geq 0.
+    \end{align*}
+    By solving $x$ from $\nabla f(x) + \alpha \nabla g(x) = 0$ and
+    inserting it to the Lagrangian cost function, one obtains the dual
+    form.
 
-    See also exercise 5 in T-61.5130 (pattern recognition) available in Noppa, which contains more derivations.
+    Now, let us examine our SVM problem.  We want to maximize the
+    separation:
+    \begin{align*}
+      \max \frac{2}{\|\mathbf{w}\|} \Rightarrow \min \|\mathbf{w}\|
+      \Rightarrow \min \|\mathbf{w}\|^2 \Rightarrow \min
+      \frac{1}{2} \mathbf{w}^T\mathbf{w}.
+    \end{align*}
+    For a linearly separable problem we have:
+    \begin{align*}
+      d_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1, \quad \text{where }
+      d_i =
+      \begin{cases}
+        +1, \quad \text{if } \mathbf{x}_i \text{ in class 1}
+        \\
+        -1, \quad \text{if } \mathbf{x}_i \text{ in class 2}
+      \end{cases}
+    \end{align*}
+    In order to handle a linearly non-separable problem, we add slack
+    variables $\xi_i$:
+    \begin{align*}
+      d_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1 - \xi_i, \quad
+      \text{where } \xi_i \geq 0 \text{ and } d_i =
+      \begin{cases}
+        +1, \quad \text{if } \mathbf{x}_i \text{ in class 1}
+        \\
+        -1, \quad \text{if } \mathbf{x}_i \text{ in class 2}
+      \end{cases}
+    \end{align*}
+    In addition to maximizing the separation, we want to minimize the
+    classification errors, that is, minimize the slack variables
+    $\xi_i$.  Thus, the optimization problem is now:
+    \begin{align*}
+      \text{minimize} &\quad \frac{1}{2} \mathbf{w}^T\mathbf{w} + C
+      \sum_i \xi_i
+      \\
+      \text{subject to} &\quad d_i(\mathbf{w}^T\mathbf{x}_i + b) \geq
+      1 - \xi_i,
+      \\
+      &\quad
+      \xi_i \geq 0,
+    \end{align*}
+    where $C$ is a trade-off parameter between the separation and the
+    classification errors.  Now the Lagrangian function is
+    \begin{align*}
+      J(\w, b, \xi, \alpha, \beta) = \frac{1}{2}\w^T\w + C
+      \sum_{i=1}^N \xi_i - \sum_{i=1}^N \alpha_i[d_i(\w^T \x_i + b) -
+      1 + \xi_i] - \sum_{i=1}^N \beta_i \xi_i
+    \end{align*}
+    where $\alpha_i$ and $\beta_i$ are Lagrange multipliers.  The
+    conditions for optimality are $\partial J/\partial \w = \vec{0}$,
+    $\partial J/\partial b = 0$ and $\partial J/\partial \xi =
+    \vec{0}$.  We thus have
+    \begin{align*}
+      &\frac{\partial J}{\partial \w} = \w - \sum_{i=1}^N \alpha_i d_i
+      \x_i = 0 \; \Rightarrow \; \w = \sum_{i=1}^N \alpha_i d_i \x_i
+      \, ,
+      \\
+      &\frac{\partial J}{\partial b} = - \sum_{i=1}^N \alpha_i d_i = 0
+      \,
+      \\
+      &\frac{\partial J}{\partial \xi_i} = C - \alpha_i - \beta_i = 0
+      \; \Rightarrow \; \alpha_i + \beta_i = C \, .
+    \end{align*}
+    Inserting these to the Lagrangian function gives after some
+    manipulation
+    \begin{align*}
+      &\quad J(\w, b, \xi, \alpha, \beta)
+      \\
+      &= \frac{1}{2}\w^T\w + C \sum_{i=1}^N \xi_i - \sum_{i=1}^N
+      \alpha_i[d_i(\w^T \x_i + b) - 1 + \xi_i] - \sum_{i=1}^N \beta_i
+      \xi_i
+      \\
+      &= \underbrace{\frac{1}{2}\w^T\w - \w^T \sum_{i=1}^N \alpha_i
+        d_i \x_i}_{=-\frac{1}{2}\w^T\w} +
+      \sum_{i=1}^N\underbrace{(C-\alpha_i-\beta_i)}_{=0}\xi_i - b
+      \underbrace{\sum_{i=1}^N\alpha_i d_i}_{=0} + \sum_{i=1}^N
+      \alpha_i
+      \\
+      &= \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i=1}^N
+      \sum_{j=1}^N \alpha_i \alpha_j d_i d_j \x_i^T \x_j
+      \\
+      &= Q(\alpha)
+    \end{align*}
+    This is the objective function of the dual problem.  In addition
+    to the constraint $\alpha_i\geq 0$, we have derived some constraints from
+    the optimality conditions.  Thus, the dual problem is
+    \begin{align*}
+      \text{maximize} &\quad \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i=1}^N
+      \sum_{j=1}^N \alpha_i \alpha_j d_i d_j \x_i^T \x_j
+      \\
+      \text{subject to} &\quad 0 \leq \alpha_i \leq C
+      \\
+      &\quad \sum_{i=1}^N \alpha_i d_i = 0,
+    \end{align*}
+    where $\alpha_i \leq C$ follows from the constraints $\alpha_i +
+    \beta_i = C$ and $\beta_i \geq 0$.  The constraint $\alpha_i \leq
+    C$ is also the only difference to the dual problem of the linearly
+    separable problem without slack variables.  After the optimal
+    $\alpha_i$ are found, the SVM parameters $\mathbf{w}$ and $b$ can
+    be computed.
+
+    The dual problem has the following nice properties:
+    \begin{itemize}
+    \item The optimization problem is cast entirely in terms of the
+      training data.
+    \item $Q(\alpha)$ depends on the input patterns only in the form
+      of a set of dot products $\x_i^T\x_j$.
+    \end{itemize}
+    
+
+    % $$Q(\alpha) = \sum_{i=1}^N \alpha_i - \frac{1}{2} \sum_{i=1}^N
+    % \sum_{j=1}^N \alpha_i \alpha_j d_i d_j \x_i^T \x_j \, ,$$ where
+    % $Q(\alpha) = J(\w, b, \xi, \alpha, \mu)$ is the objective function
+    % of the dual problem.
+
+    % See also exercise 5 in T-61.5130 (pattern recognition) available
+    % in Noppa, which contains more derivations.
   \end{solution}
   
 \item In the case of separable classes, what happens to the separating
