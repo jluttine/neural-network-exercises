@@ -183,16 +183,18 @@
     where $\alpha_i \leq C$ follows from the constraints $\alpha_i +
     \beta_i = C$ and $\beta_i \geq 0$.  The constraint $\alpha_i \leq
     C$ is also the only difference to the dual problem of the linearly
-    separable problem without slack variables.  After the optimal
-    $\alpha_i$ are found, the SVM parameters $\mathbf{w}$ and $b$ can
-    be computed.
+    separable problem without slack variables.  If $C$ is small, the
+    data is assumed to be noisy.  After the optimal $\alpha_i$ are
+    found, the SVM parameters $\mathbf{w}$ and $b$ can be computed.
 
     The dual problem has the following nice properties:
     \begin{itemize}
     \item The optimization problem is cast entirely in terms of the
       training data.
     \item $Q(\alpha)$ depends on the input patterns only in the form
-      of a set of dot products $\x_i^T\x_j$.
+      of a set of dot products $\x_i^T\x_j$.  Thus, the input
+      variables can be transformed non-linearly with a kernel trick by
+      changing $\x_i^T\x_j$ to $k(\x_i,\x_j)$.
     \end{itemize}
     
 
@@ -221,12 +223,17 @@
     Then the separation can be done using slack-variables which allow
     some points to be on the wrong side of the separating hyperplane.
     Notice that the number of support vectors does not change.
+
+    % "The number of support vectors does not change." ???
+    %
+    % That claim needs a bit of a proof!!!
+    
   \end{solution}
   
 \item The inner-product kernel for a polynomial learning machine is
   defined by
   \begin{displaymath}
-    K(\x,\x_i) = (1 + \x^T \x_i)^p \; ,
+    k(\x,\x_i) = (1 + \x^T \x_i)^p \; ,
   \end{displaymath}
   where $p$ is a positive integer.  What is the dimension of the
   implicit feature space if the dimension of $\x$ is $m$.  Find lower
@@ -234,21 +241,46 @@
 
   \begin{solution}
 
-    Consider the terms of the inner-product kernel $K(\x, \y) =
-    (1 + x_1 y_1 + \ldots x_m y_m)^p$.  For instance, $m=2$ and $p=2$
-    yields $$K(x, y) = (1 + x_1y_1 + x_2y_2)^2 = 1 + 2x_1y_1 + 2x_2y_2 +
-    x_1^2y_1^2 + x_2^2y_2^2 + 2x_1x_2y_1y_2 = $$ $$[1 \; \sqrt{2}x_1 \;
-    \sqrt{2}x_2 \; x_1^2 \; x_2^2 \; \sqrt{2}x_1 x_2] [1 \; \sqrt{2}y_1
-    \; \sqrt{2}y_2 \; y_1^2 \; y_2^2 \; \sqrt{2}y_1 y_2]^T \, .$$
+    Any inner-product kernel can be represented as
+    \begin{align*}
+      k(\x_i,\x_j) &= \sum_{d=1}^D \phi_d(\x_i) \phi_d(\x_j)
+      \\
+      &= \boldsymbol{\phi}(\x_i)^T \boldsymbol{\phi}(\x_j)
+    \end{align*}
+    where $D$ is the dimensionality of the implicit feature space and
+    $\phi_d$ are non-linear transformations to the feature space.  In
+    general, the dimensionality $D$ can be infinite.
+
+    Now, our inner-product kernel is $K(\x, \y) = (1 + x_1 y_1 +
+    \ldots x_m y_m)^p$.  For instance, $m=2$ and $p=2$ yields
+    \begin{align*}
+      k(x, y) &= (1 + x_1y_1 + x_2y_2)^2
+      \\
+      &= 1 + 2x_1y_1 + 2x_2y_2 + x_1^2y_1^2 + x_2^2y_2^2 +
+      2x_1x_2y_1y_2
+      \\
+      &=
+      \begin{bmatrix}
+        1 & \sqrt{2}x_1 & \sqrt{2}x_2 & x_1^2 & x_2^2 & \sqrt{2}x_1
+        x_2
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 & \sqrt{2}y_1 & \sqrt{2}y_2 & y_1^2 & y_2^2 & \sqrt{2}y_1
+        y_2
+      \end{bmatrix}^T .
+    \end{align*}
     Therefore the implicit features are $1$, $\sqrt{2}x_1$,
     $\sqrt{2}x_2$, $x_1^2$, $x_2^2$ and $\sqrt{2}x_1 x_2$, i.e., the
     dimension of the implicit feature space is six.
 
-    In general, each term of $K(\x, \y)$ is of the form $$c 1^{p_0}
-    x_1^{p_1} y_1^{p_1} \ldots x_m^{p_m} y_m^{p_m} = (\sqrt{c} x_1^{p_1}
-    \ldots x_m^{p_m})(\sqrt{c} y_1^{p_1} \ldots y_m^{p_m}) \, ,$$where c
-    is an integer and $\sum_{i=0}^m p_i = p$.  This shows that the
-    implicit features are of the form $\sqrt{c} x_1^{p_1} \ldots
+    In general, each term of $k(\x, \y)$ is of the form
+    \begin{align*}
+      c 1^{p_0} x_1^{p_1} y_1^{p_1} \ldots x_m^{p_m} y_m^{p_m} =
+      (\sqrt{c} x_1^{p_1} \ldots x_m^{p_m})(\sqrt{c} y_1^{p_1} \ldots
+      y_m^{p_m}),
+    \end{align*}
+    where c is an integer and $\sum_{i=0}^m p_i = p$.  This shows that
+    the implicit features are of the form $\sqrt{c} x_1^{p_1} \ldots
     x_m^{p_m}$ and the dimension of the implicit feature space is the
     number of these terms, i.e., the number of partitions $p_i$ which
     satisfy $\sum_{i=0}^m p_i = p$.
@@ -259,10 +291,21 @@
     different $p_i$ is denoted by delimiter $b$.  Since there are $m+1$
     numbers $p_i$, the sequence has $m$ symbols $b$.  It is easy to see
     that each sequence having $p$ symbols $a$ and $m$ symbols $b$ can be
-    interpreted as a unique set of numbers $p_i$ and vice versa.  The
+    interpreted as a unique set of numbers $p_i$ and vice versa.The
     number of these sequences and therefore also the dimension of the
-    implicit feature space is 
-    $$\frac{(m+p)!}{m!p!}.$$
+    implicit feature space is
+    \begin{align*}
+      \frac{(m+p)!}{m!p!}.
+    \end{align*}
+    (The sequence has length $m+p$ but there are $p$ exchangeable
+    symbols $a$ and $m$ exchangeable symbols $b$.)
+    
+    In short, one can use the formula for the number of combinations
+    with repetition.  Now we have $m+1$ elements and $p$-combinations:
+    \begin{align*}
+      D = \binom{m+1+p-1}{p} = \binom{m+p}{p} =
+      \frac{(m+p)!}{p!(m+p-p)!}  = \frac{(m+p)!}{m!p!}.
+    \end{align*}
   \end{solution}
   
 
