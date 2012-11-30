@@ -11,7 +11,7 @@
 
 \RequirePackage[english]{babel}
 \RequirePackage[latin1]{inputenc}
-\RequirePackage{subfigure}
+\RequirePackage{subfig}
 \RequirePackage{epsfig}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
