@@ -41,6 +41,7 @@ solutions.pdf: $(SOLUTIONS)
 ex%/solutions.pdf: ex%/solutions.tex ex%/exercise.tex
 	cd ex$*; \
 	TEXINPUTS="..:" pdflatex solutions.tex; \
+	TEXINPUTS="..:" pdflatex solutions.tex; \
 	#TEXINPUTS="..:" latex solutions.tex; \
 	#TEXINPUTS="..:" latex solutions.tex; \
 	#dvips solutions.dvi; \
@@ -48,6 +49,7 @@ ex%/solutions.pdf: ex%/solutions.tex ex%/exercise.tex
 
 ex%/problems.pdf: ex%/problems.tex ex%/exercise.tex
 	cd ex$*; \
+	TEXINPUTS="..:" pdflatex problems.tex; \
 	TEXINPUTS="..:" pdflatex problems.tex; \
 	#TEXINPUTS="..:" latex problems.tex; \
 	#TEXINPUTS="..:" latex problems.tex; \
