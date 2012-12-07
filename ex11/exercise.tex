@@ -101,26 +101,14 @@
   
 
 \item Using the LMS algorithm, formulate a learning algorithm for the
-  focused neuronal filter.
-
-
-  \begin{solution}
-
-    The neuronal filter is a block which is drawn in the figure:
-    % 
-    % \begin{figure}
-    %   \centering
-    %   \includegraphics[width=11cm]{l12k3a.eps} 
-    %   \label{figure: 1}
-    % \end{figure}
-    % 
-
-    % \hspace{2cm}
+  focused neuronal filter, which is drawn in the figure:
     \begin{center}
       \includegraphics[width=11cm]{l12k3a}
     \end{center}
 
-    % 
+
+  \begin{solution}
+
     The output of the filter is $y(n) =
     \varphi(v(n))$, where $v(n)$ is the linear response of the neuron $$v(n) = b +
     \sum_{l=0}^p w(l) x(n-l) \, .$$ (Notice that for convenience we use
@@ -174,94 +162,205 @@
 
   \begin{solution}
 
-    Let $\mathbf{x}(n)=[x(n), x(n-1), \ldots ,x(n-p)]$ denote the vector of current and
-    delayed input signals applied to
-    the distributed TLFN at time $n$. Let $y(n)$ denote the actual
-    response of the network trained using the temporal back-propagation
-    algorithm. With one-step prediction as the requirement, the desired
-    response is the value of the input signal one step into the future,
-    that is, $x(n+1)$. With these provisions, we may then
-    proceed with the temporal back-propagation algorithm.
+    Let $\mathbf{x}(n)=[x(n), x(n-1), \ldots ,x(n-p)]$ denote the
+    vector of current and delayed input signals applied to the
+    distributed TLFN at time $n$. Let $y(n)$ denote the actual
+    response of the network trained using the temporal
+    back-propagation algorithm. With one-step prediction as the
+    requirement, the desired response is the value of the input signal
+    one step into the future, that is,
+    \begin{equation*}
+      y(n) = x(n+1).
+    \end{equation*}
+    With these provisions, we may then proceed with the temporal
+    back-propagation algorithm.
 
   \end{solution}
   
 
 
-\item Write out the state-space model for the recurrent network shown in the
-  figure.
+\item Construct NARX model as a neural network.
 
-  \hspace{2cm}\includegraphics[width=11cm]{l12k9}
+  %\hspace{2cm}\includegraphics[width=11cm]{l12k9}
 
   \begin{solution}
 
-    In the figure, there are two neurons in the input layer, three neurons in the hidden layer and one
-    output. In the following, we consider a more general case with arbitrary number of neurons in each layer.
+    NARX is a nonlinear autoregressive exogenous model:
+    \begin{align*}
+      y_n = F(y_{n-1}, \ldots, y_{n-l}, \mathbf{x}_n, \mathbf{x}_{n-1},
+      \ldots, \mathbf{x}_{n-k} ).
+    \end{align*}
+    In our case $F$ is modelled as a neural network, which is shown
+    below.
+    
+    \begin{center}
+      \usetikzlibrary{shapes}
+      \usetikzlibrary{chains}
+      \usetikzlibrary{arrows}
+      \begin{tikzpicture}[start chain=hidden going below,
+        start chain=input going below]
 
-    Let the $q$-by-$1$ vector $x(n)$ denote the state vector of recurrent network. Let the $m$-by-$1$ vector $\vect{u}(n)$ 
-    denote the input
-    applied to the system, and the $p$-by-$1$ vector $\vect{y}(n)$ denote the
-    corresponding output of the system. In mathematical terms, the dynamic
-    behavior of the system, assumed to be noise free, is described by the
-    following pair of nonlinear equations:
+        \tikzset{>={triangle 45}}
 
-    \[
-    \vect{x}(n+1) = \phi (\matr{W}_a \vect{x}(n) + \matr{W}_b \vect{u}(n))
-    \]
+        \tikzstyle{dot}=[draw,circle,fill,scale=0.4];
+        \tikzstyle{box}=[draw,rectangle,scale=1.0];
+        \tikzstyle{delay}=[draw,rectangle,minimum size=20pt];
+        \tikzstyle{marker}=[minimum size=0pt, inner sep=0pt];
+        \tikzstyle{neuron}=[draw,circle,fill=gray!25, minimum size=20pt];
 
-    \[
-    \vect{y}(n) = \matr{C} \vect{x}(n)
-    \]
-    where $\matr{W}_a$ is a $q$-by-$q$ matrix, $\matr{W}_b$ is a $q$-by-($m+1$) matrix, $\matr{C}$ is a
-    $p$-by-$q$ matrix and $\phi: \mathbb{R}^q \rightarrow \mathbb{R}^q$ is a
-    diagonal map described by
+        %%%%%%%%%%%%%
+        % INPUT LAYER
+        %%%%%%%%%%%%%
 
-    \[
-    \phi:
-    \left[\begin{array}{c}
-        x_1 \\
-        x_2 \\
-        \vdots \\
-        x_q
-      \end{array}\right]
-    \rightarrow
-    \left[\begin{array}{c}
-        \phi(x_1) \\
-        \phi(x_2) \\
-        \vdots \\
-        \phi(x_q)
-      \end{array}\right]
-    \]
-    for some memoryless, component-wise nonlinearity $\phi: \mathbb{R}^m$,
-    $\mathbb{R}^n$, and $\mathbb{R}^p$ are called the input space, state
-    space, and output space, respectively.
+        % Time delays for input signal
+        \node[dot] (xn) {};
+        \node[marker, left=of xn, label=left:$x(n)$] (input) {};
+        \node[delay, below=of xn] (z xn) {$z^{-1}$};
+        \node[dot, below=of z xn, label=left:$x(n-1)$] (xn-1) {};
+        \node[below=of xn-1] (xn dots) {$\vdots$};
+        \node[dot,below=of xn dots, label=left:$x(n-p+1)$] (xn-p+1) {};
+        \node[delay, below=of xn-p+1] (z xn-p+1) {$z^{-1}$};
+        \node[marker,below=of z xn-p+1, label=left:$x(n-p)$] (xn-p) {};
 
-    In the network of the figure we have $m$=2, $q$=3 and $p$=1. Thus the
-    matrices $\matr{W}$ are defined as follows
+        % Bias
+        \node[marker, below=of xn-p] (bias) {};
+        \node[marker,left=of bias, label=left:bias] (b) {};
 
-    \[
-    \matr{W}_a = 
-    \left[\begin{array}{ccc}
-        w_{11} & w_{12} & w_{13} \\
-        w_{21} & w_{22} & w_{23} \\
-        w_{31} & w_{32} & w_{33} \\
-      \end{array}\right]
-    \]
+        % Time delays for output signal
+        \node[dot, below=of bias, label=left:$y(n-q)$] (yn-q) {};
+        \node[delay, below=of yn-q] (z yn-q+1) {$z^{-1}$};
+        \node[dot, below=of z yn-q+1, label=left:$y(n-q+1)$] (yn-q+1) {};
+        \node[below=of yn-q+1] (yn dots) {$\vdots$};
+        \node[dot,below=of yn dots, label=left:$y(n-1)$] (yn-1) {};
+        \node[delay, below=of yn-1] (z yn) {$z^{-1}$};
+        \node[marker,below=of z yn, label=left:$y(n)$] (yn recurrent) {};
 
-    \[
-    \matr{W}_b = 
-    \left[\begin{array}{ccc}
-        b_{1} & w_{14} & w_{15} \\
-        b_{2} & w_{24} & w_{25} \\
-        b_{3} & w_{34} & w_{35} \\
-      \end{array}\right]
-    \]
+        % Input nodes to the network
+        \node[box, right=of xn] (u1) {};
+        \node[box, right=of xn-1] (u2) {};
+        \node[box, right=of xn-p+1] (u3) {};
+        \node[box, right=of xn-p] (u4) {};
 
-    where the first column of $\matr{W}_b$ represents the bias terms applied to
-    neurons 1, 2 and 3. The matrix $\matr{C}$ is defined by
+        % Bias node to the network
+        \node[box, right=of bias] (u5) {};
 
-    \[
-    \matr{C} = [1, \; 0, \; 0]
-    \]
+        % Recurrent output nodes to the network
+        \node[box, right=of yn-q] (u6) {};
+        \node[box, right=of yn-q+1] (u7) {};
+        \node[box, right=of yn-1] (u8) {};
+
+        % Arrows in the input layer
+        \draw[-] (input) -- (xn);
+        \draw[->] (xn) -- (u1);
+        \draw[->] (xn) -- (z xn);
+        \draw[-] (z xn) -- (xn-1);
+        \draw[->] (xn-1) -- (u2);
+        \draw[->] (xn-1) -- (xn dots);
+        \draw[-] (xn-p+1) -- (xn dots);
+        \draw[->] (xn-p+1) -- (u3);
+        \draw[->] (xn-p+1) -- (z xn-p+1);
+        \draw[->] (z xn-p+1) -- (xn-p) -- (u4);
+
+        % Arrow for bias
+        \draw[->] (b) -- (u5);
+
+        % Arrow for recurrent outputs
+        \draw[->] (yn-q) -- (u6);
+        \draw[-] (z yn-q+1) -- (yn-q);
+        \draw[->] (yn-q+1) -- (z yn-q+1);
+        \draw[->] (yn-q+1) -- (u7);
+        \draw[-] (yn dots) -- (yn-q+1);
+        \draw[->] (yn-1) -- (yn dots);
+        \draw[->] (yn-1) -- (u8);
+        \draw[-] (z yn) -- (yn-1);
+        %\draw[-] (z yn) -- (yn recurrent);
+
+        %%%%%%%%%%%%%%
+        % HIDDEN LAYER
+        %%%%%%%%%%%%%%
+
+        % Neurons
+        \node[neuron, right=3 of u3] (neuron1) {};
+        \node[neuron, below=of neuron1] (neuron2) {};
+        \node[neuron, below=of neuron2] (neuron3) {};
+        \node[marker, below=of neuron3] (neuron dots) {$\vdots$};
+        \node[neuron, below=of neuron dots] (neuron4) {};
+
+        % Connections from the input layer to the hidden layer
+        \foreach \i in {1,...,8} {
+          \foreach \j in {1,...,4} {
+            \draw[->] (u\i) -- (neuron\j);
+          }
+        }
+
+        %%%%%%%%%%%%%%
+        % OUTPUT LAYER
+        %%%%%%%%%%%%%%
+
+        \node[neuron, right=2 of neuron3] (neuron y) {};
+        \node[dot, right=of neuron y] (dot yn) {};
+        \node[right=of dot yn, label=right:$y(n)$] (yn) {};
+        \draw[-] (neuron y) -- (dot yn);
+        \draw[->] (dot yn) -- (yn);
+
+        % Connections from the hidden layer to the output neuron
+        \foreach \j in {1,...,4} {
+          \draw[->] (neuron\j) to (neuron y);
+        }
+        \draw[->] (dot yn) |- (yn recurrent) -- (z yn);
+
+        % % 
+        % \foreach \i in {1,...,6} {
+        %   \node[rectangle,draw] (in\i) at (0,2*7-2*\i) {};
+        % }
+        % \foreach \i in {1,...,3} {
+        %   \node[circle,draw,fill=gray,minimum size=20pt] (hid\i) at (3,2*5.5-2*\i) {};
+        % }
+        % % 
+        % % % Hidden layer
+        % % \node[circle,fill=gray!25,draw,minimum
+        % % size=20pt,on chain=hidden,label=1] (h1) {};
+        % % \node[circle,fill=gray!25,draw,minimum
+        % % size=20pt,on chain=hidden,label=2] (h2) {};
+        % % \node[circle,fill=gray!25,draw,minimum
+        % % size=20pt,on chain=hidden,label=3] (h3) {};
+        % % 
+
+        % % Output layer
+        % \node[right=100pt of hid1]
+        % (out) {$y(n)$};
+
+        % % Arrows input->hidden
+        % \foreach \i in {1,...,6} {
+        %   \foreach \j in {1,...,3} {
+        %     \draw[->] (in\i) -- (hid\j);
+        %   }
+        % }
+
+        % % Arrow hidden->output
+        % \draw[->] (hid1) -- (out);
+
+        % % Recurrent arrows
+        % \foreach \i in {1,2,3} {
+        %   % Unit time-delays
+        %   \path (hid\i) ++(-1.5,3*\i+2) node[draw,rectangle,minimum
+        %   size=20pt] (z\i) {$z^{-1}$};
+        %   % Arrows
+        %   \draw[->] (hid\i) -- ++(1.5+\i*0.5,0) node[at start,label=above
+        %   right:$x_\i(n)$] {} node (crossing\i) {} -- ++(0,3*\i+2) --
+        %   (z\i) -- ++(-\i*0.5-3,0) node (current) {} -- (current |- in\i)
+        %   -- (in\i) node[at end, label=above left:$x_\i(n-1)$] {};
+        % }
+
+        % \node[circle,draw,fill,scale=0.4] at (crossing1) {};
+
+        % \draw[<-] (in4) -- ++(-1,0) node[label=left:$1$] {};
+        % \draw[<-] (in5) -- ++(-1,0) node[label=left:$u_1(n)$] {};
+        % \draw[<-] (in6) -- ++(-1,0) node[label=left:$u_2(n)$] {};
+        
+      \end{tikzpicture}
+    \end{center}
+    
 
   \end{solution}
 
