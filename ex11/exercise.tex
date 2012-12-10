@@ -15,87 +15,127 @@
 \begin{enumerate}
 
 \item In this problem we consider the optimized form of the learning
-  vector quantization algorithm developed by
-  Kohonen. We wish to arrange for the effects of the corrections to the
-  Voronoi vectors, made at different times, to have equal influence when
-  referring to the end of the learning period. \begin{enumerate}
-  \item First, show that
+  vector quantization algorithm developed by Kohonen.
+  \begin{enumerate}
+  \item The Voronoi vector closest to the input vector $\mathbf{x}(n)$
+    is updated as
     \begin{equation}
-      \mathbf{w}_c(n+1)=\mathbf{w}_c(n)+\alpha_n[\mathbf{x}_i-\mathbf{w}_c(n)]
+      \mathbf{w}_c(n+1)=\mathbf{w}_c(n)+\alpha_c(n)[\mathbf{x}(n)-\mathbf{w}_c(n)]
       \label{equation: 1}
     \end{equation}
-    and
+    if the classification is correct, or as
     \begin{equation}
-      \mathbf{w}_c(n+1)=\mathbf{w}_c(n)-\alpha_n[\mathbf{x}_i-\mathbf{w}_c(n)]
+      \mathbf{w}_c(n+1)=\mathbf{w}_c(n)-\alpha_c(n)[\mathbf{x}(n)-\mathbf{w}_c(n)]
       \label{equation: 2}
     \end{equation}
-    may be integrated into a single equation, as follows:
+    if the classification is incorrect.  The other Voronoi vectors
+    remain unchanged.  Show that these rules may be integrated into a
+    single equation, as follows:
     \begin{equation}
-      \mathbf{w}_c(n+1)=(1-s_n\alpha_n)\mathbf{w}_c(n)+s_n\alpha_n\mathbf{x}(n).
+      \mathbf{w}_j(n+1) = (1-s_j(n)\alpha_j(n)) \mathbf{w}_j(n) + s_j(n)
+      \alpha_j(n) \mathbf{x}(n).
       \label{equation: 3}
     \end{equation}
-    In the above equations, $\mathbf{w}_c$ is the Voronoi
-    vector closest to the input vector $\mathbf{x}_i$, $0<\alpha_n<1$ is a
-    learning constant, and $s_n$ is a sign function depending on the
-    classification result of the $n$th input vector $\mathbf{x}(n)$:
-    $s_n=+1$ if classification is correct, otherwise  $s_n=-1$.
+    In the above equations, $0<\alpha_j(n)<1$ is a learning constant
+    for $\mathbf{w}_j$, and $s_j(n)$ is a sign function depending on
+    the classification result of the $n$-th input vector
+    $\mathbf{x}(n)$: For the closest Voronoi vector, $s_j(n)=+1$ if
+    classification is correct and $s(n)=-1$ if classification is
+    incorrect.  For the other Voronoi vectors, $s_j(n)=0$.
 
-  \item Hence, show that the optimization criterion described at the
-    beginning of the problem is satisfied if
+  \item We wish to arrange for the effects of the corrections to the
+    Voronoi vectors, made at different times, to have equal influence
+    when referring to the end of the learning period.  Show that this
+    optimization criterion described at the beginning of the problem
+    is satisfied if
     \begin{equation*}
-      \alpha_n=(1-s_n\alpha_n)\alpha_{n-1}
+      \alpha_j(n)=(1-s_j(n)\alpha_j(n))\alpha_j(n-1)
     \end{equation*}
     which yields the optimized value of the learning constant
-    $\alpha_n$ as
+    $\alpha_j(n)$ as
     \begin{equation*}
-      \alpha_n^{\text{opt}}=\frac{\alpha_{n-1}^{\text{opt}}}{1+s_n\alpha_{n-1}^{\text{opt}}}.
+      \alpha_j^{\text{opt}}(n) = \frac {\alpha_j^{\text{opt}}(n-1)} {1
+        + s_j(n) \alpha_j^{\text{opt}}(n-1)}.
     \end{equation*}
+    Note that $\alpha_j(n)=\alpha_j(n-1)$ if the $j$-th Voronoi vector
+    was not closest to the input vector $\mathbf{x}(n)$.
   \end{enumerate}
 
   \begin{solution}
-    
-    Part a) is seen by inserting $s_n=1$ and $s_n=-1$ into equation (\ref{equation: 3}) yielding the two
-    update equations (\ref{equation: 1}) and (\ref{equation: 2}).
 
-    For the LVQ equation we note that the updated weight vector
-    $\mathbf{w}_c(n+1)$ contains a ``trace'' from  $\mathbf{x}(n)$ by
-    virtue of the last term $s_n\alpha_n\mathbf{x}(n)$. Moreover, it
-    contains traces of previous samples, namely, $\mathbf{x}(n-1)$,
-    $\mathbf{x}(n-2),\;\ldots,\; \mathbf{x}(1)$ by virtue of the present
-    value of the weight vector $\mathbf{w}_c(n)$.
+    \begin{enumerate}
+    \item 
 
-    Consider $\mathbf{w}_c(n)$ which is defined by
-    \begin{equation}
-      \mathbf{w}_c(n)=(1-s_{n-1}\alpha_{n-1})\mathbf{w}_c(n-1)+s_{n-1}\alpha_{n-1}\mathbf{x}(n-1)
-      \label{eq:lvq2}
-    \end{equation}
-    Hence, substituting equation \ref{eq:lvq2} into the LVQ equation and
-    combining terms yields
-    \begin{equation}
-      \mathbf{w}_c(n+1)=(1-s_n\alpha_n)(1-s_{n-1}\alpha_{n-1})\mathbf{w}_c(n-1)+(1-s_n\alpha_n)s_{n-1}\alpha_{n-1}\mathbf{x}(n-1)+s_n\alpha_n\mathbf{x}(n).
-      \label{eq:lvq3}
-    \end{equation}
-    It follows therefore that the effect of $\mathbf{x}(n-1)$ on the
-    updated weight vector $\mathbf{w}_c(n+1)$ is scaled by the factor
-    $(1-s_n\alpha_n) s_{n-1} \alpha_{n-1}$. On the other hand, the effect of
-    $\mathbf{x}(n)$ is scaled by $s_n\alpha_n$. Accordingly, if we require
-    that $\mathbf{x}(n)$ and $\mathbf{x}(n-1)$ are to have the same effect
-    on $\mathbf{w}_c(n+1)$, then we must have
-    \begin{equation*}
-      | s_n \alpha_n |= | (1-s_n\alpha_n)\alpha_{n-1} s_{n-1} |.
-    \end{equation*}
-    Since $s_{n-1}$ and $s_n$ are either $1$ or $-1$, their absolute values are $1$. The remaining quantities inside
-    the absolute values are positive and we obtain
-    \begin{equation*}
-      \alpha_n = (1-s_n\alpha_n)\alpha_{n-1} .
-    \end{equation*}
+      First, re-organize the terms in \eqref{equation: 3}:
+      \begin{align*}
+        \mathbf{w}_j(n+1) &= (1-s_j(n)\alpha_j(n)) \mathbf{w}_j(n) +
+        s_j(n)\alpha_j(n)\mathbf{x}(n)
+        \\
+        &= \mathbf{w}_j(n) + s_j(n) \alpha_j(n) [\mathbf{x}(n) -
+        \mathbf{w}_j(n)].
+      \end{align*}
+      The update equations \eqref{equation: 1} and \eqref{equation: 2}
+      are obtained by inserting $s_j(n)=1$ and $s_j(n)=-1$,
+      respectively.  The Voronoi vector remains unchanged by inserting
+      $s_j(n)=0$.
+      % This is seen by inserting $s_n=1$ and $s_n=-1$ into
+      % equation (\ref{equation: 3}) yielding the two update equations
+      % (\ref{equation: 1}) and (\ref{equation: 2}).
 
-    Solving for $\alpha_n$, we get the optimum
-    \begin{equation*}
-      \alpha_n^{opt}=\frac{\alpha_{n-1}^{opt}}{1+s_n\alpha_{n-1}^{opt}}.
-    \end{equation*}
+    \item 
+
+      For the LVQ equation we note that the updated weight vector
+      $\mathbf{w}_j(n+1)$ contains a ``trace'' from $\mathbf{x}(n)$ by
+      virtue of the last term $s_j(n)\alpha_j(n)\mathbf{x}(n)$.
+      Moreover, it contains traces of previous samples, namely,
+      $\mathbf{x}(n-1)$, $\mathbf{x}(n-2),\;\ldots,\; \mathbf{x}(1)$
+      by virtue of the present value of the weight vector
+      $\mathbf{w}_j(n)$.
+
+      Consider $\mathbf{w}_j(n)$ which is defined by
+      \begin{equation}
+        \mathbf{w}_j(n) = [1 - s_j(n-1) \alpha_j(n-1)]
+        \mathbf{w}_j(n-1) + s_j(n-1) \alpha_j(n-1) \mathbf{x}(n-1).
+        \label{eq:lvq2}
+      \end{equation}
+      Hence, substituting equation \eqref{eq:lvq2} into the LVQ
+      equation \eqref{equation: 3} and combining terms yields
+      \begin{align*}
+        \mathbf{w}_c(n+1) &= \left[1 - s_j(n) \alpha_j(n)\right]
+        \left[1 - s_j(n-1) \alpha_j(n-1)\right] \mathbf{w}_j(n-1) +
+        \\
+        &\qquad \left[1 - s_j(n) \alpha_j(n)\right] s_j(n-1)
+        \alpha_j(n-1) \mathbf{x}(n-1) + s_j(n) \alpha_j(n)
+        \mathbf{x}(n).
+        %\label{eq:lvq3}
+      \end{align*}
+      It follows therefore that the effect of $\mathbf{x}(n-1)$ on the
+      updated weight vector $\mathbf{w}_j(n+1)$ is scaled by the
+      factor $(1-s_j(n)\alpha_j(n)) s_j(n-1) \alpha_j(n-1)$. On the
+      other hand, the effect of $\mathbf{x}(n)$ is scaled by
+      $s_j(n)\alpha_j(n)$.  Accordingly, if we require that
+      $\mathbf{x}(n)$ and $\mathbf{x}(n-1)$ are to have the same
+      effect on $\mathbf{w}_j(n+1)$, then we must have
+      \begin{equation*}
+        | s_j(n) \alpha_j(n) |= | (1-s_j(n)\alpha_j(n))\alpha_j(n-1) s_j(n-1) |.
+      \end{equation*}
+      If $s_j(n-1)$ and $s_j(n)$ are either $1$ or $-1$, their
+      absolute values are $1$. The remaining quantities inside the
+      absolute values are positive and we obtain
+      \begin{equation*}
+        \alpha_j(n) = (1-s_j(n)\alpha_j(n))\alpha_j(n-1) .
+      \end{equation*}
+      Solving for $\alpha_j(n)$, we get the optimum
+      \begin{equation}
+        \alpha_j^{opt}(n) = \frac {\alpha_j^{opt}(n-1)} {1 +
+          s_j(n)\alpha_j^{opt}(n-1)}. \label{eq:alpha_opt}
+      \end{equation}
+      (If $s_j(n)=0$, $\alpha_j(n)$ remains unchanged by
+      \eqref{eq:alpha_opt}.  If $s_j(n-1)=0$, $\mathbf{x}(n-1)$ is
+      properly ignored by \eqref{eq:alpha_opt}.)
 
 
+    \end{enumerate}
 
   \end{solution}
   
@@ -187,8 +227,8 @@
 
     NARX is a nonlinear autoregressive exogenous model:
     \begin{align*}
-      y_n = F(y_{n-1}, \ldots, y_{n-l}, \mathbf{x}_n, \mathbf{x}_{n-1},
-      \ldots, \mathbf{x}_{n-k} ).
+      y_n = F(y_{n-1}, \ldots, y_{n-q}, \mathbf{x}_n, \mathbf{x}_{n-1},
+      \ldots, \mathbf{x}_{n-p} ).
     \end{align*}
     In our case $F$ is modelled as a neural network, which is shown
     below.
