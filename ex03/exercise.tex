@@ -15,7 +15,7 @@
   first-order discrete-time Markov process given by the stochastic
   difference equation
   \[
-  {\bf x}(n) = \alpha {\bf x}(n-1) + {\bf v}(k)
+  {\bf x}(n) = \alpha {\bf x}(n-1) + {\bf v}(n)
   \]
   where $\alpha = 0.9; {\bf x}, {\bf v} \in \mathbb{R}^{3\times 1}$,
   and ${\bf v}$ is zero-mean Gaussian white noise with a covariance
@@ -43,8 +43,9 @@
         E[[\alpha\vect{x}(n-1)+\vect{v}(n)]
         [\alpha\vect{x}(n-1)+\vect{v}(n)]^T]
         \\
-        &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2
+        &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+
         \underbrace{E[\alpha \vect{x}(n-1)\vect{v}(n)^T]}_{=0}+
+        \underbrace{E[\alpha \vect{v}(n)\vect{x}(n-1)^T]}_{=0}+
         E[\vect{v}(n)\vect{v}(n)^T]
         \\
         % &=\alpha^2 E[\vect{x}(n-1)\vect{x}(n-1)^T]+2E[ \alpha \vect{x}(n-1)\vect{v}(n)^T]\\
