@@ -65,14 +65,21 @@
       \left.\frac{d\varphi}{dv}\right|_{v=0} = \frac{a}{2} \left[1 - \left(
           \frac{1 - e^{-a * 0}}{1 + e^{-a*0}} \right)^2\right] = \frac{a}{2}.
     \end{equation*}
-    \begin{equation*}
-      \text{When  $a$ $\rightarrow$ $\infty$,  $\varphi(v)$ $\rightarrow$}
-        \begin{cases}
-          +1, &v > 0 \\
-          -1, &v < 0 \\
-          0, &v = 0
-        \end{cases}
-    \end{equation*}
+
+    Let us examine the function in the case that $a$ is made infinitely large:
+    \begin{align*}
+      \lim_{a\rightarrow\infty} \varphi(v) =
+      \lim_{a\rightarrow\infty} \frac{1-e^{-av}}{1+e^{-av}} =
+      \begin{cases}
+        \frac{1-e^{-\infty}}{1+e^{-\infty}} = \frac{1-0}{1+0} = +1 & v > 0
+        \\
+        \lim_{a\rightarrow\infty} \frac{e^{av}(1-e^{-av})}{e^{av}(1+e^{-av})} =
+        \lim_{a\rightarrow\infty} \frac{e^{av}-1}{e^{av}+1} =
+        \frac{e^{-\infty}-1}{e^{-\infty}+1} = \frac{0-1}{0+1} = -1 & v < 0
+        \\
+        \frac{1-e^0}{1+e^0} = \frac{1-1}{1+1} = 0 & v = 0
+      \end{cases}
+    \end{align*}
 
     Fig.~\ref{fig:sigmoid} shows the values of the sigmoid function
     $\varphi(v)$ with different values of $a$.
