@@ -139,19 +139,62 @@
         \end{aligned}
       \end{equation}
       
-    \item We expand the $e^{-av}$ in Taylor series around point $v=0$:
+    \item First, note that any differentiable function with non-zero derivative
+      at $v=0$ can be used as an approximation to a linear function.  This can
+      be done because such functions are locally linear around point $v=0$.
+      Thus, one can scale the input to a small value (i.e., use the locally
+      linear region) and then scale the output arbitrarily, obtaining arbitrary
+      linear functions.  Thus, in theory, it is not very interesting if a
+      function can be used to approximate linear functions.
+
+      Now, let us show that the activation function $\sigma(v)$ is such a
+      function.  Note that $\sigma(v)$ is differentiable and the derivative is
+      non-zero at $v=0$ (actually everywhere):
+      \begin{align}
+        \frac{d \sigma}{d v}(0) = \frac{ae^{-a0}}{(1+e^{-a0})^2} > 0, \text{
+          assuming } a>0.
+      \end{align}
+      Thus, $\sigma(v)$ can be used to approximate linear functions.
+      % Thus, in general, the function is locally linear around any point.  In
+      % particular, it is locally linear around $v=0$.  Thus, the function can be
+      % used as a linear function by scaling the input $v$ to close to zero and
+      % then scaling the output $\sigma(v)$ to any scale.  The point is that 
+
       
-      \begin{equation}
-        \begin{split}
-          \sigma(v) &= \frac{1}{1 + e^{-av}} = \frac{1}{1 + 1 - av +
-            \underbrace{\frac{(av)^2}{2!} - \frac{(av)^3}{3!} +
-              \cdots}_{\mbox{$\approx$ $0$, for small values of $v$}}} \\ 
-          &\approx \frac{1}{2 ( 1 - \frac{av}{2})} \\
-          &= \frac{1}{2} \frac{1 + \frac{av}{2}} {1 -
-            \underbrace{\frac{(av)^2}{4}}_{\approx 0}} \approx \frac{1}{2}
-          \left(1 + \frac{av}{2} \right) = L(v) \: _\Box
-        \end{split}
-      \end{equation}
+      Although the linear approximation property of $\sigma(v)$ is not very
+      special, it is interesting to note that the sigmoid function can be a
+      ``good'' linear approximator in practice.  This means that the sigmoid
+      function is approximately linear without scaling the input to an almost
+      infinitesimally small value.  Most importantly, the linear region is
+      clearly visible by looking at a plot of the sigmoid function: It has
+      similar linear region as the activation function in
+      Fig.~\ref{fig:sigmoid}.  The linear region can be expanded by making $a$
+      or the synaptic weights smaller.  In addition, the second derivative is
+      zero at $v=0$ making the approximation even better.  However, we won't go
+      to any further mathematical analysis on the linearity of the sigmoid
+      function.
+      % The intuition or take-home The linear region is
+      % has a ``significant'' linear region., allowing it to be approximately
+      % linear in practice.
+
+
+      The point of this exercise was to show that the sigmoid function can learn
+      approximately linear or step shape, thus being more general than those
+      two.
+
+      % We expand the $e^{-av}$ in Taylor series around point $v=0$:
+      
+      % \begin{equation}
+      %   \begin{split}
+      %     \sigma(v) &= \frac{1}{1 + e^{-av}} = \frac{1}{1 + 1 - av +
+      %       \underbrace{\frac{(av)^2}{2!} - \frac{(av)^3}{3!} +
+      %         \cdots}_{\mbox{$\approx$ $0$, for small values of $v$}}} \\ 
+      %     &\approx \frac{1}{2 ( 1 - \frac{av}{2})} \\
+      %     &= \frac{1}{2} \frac{1 + \frac{av}{2}} {1 -
+      %       \underbrace{\frac{(av)^2}{4}}_{\approx 0}} \approx \frac{1}{2}
+      %     \left(1 + \frac{av}{2} \right) = L(v) \: _\Box
+      %   \end{split}
+      % \end{equation}
       
     \end{enumerate}
 
