@@ -8,6 +8,7 @@
 \newcommand{\matr}[1]{\boldsymbol{#1}}
 
 \usepackage{cancel}
+\usepackage{mathtools}
 
 \begin{document}
 
@@ -70,15 +71,15 @@
     \begin{align*}
       \lim_{a\rightarrow\infty} \varphi(v) =
       \lim_{a\rightarrow\infty} \frac{1-e^{-av}}{1+e^{-av}} =
-      \begin{cases}
-        \frac{1-e^{-\infty}}{1+e^{-\infty}} = \frac{1-0}{1+0} = +1 & v > 0
+      \begin{dcases}
+        \frac{1-e^{-\infty}}{1+e^{-\infty}} = \frac{1-0}{1+0} = +1, & v > 0
         \\
         \lim_{a\rightarrow\infty} \frac{e^{av}(1-e^{-av})}{e^{av}(1+e^{-av})} =
         \lim_{a\rightarrow\infty} \frac{e^{av}-1}{e^{av}+1} =
-        \frac{e^{-\infty}-1}{e^{-\infty}+1} = \frac{0-1}{0+1} = -1 & v < 0
+        \frac{e^{-\infty}-1}{e^{-\infty}+1} = \frac{0-1}{0+1} = -1, & v < 0
         \\
-        \frac{1-e^0}{1+e^0} = \frac{1-1}{1+1} = 0 & v = 0
-      \end{cases}
+        \frac{1-e^0}{1+e^0} = \frac{1-1}{1+1} = 0, & v = 0
+      \end{dcases}
     \end{align*}
 
     Fig.~\ref{fig:sigmoid} shows the values of the sigmoid function
@@ -133,7 +134,7 @@
           \\
           \lim_{a \rightarrow \infty} \sigma(v)& = \left. \frac{1}{1 +
               e^{-av}}\right|_{a \rightarrow \infty} =
-          \frac{1}{1-\infty} = 0 \mbox{\ \ \ \ \ ($v<0$)}
+          \frac{1}{1+\infty} = 0 \mbox{\ \ \ \ \ ($v<0$)}
         \end{aligned}
       \end{equation}
       
