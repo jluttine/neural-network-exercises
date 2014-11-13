@@ -33,52 +33,56 @@
 
   \begin{solution}
 
-    Depending on the nature of $\mathcal{E}_{av}(\mathbf{w})$ the above
-    problem can be solved iteratively or analytically.
+    % \begin{figure}[h]
+    %   \centering
+    %   \includegraphics[height=3.5cm]{fig1}
+    %   \caption{Negative gradient gives the direction of steepest descent at a
+    %     point. The figure demonstrates the fact that the gradient descent method
+    %     with line search always finds a local minimum, but not necessarily the
+    %     global one.}
+    % \end{figure}
 
-    While many possible line search methods exist,
-    optimal $\eta$ can be found for example as follows:
+    Typically, the optimal value for $\eta$ cannot be found analytically.  In
+    that case, one can use line search methods.  First, denote the
+    one-dimensional function for the line search:
+    \begin{align*}
+      f(\eta) = \mathcal{E}_{av}(\mathbf{w}(n)-\eta\mathbf{g}(n)).
+    \end{align*}
+    Assume that this function is quasiconvex (i.e., the largest value of $f$ on
+    any range $[a,b]$ is either $f(a)$ or $f(b)$).  Find the boundary in which
+    the minimum (or a local minimum) lies:
+    \begin{itemize}
+    \item Set $a_0=0$ and $n=0$.
+    \item Iterate $n\leftarrow n+1$ by choosing next $a_n$ as $a_n > a_{n-1}$
+      until $f(a_n)>f(a_{n-1})$
+    \item Set $a=a_0$ and $b=a_n$.
+    \end{itemize}
+    Now, a minimum lies in range $[a,b]$.  Perform a line search by making the
+    range smaller and smaller.  At each iteration, add two interior points and
+    move the boundary on that side in which function value for the interior
+    point is larger:
+    \begin{itemize}
+    \item Choose two interior points $c,d\in(a,b)$ such that $c<d$.
+    \item If $f(c)>f(d)$, $a\leftarrow c$. Othewise, $b\leftarrow d$.
+    \item Repeat until the range is small enough.
+    \end{itemize}
+    In the end, the minimum lies in the range $[a,b]$.  An estimate of the
+    optimal value for $\eta$ could be, for instance, the point ($a$, $b$, $c$ or
+    $d$) for which the function value is the smallest.
 
-    Take first some suitable guess for $\eta$, say $\eta_0$. Then compute
-    $\mathcal{E}_{av}(\mathbf{w}(n)-\eta_0\mathbf{g}(n))$. If this is
-    greater than $\mathcal{E}_{av}(\mathbf{w}(n))$, take a new point
-    $\eta_1$ from the search line between $\mathbf{w}(n)$ and
-    $\mathbf{w}(n)-\eta_0\mathbf{g}(n)$. Otherwise, choose $\eta_1>\eta_0$
-    to see if a larger value of $\eta$ yields an even smaller value
-    $\mathcal{E}_{av}(\mathbf{w}(n)-\eta_1\mathbf{g}(n))$. Continue this
-    procedure until the optimal $\eta$, with a given precision, is reached.
 
-    The simplest way to implement such a iterative search would be to
-    divide the search line into equal intervals so that
-    \begin{eqnarray*}
-      \eta_1&=&\eta_0/2, \mbox{ if
-      }\mathcal{E}_{av}(\mathbf{w}(n)-\eta_0\mathbf{g}(n))>\mathcal{E}_{av}(\mathbf{w}(n))\\
-      \eta_1&=&2\eta_0, \mbox{otherwise}
-    \end{eqnarray*}
-    when we have found the interval where the minimum lies, we can divide
-    it again into two parts and get a better estimate of $\eta^*$ and continue in a similar manner.
+    The golden section search is a method which chooses the interior points in
+    such a way that the other interior point is an interior point at the next
+    iteration step.
 
-    Dividing the search interval into two equal parts is not optimal with
-    respect to the number of iterations needed to find the optimal
-    learning rate parameter. A better way is to use Fibonacci numbers (golden intersection) that
-    can be used for optimal division of a search interval.
-    % 
-    % 
-    % \vskip -2cm
-    \begin{figure}[h]
-      \includegraphics[height=3.5cm]{fig1}
-      \caption{Gradient gives the direction of steepest descent at a point. The figure demonstrates
-        the fact that the gradient descent method with line search always finds a local minimum, but not necessarily
-        the global one.}       
-    \end{figure}
     \clearpage
-
+    
   \end{solution}
   
 
 \item The Levenberg-Marquardt algorithm is
   \[
-  \vect{w}(n+1) = \vect{w}(n) - \left(\matr{J}^T(n)\matr{J}(n) +
+  \vect{w}(n+1) = \vect{w}(n) - \eta \left(\matr{J}^T(n)\matr{J}(n) +
     \sigma \matr{I} \right)^{-1}\matr{J}^T(n)\vect{e}(n),
   \]
   where $\mathbf{w}$ is the parameter vector of the neural network,
@@ -191,14 +195,14 @@
     (invertible) we can add an increment $\sigma$ to the diagonal of
     the matrix resulting in the update rule
     \[
-    \vect{w}(n+1) = \vect{w}(n) - \left(\matr{J}^T(n)\matr{J}(n) + \sigma
+    \vect{w}(n+1) = \vect{w}(n) - \eta\left(\matr{J}^T(n)\matr{J}(n) + \sigma
       \matr{I} \right)^{-1}\matr{J}^T(n)\vect{e}(n)
     \]
-    which is the Levenberg-Marquardt learning rule.  When $\sigma$ is
-    close to zero, the method is close to the Gauss-Newton
-    method. When $\sigma$ is large, the method is close to the
-    steepest descent method.  The parameter $\sigma$ can be varied
-    during the iteration in order to achieve efficient convergence. A
+    which is the Levenberg-Marquardt learning rule.  The optimal value for
+    $\eta$ can be found with a line search.  When $\sigma$ is close to zero, the
+    method is close to the Gauss-Newton method.  When $\sigma$ is large, the
+    method is close to the steepest descent method.  The parameter $\sigma$ can
+    be varied during the iteration in order to achieve efficient convergence. A
     good overview of the algorithm can be found at
     \url{http://media.cs.ohiou.edu/teaching/CS641/week3/LMA.pdf}.
   \end{solution}
