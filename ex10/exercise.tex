@@ -18,15 +18,15 @@
 \begin{enumerate}
 
 
-\item Assume a mixture of time-delayed (but not convolved) sources with known delays $D_{ij}$:
+\item Assume a mixture of time-delayed (but not convolved) sources with known delays $D_{kl}$:
   \begin{displaymath}
-    x_i(t) = \sum_{j=1}^N a_{ij}s_j(t-D_{ij}),
+    x_k(t) = \sum_{l=1}^N a_{kl}s_l(t-D_{kl}),
   \end{displaymath}
   \begin{enumerate}
   \item Show that by Fourier transform, this can be reduced to the instantaneous mixture
     model $\mathbf{X} = \mathbf{A} \mathbf{S}$.
   \item From this mixing matrix $\mathbf{A}$, how do you solve the original mixing
-    coefficients $a_{ij}$?
+    coefficients $a_{kl}$?
   \end{enumerate}
 
   \begin{solution}
@@ -38,33 +38,45 @@
         F(\omega) = \int^{\infty}_{-\infty} f(x) e^{-2\pi i x \omega}
         dx.
       \end{align*}
-      We shall use subindices $k$ and $l$ instead of $i$ and $j$ in
-      order to avoid confusion with the $i = \sqrt{-1}$.  Denote the
-      Fourier transform of the sequence $x_k(t)$ by $X_k(\omega)$ and
-      the Fourier transform of $s_l(t)$ by $S_l(\omega)$.  Recall that
-      the Fourier transform changes a delay by $D_{kl}$ into
-      multiplication with term $e^{i\omega D_{kl}}$.  Fourier
-      transforming both sides of the equation defining the mixtures
-      thus yields
+      Denote the Fourier transform of the sequence $x_k(t)$ by $X_k(\omega)$ and
+      the Fourier transform of $s_l(t)$ by $S_l(\omega)$.  Recall that the
+      Fourier transform changes a delay by $D$ into multiplication with
+      term $e^{2\pi i\omega D}$:
       \begin{align*}
-        X_k(\omega) = \sum_{l=1}^N a_{kl} e^{i\omega
+        &\int^{\infty}_{-\infty} f(x+D) e^{-2\pi i x \omega} dx
+        \\
+        =& \int^{\infty}_{-\infty} f(x) e^{-2\pi i (x-D) \omega} dx
+        \\
+        =& e^{2\pi i D \omega} \int^{\infty}_{-\infty} f(x) e^{-2\pi i x \omega}
+        dx
+        \\
+        =& e^{2\pi i D \omega}F(\omega)
+      \end{align*}
+      Thus, Fourier transforming both sides of the equation
+      defining the mixtures $x_k(t)$ yields
+      \begin{align*}
+        X_k(\omega) = \sum_{l=1}^N a_{kl} e^{2\pi i\omega
           D_{kl}} S_l(\omega) .
       \end{align*}
-      This can be written as $\bf{X}(\omega) = \bf{A}(\omega)
-      \bf{S}(\omega)$ when $\bf{X}$ and $\bf{S}$ are defined to be the
+      This can be written as $\mathbf{X}(\omega) = \mathbf{A}(\omega)
+      \mathbf{S}(\omega)$ when $\mathbf{X}$ and $\mathbf{S}$ are defined to be the
       vectors containing $X_k$ and $S_l$ and
-      \[
-      \bf{A}(\omega) = \left( \begin{array}{ccc} a_{11}e^{i\omega
-            D_{11}} & \cdots & a_{1N}e^{i\omega D_{1N}} \\ \vdots & \ddots &
-          \vdots \\ a_{M1}e^{i\omega D_{M1}} & \cdots & a_{MN}e^{i\omega
-            D_{MN}} \end{array} \right) \, .
-      \]
-      Notice that ${\bf A}$ is not constant and that the terms
-      $e^{i\omega D_{kl}}$ only affect the phase but not the magnitude
-      of the components.
+      \begin{align*}
+        \mathbf{A}(\omega) =
+        \begin{bmatrix}
+          a_{11}e^{2\pi i\omega D_{11}} & \cdots & a_{1N}e^{2\pi i\omega D_{1N}}
+          \\
+          \vdots & \ddots & \vdots
+          \\
+          a_{M1}e^{2\pi i\omega D_{M1}} & \cdots & a_{MN}e^{2\pi i\omega D_{MN}}
+        \end{bmatrix}.
+      \end{align*}
+      Notice that ${\mathbf A}$ is not constant and that the terms $e^{2\pi
+        i\omega D_{kl}}$ only affect the phase but not the magnitude of the
+      components.
 
     \item Clearly, the original mixing coefficients are obtained from
-      $\mathbf{A}(0)$ because $e^{i \cdot 0 \cdot  D_{kl}}=1$.
+      $\mathbf{A}(0)$ because $e^{2\pi i \cdot 0 \cdot  D_{kl}}=1$.
       % Since the original $a_{kl}$ are real, we have $a_{kl} = \pm
       % |A_{kl}|$, where $A_{kl}$ denotes the element of matrix $\bf{A}$.
     \end{enumerate}
